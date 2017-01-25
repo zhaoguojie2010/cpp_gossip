@@ -1,0 +1,22 @@
+syntax = "proto3";
+package message;
+
+message Header {
+    fixed32 type = 1;
+    fixed32 length = 2;
+}
+
+enum STATE {
+    ALIVE = 0;
+    SUSPECT = 1;
+    DEAD = 2;
+}
+
+message nodeState {
+    string Name = 1;
+    string IP = 2;
+    uint32 Port = 3;
+    uint64 Dominant = 4;
+    STATE State = 5;
+    uint64 Timestamp = 6;
+}

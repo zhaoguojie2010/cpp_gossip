@@ -1,0 +1,14 @@
+# *.a  *.o
+*.[oa]
+
+*.swp
+*.dat
+# ignore log in cur dir
+log/
+cmake-build-debug/
+.idea/
+
+/wk*
+
+# ignore all files in /bin
+/bin/*
