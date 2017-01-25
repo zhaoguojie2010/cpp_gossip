@@ -7,7 +7,7 @@
 
 #include <memory>
 #include <functional>
-#include "src/types.h"
+#include "src/types.hpp"
 #include "src/message/message.pb.h"
 #include "thirdparty/asio/include/asio.hpp"
 
@@ -80,16 +80,24 @@ private:
 
 class TcpSvr {
 public:
-    TcpSvr();
-    void Run();
+    TcpSvr(short port)
+    : io_svc_(),
+      acceptor_(io_svc_, tcp::endpoint(tcp::v4(), port)),
+      socket_(io_svc_) {
+        do_accept();
+    }
 
 private:
-    void do_accept();
+    void do_accept() {
+        acceptor_.async_accept(socket_,
+            [this](std::error_code ec) {
+                if (!ec) {
+                    std::make_shared<session>(std::move(socket_))->Go();
+                }
+            });
+    }
 
 private:
-    std::string listen_ip_;
-    short listen_port_;
-
     asio::io_service io_svc_;
     tcp::acceptor acceptor_;
     tcp::socket socket_;

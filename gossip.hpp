@@ -5,7 +5,7 @@
 #ifndef CPPGOSSIP_GOSSIP_H
 #define CPPGOSSIP_GOSSIP_H
 
-#include "src/config.h"
-#include "src/gossiper.h"
+#include "src/config.hpp"
+#include "src/gossiper.hpp"
 
 #endif //CPPGOSSIP_GOSSIP_H

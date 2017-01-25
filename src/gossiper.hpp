@@ -11,23 +11,30 @@
 #include <queue>
 #include <string>
 
-#include "config.h"
+#include "config.hpp"
 #include "src/message/message.pb.h"
-#include "src/network/tcp/server.h"
+#include "src/network/tcp/server.hpp"
 //#include "broadcast.h"
 
 namespace gossip {
 
 class gossiper {
 public:
-    gossiper(confptr);
+    gossiper(config& conf)
+    : conf_(conf),
+      seq_num_(0),
+      dominant_(0),
+      is_leaving_(false),
+      tcp_svc_(conf.Bind_port_) {}
 
     // Join randomly choose one node of the peers and sync state
     // with it.
     // Returned value: indicates how many members the cluster has
     // including ourselves when it's gt 0.
     // Join failed if it returns 0
-    int Join(std::vector<std::string> &peers);
+    int Join(std::vector<std::string> &peers) {
+        return 0;
+    }
 
     // GetAliveNodes
 
@@ -36,17 +43,19 @@ public:
 public:
     // setAlive starts the random probe & gossip routine in a
     // new thread
-    bool setAlive();
+    bool setAlive() {
+        return true;
+    }
 
 private:
-    confptr p_cfg;
+    config& conf_;
 
     uint64 seq_num_; // typically use for ping
     uint64 dominant_;
     bool is_leaving_;
 
-    //udpSvcPtr p_udp_svc_;
-    tcpSvrPtr p_tcp_svc_;
+    //udpSvcPtr udp_svc_;
+    TcpSvr tcp_svc_;
 
     std::mutex node_lock_;
     std::unordered_map<std::string, message::nodeState> node_map_;
