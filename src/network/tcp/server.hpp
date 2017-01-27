@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <functional>
+#include <thread>
 #include "src/types.hpp"
 #include "src/message/message.pb.h"
 #include "thirdparty/asio/include/asio.hpp"
@@ -87,6 +88,15 @@ public:
         do_accept();
     }
 
+    void Run() {
+        std::thread([this]() {
+            io_svc_.run();
+        });
+    }
+
+    asio::io_service* GetIoSvc() {
+        return &io_svc_;
+    }
 private:
     void do_accept() {
         acceptor_.async_accept(socket_,
@@ -96,6 +106,7 @@ private:
                 }
             });
     }
+
 
 private:
     asio::io_service io_svc_;

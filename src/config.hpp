@@ -11,10 +11,14 @@
 
 namespace gossip {
 
+std::string getLocalAddr() {
+    return "localhost";
+}
+
 struct config {
     config(short port)
-    : Bind_port_(port),
-      Bind_addr_("0.0.0.0"),
+    : Port_(port),
+      Addr_(getLocalAddr()),
       Indirect_checks_(1000),
       Probe_interval_(1000),
       Probe_timeout_(1000),
@@ -23,8 +27,8 @@ struct config {
     }
 
     std::string Name_;
-    std::string Bind_addr_;
-    short Bind_port_;
+    std::string Addr_;
+    short Port_;
 
     short Indirect_checks_;
 
