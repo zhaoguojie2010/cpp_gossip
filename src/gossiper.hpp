@@ -16,11 +16,12 @@
 
 #include "config.hpp"
 #include "src/suspicion.hpp"
+#include "src/handler.hpp"
 #include "src/message/message.pb.h"
 #include "src/network/tcp/server.hpp"
+#include "src/broadcast.hpp"
 #include "thirdparty/asio/include/asio.hpp"
 #include "thirdparty/asio/include/asio/steady_timer.hpp"
-//#include "broadcast.h"
 
 namespace gossip {
 
@@ -30,8 +31,9 @@ public:
     : conf_(conf),
       seq_num_(0),
       dominant_(0),
+      node_num_(0),
       is_leaving_(false),
-      tcp_svc_(conf.Port_) {
+      tcp_svc_(conf.Port_, handle_header, handle_body, 0) { // TODO: get header size
         setAlive();
     }
 
@@ -53,8 +55,7 @@ public:
 
 public:
     typedef std::shared_ptr<message::nodeState> node_state_ptr;
-    typedef std::shared_ptr<asio::steady_timer> timer_ptr;
-    typedef std::shared_ptr<suspicion<timer_ptr>> suspicion_ptr;
+    typedef std::shared_ptr<suspicion> suspicion_ptr;
 
 private:
     // setAlive starts the random probe & gossip routine in a
@@ -84,6 +85,10 @@ private:
             updateNodeState(state, a, message::ALIVE);
 
             setNodeState(alive_node_name, state);
+            node_num_.fetch_add(1, std::memory_order_relaxed);
+
+            // notify join
+            // TODO:
         }
 
         if (a.dominant() <= state->dominant()) {
@@ -92,7 +97,10 @@ private:
 
         updateNodeState(state, a, message::ALIVE);
 
-        // TODO: clear timer if any
+        // clear suspicion if any
+        suspicion_lock_.lock();
+        suspicions_.erase(alive_node_name);
+        suspicion_lock_.unlock();
 
         // if it's about us and this is not a initialization, then update
         // ourselves
@@ -100,7 +108,10 @@ private:
             dominant_ = a.dominant();
         } else {
             // it's not about us or we just init ourselves, start broadcasting
-            // TODO:
+            message::alive *alive = new message::alive;
+            *alive = a;
+            bc_queue_.push(std::make_shared<broadcast_message>(message::ALIVE, alive),
+                           node_num_.load(std::memory_order_relaxed));
         }
     }
 
@@ -112,13 +123,20 @@ private:
             return;
         }
 
-        auto suspicion = getSuspicion(suspect_node_name);
-        if (suspicion != nullptr) {
+        std::function<void()> broadcastSuspect = [this, &s]() {
+            message::suspect *sus = new message::suspect;
+            *sus = s;
+            bc_queue_.push(std::make_shared<broadcast_message>(message::SUSPECT, sus),
+                           node_num_.load(std::memory_order_relaxed));
+        };
+
+        auto sus = getSuspicion(suspect_node_name);
+        if (sus != nullptr) {
             // if the node has already been a suspect, try to verify if
             // it's dead
-            if (suspicion->Confirm(s.from())) {
+            if (!sus->Confirm(s.from())) {
                 // it's not been confirmed to be dead, so just gossip it
-                // TODO: enqueue
+                broadcastSuspect();
             }
             return;
         }
@@ -131,15 +149,63 @@ private:
 
         if (conf_.Name_ == suspect_node_name) {
             // if it's us, issue a objection
-            fuckyou();
+            fuckyou(s.dominant());
         } else {
             // otherwise, just gossip it
-            // TODO:
+            broadcastSuspect();
         }
+
+        updateNodeState(state, s, message::SUSPECT);
+
+        // set up suspicion
+        node_lock_.lock();
+        auto node_num = node_map_.size();
+        node_lock_.unlock();
+
+        suspicion::callback convict = [this, &s]() {
+            message::dead d;
+            d.mutable_node()->set_name(s.node().name());
+            d.mutable_node()->set_ip(s.node().ip());
+            d.mutable_node()->set_port(s.node().port());
+            d.set_dominant(s.dominant());
+            d.set_from(s.from());
+            deadNode(d);
+        };
+        sus = std::make_shared<suspicion>(node_num, convict, tcp_svc_.GetIoSvc(), 2000);
+        suspicion_lock_.lock();
+        suspicions_[suspect_node_name] = sus;
+        suspicion_lock_.unlock();
     }
 
     void deadNode(const message::dead& d) {
+        auto dead_node_name = d.node().name();
+        auto state = getNodeState(dead_node_name);
+        if (state == nullptr || d.dominant() < state->dominant()) {
+            return;
+        }
 
+        suspicion_lock_.lock();
+        suspicions_.erase(dead_node_name);
+        suspicion_lock_.unlock();
+        node_num_.fetch_sub(1, std::memory_order_relaxed);
+
+        if (state->state() == message::DEAD) {
+            return;
+        }
+
+        // if it's us, object
+        if (dead_node_name == conf_.Name_ && !is_leaving_) {
+            fuckyou(d.dominant());
+            return;
+        }
+        // start to broadcast
+        message::dead *dead = new message::dead;
+        *dead = d;
+        bc_queue_.push(std::make_shared<broadcast_message>(message::DEAD, dead),
+                       node_num_.load(std::memory_order_relaxed));
+
+        // notify leave
+        // TODO:
     }
 
     // probe randomly ping one known node via udp
@@ -157,8 +223,8 @@ private:
 
     }
 
-    uint64 nextDominant() {
-        return dominant_.fetch_add(1, std::memory_order_relaxed) + 1;
+    uint64 nextDominant(uint64 shift = 1) {
+        return dominant_.fetch_add(shift, std::memory_order_relaxed) + 1;
     }
 
     uint64 nextSeqNum() {
@@ -207,14 +273,23 @@ private:
         return result;
     }
 
-    timer_ptr getTimer() {
-        auto io_svc = tcp_svc_.GetIoSvc();
-        return std::make_shared<asio::steady_timer>(*io_svc);
-    }
+    // object if we're accused of being suspect or dead
+    void fuckyou(uint64 dominant) {
+        auto alive = new message::alive;
+        auto node = alive->mutable_node();
+        node->set_ip(conf_.Addr_);
+        node->set_port(conf_.Port_);
+        node->set_name(conf_.Name_);
 
-    // object if we're accused of suspect or dead
-    void fuckyou() {
+        auto d = nextDominant();
+        if (dominant >= d) {
+            d = nextDominant(dominant-d+1);
+        }
+        alive->set_dominant(d);
 
+        // broadcast
+        bc_queue_.push(std::make_shared<broadcast_message>(message::ALIVE, alive),
+            node_num_.load(std::memory_order_relaxed));
     }
 private:
     config& conf_;
@@ -228,11 +303,12 @@ private:
 
     std::mutex node_lock_;
     std::unordered_map<std::string, node_state_ptr> node_map_;
+    std::atomic<uint32> node_num_;
 
     std::mutex suspicion_lock_;
     std::unordered_map<std::string, suspicion_ptr> suspicions_;
 
-    //std::queue<broadcastMsg> bc_queue_;
+    broadcast_queue bc_queue_;
 };
 }
 

@@ -8,27 +8,46 @@
 #include "string"
 #include <set>
 #include <functional>
+
+#include "thirdparty/asio/include/asio.hpp"
+#include "thirdparty/asio/include/asio/steady_timer.hpp"
 namespace gossip {
 
-template <class TIMER>
-class suspicion {
+class suspicion :public asio::steady_timer {
 public:
     typedef std::function<void()> callback;
 public:
-    suspicion(uint32 node_num, callback convict, TIMER t)
-    : confirm_(0),
+    suspicion(uint32 node_num, callback convict,
+              asio::io_service *io_svc, uint32 timeout)
+    : asio::steady_timer(*io_svc),
+      confirm_(0),
       need_confirm_(std::log(node_num) * 3),
-      timer_(t),
-      convict_(convict) {}
-
-    bool Confirm(std::string from) {
-        return false;
+      convict_(convict) {
+        expires_from_now(std::chrono::milliseconds(timeout));
+        async_wait([this](const asio::error_code&) {
+            convict_();
+        });
     }
 
+    bool Confirm(std::string from) {
+        bool result = false;
+        mtx_.lock();
+        auto search = who_confirmed_.find(from);
+        if (search == who_confirmed_.end()) {
+            who_confirmed_.insert(from);
+            ++confirm_;
+        }
+        if (confirm_ >= need_confirm_) {
+            result = true;
+            // clean up the timer and convict
+            cancel();
+            convict_();
+        }
+        mtx_.unlock();
+        return result;
+    }
 
 private:
-    TIMER timer_;
-
     // indicates the number of confirms we'd like to see
     // before the suspicion is convicted.
     uint32 need_confirm_;
@@ -36,6 +55,7 @@ private:
     // indicates the number of confirms we've seen so far
     uint32 confirm_;
 
+    std::mutex mtx_;
     // rule out duplicated confirms from the same node
     std::set<std::string> who_confirmed_;
 

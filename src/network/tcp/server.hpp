@@ -9,37 +9,36 @@
 #include <functional>
 #include <thread>
 #include "src/types.hpp"
-#include "src/message/message.pb.h"
 #include "thirdparty/asio/include/asio.hpp"
 
 namespace gossip {
 using asio::ip::tcp;
 
-typedef std::function<uint32(const message::Header&, char*, uint32)> Handler;
+typedef std::function<uint32(char*, uint32)> header_handler;
+typedef std::function<uint32(char*, uint32, char*, uint32)> body_handler;
 
 class session: public std::enable_shared_from_this<session> {
 public:
-    session(tcp::socket socket)
-        : socket_(std::move(socket))
-    {}
-
-    session(tcp::socket socket, Handler handler)
-        : socket_(std::move(socket)),
-          handler_(handler)
+    session(tcp::socket socket, header_handler handle_header,
+        body_handler handle_body, uint32 header_size)
+    : socket_(std::move(socket)),
+      header_size_(header_size),
+      handle_header_(handle_header),
+      handle_body_(handle_body)
     {}
 
     // Go starts the session with a read op
     void Go() {
-        do_read_header(header_size_);
+        do_read_header();
     }
 
 private:
     // do_read_header reads the fixed length header so that
     // we know what we are dealing with.
-    void do_read_header(uint32 header_size) {
+    void do_read_header() {
         auto self(shared_from_this());
         asio::async_read(socket_,
-            asio::buffer(buff_, header_size),
+            asio::buffer(buff_, header_size_),
             [this, self](std::error_code ec, std::size_t){
                 if (!ec) {
                     do_read_body();
@@ -49,13 +48,12 @@ private:
 
     void do_read_body() {
         auto self(shared_from_this());
-        message::Header hdr;
-        hdr.ParseFromArray(buff_, header_size_);
+        auto length = handle_header_(buff_, header_size_);
         asio::async_read(socket_,
-            asio::buffer(buff_, hdr.length()),
-            [this, self, &hdr](std::error_code ec, std::size_t) {
+            asio::buffer(buff_, length),
+            [this, self, &length](std::error_code ec, std::size_t) {
                 if (!ec) {
-                    auto resp_length = handler_(hdr, buff_, buff_size_);
+                    uint32 resp_length = handle_body_(buff_, length, buff_, buff_size_);
                     do_write_response(resp_length);
                 }
             });
@@ -76,14 +74,19 @@ private:
     enum { buff_size_ = 65536};
     char buff_[buff_size_];
 
-    Handler handler_;
+    header_handler handle_header_;
+    body_handler handle_body_;
 };
 
 class TcpSvr {
 public:
-    TcpSvr(short port)
+    TcpSvr(short port, header_handler handle_header,
+        body_handler handle_body, uint32 header_size)
     : io_svc_(),
       acceptor_(io_svc_, tcp::endpoint(tcp::v4(), port)),
+      header_size_(header_size),
+      handle_header_(handle_header),
+      handle_body_(handle_body),
       socket_(io_svc_) {
         do_accept();
     }
@@ -102,7 +105,8 @@ private:
         acceptor_.async_accept(socket_,
             [this](std::error_code ec) {
                 if (!ec) {
-                    std::make_shared<session>(std::move(socket_))->Go();
+                    std::make_shared<session>(std::move(
+                        socket_), handle_header_, handle_body_, header_size_)->Go();
                 }
             });
     }
@@ -112,6 +116,9 @@ private:
     asio::io_service io_svc_;
     tcp::acceptor acceptor_;
     tcp::socket socket_;
+    uint32 header_size_;
+    header_handler handle_header_;
+    body_handler handle_body_;
 };
 typedef std::shared_ptr<TcpSvr> tcpSvrPtr;
 
