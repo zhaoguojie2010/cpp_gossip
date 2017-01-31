@@ -110,7 +110,7 @@ private:
             // it's not about us or we just init ourselves, start broadcasting
             message::alive *alive = new message::alive;
             *alive = a;
-            bc_queue_.push(std::make_shared<broadcast_message>(message::ALIVE, alive),
+            bc_queue_.push(std::make_shared<broadcast_message>(alive),
                            node_num_.load(std::memory_order_relaxed));
         }
     }
@@ -126,7 +126,7 @@ private:
         std::function<void()> broadcastSuspect = [this, &s]() {
             message::suspect *sus = new message::suspect;
             *sus = s;
-            bc_queue_.push(std::make_shared<broadcast_message>(message::SUSPECT, sus),
+            bc_queue_.push(std::make_shared<broadcast_message>(sus),
                            node_num_.load(std::memory_order_relaxed));
         };
 
@@ -201,7 +201,7 @@ private:
         // start to broadcast
         message::dead *dead = new message::dead;
         *dead = d;
-        bc_queue_.push(std::make_shared<broadcast_message>(message::DEAD, dead),
+        bc_queue_.push(std::make_shared<broadcast_message>(dead),
                        node_num_.load(std::memory_order_relaxed));
 
         // notify leave
@@ -288,7 +288,7 @@ private:
         alive->set_dominant(d);
 
         // broadcast
-        bc_queue_.push(std::make_shared<broadcast_message>(message::ALIVE, alive),
+        bc_queue_.push(std::make_shared<broadcast_message>(alive),
             node_num_.load(std::memory_order_relaxed));
     }
 private:
