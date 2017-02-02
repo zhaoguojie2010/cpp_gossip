@@ -1,0 +1,34 @@
+// command: flatc --gen-mutable -c message.fbs
+namespace gossip.message;
+
+enum STATE:byte {
+  ALIVE,
+  SUSPECT,
+  DEAD
+}
+
+table Node {
+  name:string;
+  ip:string;
+  port:short;
+}
+
+table NodeState {
+  node:Node;
+  state:STATE;
+  dominant:ulong;
+  from:string;
+  timeStamp:ulong;
+}
+
+table Ping {
+  seqNo:ulong;
+  from:string;
+}
+
+table IndirectPing {
+  seqNo:ulong;
+  target:Node;
+}
+
+root_type NodeState;
