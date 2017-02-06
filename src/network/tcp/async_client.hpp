@@ -6,6 +6,7 @@
 #define CPPGOSSIP_ASYNC_CLIENT_HPP
 
 namespace gossip {
+using asio::ip::tcp;
 
 class AsyncClient {
 public:
@@ -16,7 +17,7 @@ public:
           host_(host),
           port_(port),
           deadline_(io_svc) {
-        connect(host, port);
+        connect(host, std::to_string(port));
     }
 
     // This function terminates all the actors to shut down the connection. It
@@ -53,8 +54,8 @@ public:
     }
 
 private:
-    void connect(const std::string &host, const short port) {
-        auto endpoint = resolver_.resolve(tcp::resolver::query(host, std::to_string(port)));
+    void connect(const std::string &host, const std::string &port) {
+        auto endpoint = resolver_.resolve(tcp::resolver::query(host, port));
         start_connect(endpoint);
     }
 
@@ -63,7 +64,9 @@ private:
         if (endpoint_iter != tcp::resolver::iterator())
         {
             std::cout << "Trying " << endpoint_iter->endpoint() << "...\n";
-            std::string error_info = "connect to " + endpoint_iter->endpoint() + "timeout";
+            std::string error_info = "connect to " +
+                endpoint_iter->endpoint().address().to_string() +
+                ":" + std::to_string(endpoint_iter->endpoint().port()) + " timeout";
 
             // Set a deadline for the connect operation.
             deadline_.expires_from_now(std::chrono::milliseconds(1000));
@@ -158,7 +161,7 @@ private:
 
             // There is no longer an active deadline. The expiry is set to positive
             // infinity so that the actor takes no action until a new deadline is set.
-            // deadline_.expires_at(std::chrono::time_point(std::chrono::duration::max()));
+            // deadline_.expires_at(std::chrono::time_point<std::chrono::steady_clock>::max());
         }
     }
 

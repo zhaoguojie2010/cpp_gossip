@@ -10,6 +10,8 @@
 #include <thread>
 #include <chrono>
 #include "src/types.hpp"
+#include "src/network/tcp/async_client.hpp"
+#include "src/network/tcp/blocking_client.hpp"
 #include "thirdparty/asio/include/asio.hpp"
 
 namespace gossip {
