@@ -6,4 +6,3 @@ include_directories(. ./thirdparty/asio/include ./src ./src/message ./src/networ
 aux_source_directory(./src/message SRC_DIR)
 add_executable(main ./examples/main.cpp ${SRC_DIR})
 link_directories(/usr/local/lib)
-target_link_libraries(main -lprotobuf)

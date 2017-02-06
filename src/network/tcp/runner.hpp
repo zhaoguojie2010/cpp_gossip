@@ -81,20 +81,15 @@ private:
 class TcpSvr {
 public:
     TcpSvr(short port, header_handler handle_header,
-        body_handler handle_body, uint32 header_size)
-    : io_svc_(),
+        body_handler handle_body, uint32 header_size,
+        asio::io_service &io_svc)
+    : io_svc_(io_svc),
       acceptor_(io_svc_, tcp::endpoint(tcp::v4(), port)),
       header_size_(header_size),
       handle_header_(handle_header),
       handle_body_(handle_body),
       socket_(io_svc_) {
         do_accept();
-    }
-
-    void Run() {
-        std::thread([this]() {
-            io_svc_.run();
-        });
     }
 
     asio::io_service* GetIoSvc() {
@@ -113,12 +108,75 @@ private:
 
 
 private:
-    asio::io_service io_svc_;
+    asio::io_service &io_svc_;
     tcp::acceptor acceptor_;
     tcp::socket socket_;
     uint32 header_size_;
     header_handler handle_header_;
     body_handler handle_body_;
+};
+
+class TcpClient {
+public:
+    TcpClient(asio::io_service &io_svc)
+    : stopped_(false),
+      socket_(io_svc),
+      deadline_(io_svc) {
+
+    }
+
+    // This function terminates all the actors to shut down the connection. It
+    // may be called by the user of the client class, or by the class itself in
+    // response to graceful termination or an unrecoverable error.
+    void stop()
+    {
+        stopped_ = true;
+        asio::error_code ignored_ec;
+        socket_.close(ignored_ec);
+        deadline_.cancel();
+    }
+
+private:
+
+
+
+
+private:
+    bool stopped_;
+    tcp::socket socket_;
+    asio::streambuf input_buffer_;
+    asio::steady_timer deadline_;
+};
+
+class TcpRunner {
+public:
+    TcpRunner()
+    : io_svc_(),
+      tcp_svr_(nullptr) {
+
+    }
+
+    asio::io_service* GetIoSvc() {
+        return &io_svc_;
+    }
+
+    bool PrepareServer (short port, header_handler handle_header,
+        body_handler handle_body, uint32 header_size) {
+        if (tcp_svr_)
+            return false;
+        tcp_svr_ = new TcpSvr(port, handle_header, handle_body, header_size, io_svc_);
+        return true;
+    }
+
+    void Run() {
+        std::thread([this]() {
+            io_svc_.run();
+        });
+    }
+
+private:
+    asio::io_service io_svc_;
+    TcpSvr *tcp_svr_;
 };
 typedef std::shared_ptr<TcpSvr> tcpSvrPtr;
 

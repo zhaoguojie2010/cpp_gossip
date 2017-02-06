@@ -18,9 +18,8 @@
 #include "src/suspicion.hpp"
 #include "src/handler.hpp"
 #include "src/node.hpp"
-//#include "src/message/message.pb.h"
 #include "src/message/message_generated.h"
-#include "src/network/tcp/server.hpp"
+#include "src/network/tcp/runner.hpp"
 #include "src/broadcast.hpp"
 #include "thirdparty/asio/include/asio.hpp"
 #include "thirdparty/asio/include/asio/steady_timer.hpp"
@@ -35,7 +34,8 @@ public:
       dominant_(0),
       node_num_(0),
       is_leaving_(false),
-      tcp_svc_(conf.Port_, handle_header, handle_body, 0) { // TODO: get header size
+      tcp_runner_() {
+        tcp_runner_.PrepareServer(conf.Port_, handle_header, handle_body, 0); // TODO: get header size
         setAlive();
     }
 
@@ -44,6 +44,7 @@ public:
     // Returned value: indicates how many members the cluster has
     // including ourselves when it's gt 0.
     // Join failed if it returns 0
+    // peer example: 192.168.1.39:29011
     int Join(std::vector<std::string> &peers) {
         // select a random peer
         std::srand(std::time(0));
@@ -165,7 +166,7 @@ private:
             d.State_ = message::STATE_DEAD;
             deadNode(d);
         };
-        sus = std::make_shared<suspicion>(node_num, convict, tcp_svc_.GetIoSvc(), 2000);
+        sus = std::make_shared<suspicion>(node_num, convict, tcp_runner_.GetIoSvc(), 2000);
         suspicion_lock_.lock();
         suspicions_[suspect_node_name] = sus;
         suspicion_lock_.unlock();
@@ -286,7 +287,7 @@ private:
     bool is_leaving_;
 
     //udpSvcPtr udp_svc_;
-    TcpSvr tcp_svc_;
+    TcpRunner tcp_runner_;
 
     std::mutex node_lock_;
     std::unordered_map<std::string, node_state_ptr> node_map_;
