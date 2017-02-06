@@ -8,6 +8,7 @@
 #include <memory>
 #include <functional>
 #include <thread>
+#include <chrono>
 #include "src/types.hpp"
 #include "thirdparty/asio/include/asio.hpp"
 
@@ -114,38 +115,6 @@ private:
     uint32 header_size_;
     header_handler handle_header_;
     body_handler handle_body_;
-};
-
-class TcpClient {
-public:
-    TcpClient(asio::io_service &io_svc)
-    : stopped_(false),
-      socket_(io_svc),
-      deadline_(io_svc) {
-
-    }
-
-    // This function terminates all the actors to shut down the connection. It
-    // may be called by the user of the client class, or by the class itself in
-    // response to graceful termination or an unrecoverable error.
-    void stop()
-    {
-        stopped_ = true;
-        asio::error_code ignored_ec;
-        socket_.close(ignored_ec);
-        deadline_.cancel();
-    }
-
-private:
-
-
-
-
-private:
-    bool stopped_;
-    tcp::socket socket_;
-    asio::streambuf input_buffer_;
-    asio::steady_timer deadline_;
 };
 
 class TcpRunner {

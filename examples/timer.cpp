@@ -107,8 +107,8 @@ int main(int argc, char* argv[])
 
         asio::steady_timer timer(io_service);
         timer.expires_from_now(std::chrono::seconds(2));
-        timer.async_wait([](const asio::error_code&){
-            std::cout << "11111\n";
+        timer.async_wait([](const asio::error_code &ec){
+            std::cout << "11111 " << ec.message() << "\n";
         });
         t.join();
     }
