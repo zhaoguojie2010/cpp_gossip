@@ -8,53 +8,60 @@
 #include <cstdlib>
 #include <iostream>
 #include "asio.hpp"
+#include "src/handler.hpp"
+
+namespace gossip {
+namespace udp {
 
 using asio::ip::udp;
 
-typedef std::function<int(char*/*data*/,
+typedef std::function<int(char */*data*/,
                           int/*data length*/,
-                          int/*maximum length of response*/)> handle_packet;
+                          char */*response buff*/,
+                          int/*maximum length of response*/)> packet_handler;
 
-class server
-{
+class Server {
 public:
-    server(asio::io_service& io_service, short port)
-        : socket_(io_service, udp::endpoint(udp::v4(), port)) {
-        do_receive();
+    Server(short port, packet_handler handle_packet, asio::io_service &io_svc)
+        : socket_(io_svc, udp::endpoint(udp::v4(), port)),
+          handle_packet_(handle_packet) {}
+
+    void Start() {
+        doReceive();
     }
 
-    void do_receive() {
+    void doReceive() {
         socket_.async_receive_from(
-            asio::buffer(data_, max_length), sender_endpoint_,
-            [this](std::error_code ec, std::size_t bytes_recvd)
-            {
-                if (!ec && bytes_recvd > 0)
-                {
-                    int response_length = handle_packet(data_, bytes_recvd, mtu_);
-                    do_send(response_length);
-                }
-                else
-                {
-                    do_receive();
+            asio::buffer(data_, mtu_), sender_endpoint_,
+            [this](std::error_code ec, std::size_t bytes_recvd) {
+                if (!ec && bytes_recvd > 0) {
+                    int response_length = handle_packet_(data_, bytes_recvd, data_, mtu_);
+                    // TODO: handle error
+                    if (response_length > 0)
+                        doSend(response_length);
+                } else {
+                    doReceive();
                 }
             });
     }
 
-    void do_send(std::size_t length) {
+    void doSend(std::size_t length) {
         socket_.async_send_to(
             asio::buffer(data_, length), sender_endpoint_,
-            [this](std::error_code /*ec*/, std::size_t /*bytes_sent*/)
-            {
-                do_receive();
+            [this](std::error_code /*ec*/, std::size_t /*bytes_sent*/) {
+                doReceive();
             });
     }
 
 private:
     udp::socket socket_;
     udp::endpoint sender_endpoint_;
-    enum { max_length = 1024 };
-    char data_[max_length];
-    const int mtu_ = 1460;
+    const static int mtu_ = 1460;
+    char data_[mtu_];
+    packet_handler handle_packet_;
 };
+
+}
+}
 
 #endif //CPPGOSSIP_SERVER_HPP

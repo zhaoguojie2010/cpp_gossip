@@ -1,6 +1,6 @@
 //
 // Created by bloodstone on 17/2/6.
-//
+// This is a modified version of asio example code
 
 #ifndef CPPGOSSIP_BLOCKING_CLIENT_HPP
 #define CPPGOSSIP_BLOCKING_CLIENT_HPP
@@ -8,14 +8,14 @@
 #include <chrono>
 
 namespace gossip {
+namespace tcp {
 
-class BlockingClient
-{
+class BlockingClient {
 public:
     BlockingClient()
-        : socket_(io_service_),
-          deadline_(io_service_)
-    {
+        : io_service_(),
+          socket_(io_service_),
+          deadline_(io_service_) {
         // No deadline is required until the first socket operation is started. We
         // set the deadline to positive infinity so that the actor takes no action
         // until a specific deadline is set.
@@ -25,10 +25,9 @@ public:
         check_deadline();
     }
 
-    void Connect(const std::string& host,
-                 const std::string& service,
-                 int timeout = 0)
-    {
+    void Connect(const std::string &host,
+                 const std::string &service,
+                 int timeout = 0) {
         // Resolve the host name and service to a list of endpoints.
         tcp::resolver::query query(host, service);
         tcp::resolver::iterator iter = tcp::resolver(io_service_).resolve(query);
@@ -51,10 +50,10 @@ public:
         // operation completes.
         asio::async_connect(
             socket_, iter,
-            [&ec](const asio::error_code& ec1,
+            [&ec](const asio::error_code &ec1,
                   tcp::resolver::iterator endpoint_iter) {
-            ec = ec1;
-        });
+                ec = ec1;
+            });
 
         // Block until the asynchronous operation has completed.
         do io_service_.run_one(); while (ec == asio::error::would_block);
@@ -69,8 +68,7 @@ public:
                 ec ? ec : asio::error::operation_aborted);
     }
 
-    std::string ReadFull(char *buff, std::size_t size, int timeout)
-    {
+    std::string ReadFull(char *buff, std::size_t size, int timeout) {
         // Set a deadline for the asynchronous operation. Since this function uses
         // a composed operation (async_read_until), the deadline applies to the
         // entire operation, rather than individual reads from the socket.
@@ -88,10 +86,10 @@ public:
         // operation completes.
         asio::async_read(
             socket_, asio::buffer(buff, size),
-            [&ec](const asio::error_code& ec1,
+            [&ec](const asio::error_code &ec1,
                   std::size_t /*lenght*/) {
-            ec = ec1;
-        });
+                ec = ec1;
+            });
 
         // Block until the asynchronous operation has completed.
         do io_service_.run_one(); while (ec == asio::error::would_block);
@@ -106,8 +104,7 @@ public:
     }
 
     void WriteLine(char *buff, std::size_t size,
-                    int timeout = 0)
-    {
+                   int timeout = 0) {
         // Set a deadline for the asynchronous operation. Since this function uses
         // a composed operation (async_write), the deadline applies to the entire
         // operation, rather than individual writes to the socket.
@@ -126,10 +123,10 @@ public:
         // can use boost::bind rather than boost::lambda.
         asio::async_write(
             socket_, asio::buffer(buff, size),
-            [&ec](const asio::error_code& ec1,
+            [&ec](const asio::error_code &ec1,
                   std::size_t /*length*/) {
-            ec = ec1;
-        });
+                ec = ec1;
+            });
 
         // Block until the asynchronous operation has completed.
         do io_service_.run_one(); while (ec == asio::error::would_block);
@@ -139,13 +136,11 @@ public:
     }
 
 private:
-    void check_deadline()
-    {
+    void check_deadline() {
         // Check whether the deadline has passed. We compare the deadline against
         // the current time since a new asynchronous operation may have moved the
         // deadline before this actor had a chance to run.
-        if (deadline_.expires_at() <= std::chrono::steady_clock::now())
-        {
+        if (deadline_.expires_at() <= std::chrono::steady_clock::now()) {
             // The deadline has passed. The socket is closed so that any outstanding
             // asynchronous operations are cancelled. This allows the blocked
             // connect(), read_line() or write_line() functions to return.
@@ -167,6 +162,7 @@ private:
     asio::streambuf input_buffer_;
 };
 
+}
 }
 
 #endif //CPPGOSSIP_BLOCKING_CLIENT_HPP

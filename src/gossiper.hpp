@@ -19,7 +19,7 @@
 #include "src/handler.hpp"
 #include "src/node.hpp"
 #include "src/message/message_generated.h"
-#include "src/network/tcp/runner.hpp"
+#include "src/hybrid_runner.hpp"
 #include "src/broadcast.hpp"
 #include "thirdparty/asio/include/asio.hpp"
 #include "thirdparty/asio/include/asio/steady_timer.hpp"
@@ -34,22 +34,35 @@ public:
       dominant_(0),
       node_num_(0),
       is_leaving_(false),
-      tcp_runner_() {
-        tcp_runner_.PrepareServer(conf.Port_, handle_header, handle_body, 0); // TODO: get header size
-        setAlive();
+      hybrid_runner_(conf.Port_, handle_header, handle_body, 0, handle_packet) {
+        // TODO: get header size
     }
 
-    // Join randomly choose one node of the peers and sync state
-    // with it.
+    // sync with the first available peer and call Alive()
     // Returned value: indicates how many members the cluster has
     // including ourselves when it's gt 0.
     // Join failed if it returns 0
     // peer example: 192.168.1.39:29011
-    int Join(std::vector<std::string> &peers) {
+    int AliveAndJoin(std::vector<std::string> &peers) {
         // select a random peer
         std::srand(std::time(0));
         const std::string &seed = peers[std::rand()%peers.size()];
         return 0;
+    }
+
+    // setAlive starts the random probe & gossip routine in a
+    // new thread
+    bool Alive() {
+        node_state alive;
+        alive.Name_ = conf_.Name_;
+        alive.IP_ = conf_.Addr_;
+        alive.Port_ = conf_.Port_;
+        alive.Dominant_ = nextDominant();
+        aliveNode(alive, true);
+        // TODO:
+
+        hybrid_runner_.Run();
+        return true;
     }
 
     // GetAliveNodes
@@ -61,18 +74,6 @@ public:
     typedef std::shared_ptr<suspicion> suspicion_ptr;
 
 private:
-    // setAlive starts the random probe & gossip routine in a
-    // new thread
-    bool setAlive() {
-        node_state alive;
-        alive.Name_ = conf_.Name_;
-        alive.IP_ = conf_.Addr_;
-        alive.Port_ = conf_.Port_;
-        alive.Dominant_ = nextDominant();
-        aliveNode(alive, true);
-        return true;
-    }
-
     void aliveNode(const node_state &a, bool bootstrap) {
         const std::string alive_node_name = a.Name_;
         if (is_leaving_ && alive_node_name == conf_.Name_) {
@@ -166,7 +167,7 @@ private:
             d.State_ = message::STATE_DEAD;
             deadNode(d);
         };
-        sus = std::make_shared<suspicion>(node_num, convict, tcp_runner_.GetIoSvc(), 2000);
+        sus = std::make_shared<suspicion>(node_num, convict, hybrid_runner_.GetIoSvc(), 2000);
         suspicion_lock_.lock();
         suspicions_[suspect_node_name] = sus;
         suspicion_lock_.unlock();
@@ -286,8 +287,7 @@ private:
     std::atomic<uint64> dominant_;
     bool is_leaving_;
 
-    //udpSvcPtr udp_svc_;
-    TcpRunner tcp_runner_;
+    HybridRunner hybrid_runner_;
 
     std::mutex node_lock_;
     std::unordered_map<std::string, node_state_ptr> node_map_;

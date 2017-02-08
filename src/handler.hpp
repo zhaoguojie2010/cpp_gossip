@@ -15,6 +15,11 @@ uint32 handle_body(char*, uint32, char*, uint32) {
     return 0;
 }
 
+int handle_packet(char *buff, std::size_t size,
+    char *resp_buff, std::size_t resp_size) {
+    return 0;
+}
+
 }
 
 #endif //CPPGOSSIP_HANDLER_HPP
