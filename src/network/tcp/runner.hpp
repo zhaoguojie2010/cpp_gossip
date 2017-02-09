@@ -18,8 +18,8 @@ namespace gossip {
 namespace tcp {
 using asio::ip::tcp;
 
-typedef std::function<uint32(char *, uint32)> header_handler;
-typedef std::function<uint32(char *, uint32, char *, uint32)> body_handler;
+typedef std::function<std::size_t(char*, std::size_t)> header_handler;
+typedef std::function<std::size_t(char*, std::size_t, char*, std::size_t)> body_handler;
 
 class Session : public std::enable_shared_from_this<Session> {
 public:

@@ -5,13 +5,25 @@
 #ifndef CPPGOSSIP_HANDLER_HPP
 #define CPPGOSSIP_HANDLER_HPP
 
+#include "thirdparty/portable_endian.h"
+#include "src/message/header.hpp"
+#include "src/logger.hpp"
+
 namespace gossip {
 
-uint32 handle_header(char*, uint32) {
-    return 0;
+std::size_t handle_header(char* buff, std::size_t size) {
+    if (size != HEADER_SIZE) {
+        logger->info("invalid header size: ", 4);
+        return 0;
+    }
+    buff[HEADER_SIZE] = 0;
+    // don't need endian conversion since the first byte received
+    // is always the higher bit
+    // return be32toh(std::atoi(buff));
+    return std::atoi(buff);
 }
 
-uint32 handle_body(char*, uint32, char*, uint32) {
+std::size_t handle_body(char*, std::size_t, char*, std::size_t) {
     return 0;
 }
 

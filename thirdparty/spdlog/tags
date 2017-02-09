@@ -1,0 +1,1178 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ALIGN_CENTER	fmt/bundled/format.h	/^    ALIGN_DEFAULT, ALIGN_LEFT, ALIGN_RIGHT, ALIGN_CENTER, ALIGN_NUMERIC$/;"	e	enum:fmt::Alignment
+ALIGN_DEFAULT	fmt/bundled/format.h	/^    ALIGN_DEFAULT, ALIGN_LEFT, ALIGN_RIGHT, ALIGN_CENTER, ALIGN_NUMERIC$/;"	e	enum:fmt::Alignment
+ALIGN_LEFT	fmt/bundled/format.h	/^    ALIGN_DEFAULT, ALIGN_LEFT, ALIGN_RIGHT, ALIGN_CENTER, ALIGN_NUMERIC$/;"	e	enum:fmt::Alignment
+ALIGN_NUMERIC	fmt/bundled/format.h	/^    ALIGN_DEFAULT, ALIGN_LEFT, ALIGN_RIGHT, ALIGN_CENTER, ALIGN_NUMERIC$/;"	e	enum:fmt::Alignment
+ALIGN_RIGHT	fmt/bundled/format.h	/^    ALIGN_DEFAULT, ALIGN_LEFT, ALIGN_RIGHT, ALIGN_CENTER, ALIGN_NUMERIC$/;"	e	enum:fmt::Alignment
+A_formatter	details/pattern_formatter_impl.h	/^class A_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+AlignSpec	fmt/bundled/format.h	/^    AlignSpec(unsigned width, wchar_t fill, Alignment align = ALIGN_DEFAULT)$/;"	f	struct:fmt::AlignSpec
+AlignSpec	fmt/bundled/format.h	/^struct AlignSpec: WidthSpec$/;"	s	namespace:fmt
+AlignTypeSpec	fmt/bundled/format.h	/^    AlignTypeSpec(unsigned width, wchar_t fill): AlignSpec(width, fill)$/;"	f	struct:fmt::AlignTypeSpec
+AlignTypeSpec	fmt/bundled/format.h	/^struct AlignTypeSpec: AlignSpec$/;"	s	namespace:fmt
+Alignment	fmt/bundled/format.h	/^enum Alignment$/;"	g	namespace:fmt
+Arg	fmt/bundled/format.h	/^    typedef internal::Arg Arg;$/;"	t	class:fmt::ArgVisitor
+Arg	fmt/bundled/format.h	/^struct Arg: Value$/;"	s	namespace:fmt::internal
+ArgArray	fmt/bundled/format.h	/^struct ArgArray<N, false\/*IsPacked*\/>$/;"	s	namespace:fmt
+ArgConverter	fmt/bundled/printf.h	/^    ArgConverter(internal::Arg &arg, wchar_t type)$/;"	f	class:fmt::internal::ArgConverter
+ArgConverter	fmt/bundled/printf.h	/^class ArgConverter: public ArgVisitor<ArgConverter<T>, void>$/;"	c	namespace:fmt::internal
+ArgFormatter	fmt/bundled/format.h	/^    ArgFormatter(BasicFormatter<Char> &formatter,$/;"	f	class:fmt::ArgFormatter
+ArgFormatter	fmt/bundled/format.h	/^class ArgFormatter: public BasicArgFormatter<ArgFormatter<Char>, Char>$/;"	c	namespace:fmt
+ArgFormatterBase	fmt/bundled/format.h	/^    ArgFormatterBase(BasicWriter<Char> &w, FormatSpec &s)$/;"	f	class:fmt::internal::ArgFormatterBase
+ArgFormatterBase	fmt/bundled/format.h	/^class ArgFormatterBase: public ArgVisitor<Impl, void>$/;"	c	namespace:fmt::internal
+ArgList	fmt/bundled/format.h	/^    ArgList(): types_(0)$/;"	f	class:fmt::ArgList
+ArgList	fmt/bundled/format.h	/^    ArgList(ULongLong types, const internal::Arg *args)$/;"	f	class:fmt::ArgList
+ArgList	fmt/bundled/format.h	/^    ArgList(ULongLong types, const internal::Value *values)$/;"	f	class:fmt::ArgList
+ArgList	fmt/bundled/format.h	/^class ArgList$/;"	c	namespace:fmt
+ArgMap	fmt/bundled/format.h	/^class ArgMap$/;"	c	namespace:fmt::internal
+ArgType	fmt/bundled/format.h	/^    ArgType(): type(0)$/;"	f	struct:fmt::ArgType
+ArgType	fmt/bundled/format.h	/^    ArgType(const T &arg) : type(make_type(arg))$/;"	f	struct:fmt::ArgType
+ArgType	fmt/bundled/format.h	/^struct ArgType$/;"	s	namespace:fmt
+ArgVisitor	fmt/bundled/format.h	/^class ArgVisitor$/;"	c	namespace:fmt
+ArrayWriter	fmt/bundled/format.h	/^typedef BasicArrayWriter<char> ArrayWriter;$/;"	t
+BLACK	fmt/bundled/format.h	/^    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE$/;"	e	enum:Color
+BLUE	fmt/bundled/format.h	/^    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE$/;"	e	enum:Color
+BOLD	sinks/wincolor_sink.h	/^    const WORD BOLD = FOREGROUND_INTENSITY;$/;"	m	class:spdlog::sinks::wincolor_sink
+BOOL	fmt/bundled/format.h	/^        INT, UINT, LONG_LONG, ULONG_LONG, BOOL, CHAR, LAST_INTEGER_TYPE = CHAR,$/;"	e	enum:fmt::internal::Value::Type
+BUFFER_SIZE	fmt/bundled/format.h	/^        BUFFER_SIZE = std::numeric_limits<ULongLong>::digits10 + 3$/;"	e	enum:FormatInt::__anon31
+B_formatter	details/pattern_formatter_impl.h	/^class B_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+Base	fmt/bundled/printf.h	/^    typedef internal::ArgFormatterBase<Impl, Char> Base;$/;"	t	class:fmt::BasicPrintfArgFormatter
+BasicArgFormatter	fmt/bundled/format.h	/^    BasicArgFormatter(BasicFormatter<Char, Impl> &formatter,$/;"	f	class:fmt::BasicArgFormatter
+BasicArgFormatter	fmt/bundled/format.h	/^class BasicArgFormatter: public internal::ArgFormatterBase<Impl, Char>$/;"	c	namespace:fmt
+BasicArrayWriter	fmt/bundled/format.h	/^    BasicArrayWriter(Char *array, std::size_t size)$/;"	f	class:BasicArrayWriter
+BasicArrayWriter	fmt/bundled/format.h	/^class BasicArrayWriter: public BasicWriter<Char>$/;"	c
+BasicCStringRef	fmt/bundled/format.h	/^    BasicCStringRef(const Char *s): data_(s)$/;"	f	class:fmt::BasicCStringRef
+BasicCStringRef	fmt/bundled/format.h	/^    BasicCStringRef(const std::basic_string<Char> &s): data_(s.c_str())$/;"	f	class:fmt::BasicCStringRef
+BasicCStringRef	fmt/bundled/format.h	/^class BasicCStringRef$/;"	c	namespace:fmt
+BasicCharTraits	fmt/bundled/format.h	/^class BasicCharTraits$/;"	c	namespace:fmt::internal
+BasicData	fmt/bundled/format.cc	/^	template struct internal::BasicData<void>;$/;"	m	class:fmt::internal	typeref:struct:fmt::internal::	file:
+BasicFormatter	fmt/bundled/format.h	/^    BasicFormatter(const ArgList &args, BasicWriter<Char> &w)$/;"	f	class:fmt::BasicFormatter
+BasicFormatter	fmt/bundled/format.h	/^class BasicFormatter: private internal::FormatterBase$/;"	c	namespace:fmt
+BasicMemoryWriter	fmt/bundled/format.h	/^    BasicMemoryWriter(BasicMemoryWriter &&other)$/;"	f	class:BasicMemoryWriter
+BasicMemoryWriter	fmt/bundled/format.h	/^    explicit BasicMemoryWriter(const Allocator& alloc = Allocator())$/;"	f	class:BasicMemoryWriter
+BasicMemoryWriter	fmt/bundled/format.h	/^class BasicMemoryWriter: public BasicWriter<Char>$/;"	c
+BasicPrintfArgFormatter	fmt/bundled/printf.h	/^    BasicPrintfArgFormatter(BasicWriter<Char> &w, FormatSpec &s)$/;"	f	class:fmt::BasicPrintfArgFormatter
+BasicPrintfArgFormatter	fmt/bundled/printf.h	/^class BasicPrintfArgFormatter: public internal::ArgFormatterBase<Impl, Char>$/;"	c	namespace:fmt
+BasicStringRef	fmt/bundled/format.h	/^    BasicStringRef(const Char *s)$/;"	f	class:fmt::BasicStringRef
+BasicStringRef	fmt/bundled/format.h	/^    BasicStringRef(const Char *s, std::size_t size): data_(s), size_(size)$/;"	f	class:fmt::BasicStringRef
+BasicStringRef	fmt/bundled/format.h	/^    BasicStringRef(const std::basic_string<Char> &s)$/;"	f	class:fmt::BasicStringRef
+BasicStringRef	fmt/bundled/format.h	/^class BasicStringRef$/;"	c	namespace:fmt
+BasicWriter	fmt/bundled/format.h	/^    explicit BasicWriter(Buffer<Char> &b): buffer_(b)$/;"	f	class:BasicWriter
+BasicWriter	fmt/bundled/format.h	/^class BasicWriter$/;"	c
+Buffer	fmt/bundled/format.h	/^    Buffer(T *ptr = FMT_NULL, std::size_t capacity = 0)$/;"	f	class:fmt::Buffer
+Buffer	fmt/bundled/format.h	/^class Buffer$/;"	c	namespace:fmt
+CHAR	fmt/bundled/format.h	/^        INT, UINT, LONG_LONG, ULONG_LONG, BOOL, CHAR, LAST_INTEGER_TYPE = CHAR,$/;"	e	enum:fmt::internal::Value::Type
+CHAR_FLAG	fmt/bundled/format.h	/^    CHAR_FLAG = 0x10  \/\/ Argument has char type - used in error reporting.$/;"	e	enum:fmt::__anon30
+CSTRING	fmt/bundled/format.h	/^        CSTRING, STRING, WSTRING, POINTER, CUSTOM$/;"	e	enum:fmt::internal::Value::Type
+CStringRef	fmt/bundled/format.h	/^typedef BasicCStringRef<char> CStringRef;$/;"	t	namespace:fmt
+CUSTOM	fmt/bundled/format.h	/^        CSTRING, STRING, WSTRING, POINTER, CUSTOM$/;"	e	enum:fmt::internal::Value::Type
+CYAN	fmt/bundled/format.h	/^    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE$/;"	e	enum:Color
+CYAN	sinks/wincolor_sink.h	/^    const WORD CYAN = FOREGROUND_GREEN | FOREGROUND_BLUE;$/;"	m	class:spdlog::sinks::wincolor_sink
+C_formatter	details/pattern_formatter_impl.h	/^class C_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+Char	fmt/bundled/format.h	/^    typedef CharType Char;$/;"	t	class:fmt::BasicFormatter
+Char	fmt/bundled/format.h	/^    typedef char Char;  \/\/ For FMT_VARIADIC_CTOR.$/;"	t	class:SystemError
+Char	fmt/bundled/format.h	/^    typedef typename Formatter::Char Char;$/;"	t	class:fmt::internal::MakeValue
+CharConverter	fmt/bundled/printf.h	/^    explicit CharConverter(internal::Arg &arg): arg_(arg)$/;"	f	class:fmt::internal::CharConverter
+CharConverter	fmt/bundled/printf.h	/^class CharConverter: public ArgVisitor<CharConverter, void>$/;"	c	namespace:fmt::internal
+CharPtr	fmt/bundled/format.h	/^    typedef stdext::checked_array_iterator<Char*> CharPtr;$/;"	t	class:fmt::internal::BasicCharTraits
+CharPtr	fmt/bundled/format.h	/^    typedef typename internal::CharTraits<Char>::CharPtr CharPtr;$/;"	t	class:BasicWriter
+CharTraits	fmt/bundled/format.h	/^class CharTraits<char>: public BasicCharTraits<char>$/;"	c	namespace:fmt::internal
+CharTraits	fmt/bundled/format.h	/^class CharTraits<wchar_t>: public BasicCharTraits<wchar_t>$/;"	c	namespace:fmt::internal
+Color	fmt/bundled/format.h	/^enum Color$/;"	g
+Conditional	fmt/bundled/format.h	/^struct Conditional$/;"	s	namespace:fmt::internal
+Conditional	fmt/bundled/format.h	/^struct Conditional<false, T, F>$/;"	s	namespace:fmt::internal
+ConvertToInt	fmt/bundled/format.h	/^struct ConvertToInt$/;"	s	namespace:fmt::internal
+ConvertToIntImpl	fmt/bundled/format.h	/^struct ConvertToIntImpl$/;"	s	namespace:fmt::internal
+ConvertToIntImpl	fmt/bundled/ostream.h	/^struct ConvertToIntImpl<T, true>$/;"	s	namespace:fmt::internal
+ConvertToIntImpl2	fmt/bundled/format.h	/^struct ConvertToIntImpl2$/;"	s	namespace:fmt::internal
+ConvertToIntImpl2	fmt/bundled/format.h	/^struct ConvertToIntImpl2<T, true>$/;"	s	namespace:fmt::internal
+CustomValue	fmt/bundled/format.h	/^    struct CustomValue$/;"	s	struct:fmt::internal::Value
+DIGITS	fmt/bundled/format.cc	/^	const char internal::BasicData<T>::DIGITS[] =$/;"	m	class:fmt::internal::BasicData	file:
+DOUBLE	fmt/bundled/format.h	/^        DOUBLE, LONG_DOUBLE, LAST_NUMERIC_TYPE = LONG_DOUBLE,$/;"	e	enum:fmt::internal::Value::Type
+D_formatter	details/pattern_formatter_impl.h	/^class D_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+DummyInt	fmt/bundled/format.h	/^struct DummyInt$/;"	s	namespace:fmt::internal
+DummyStream	fmt/bundled/ostream.h	/^struct DummyStream: std::ostream$/;"	s	namespace:fmt::internal
+EmptySpec	fmt/bundled/format.h	/^struct EmptySpec$/;"	s	namespace:fmt
+EnableIf	fmt/bundled/format.h	/^struct EnableIf$/;"	s	namespace:fmt::internal
+EnableIf	fmt/bundled/format.h	/^struct EnableIf<true, T>$/;"	s	namespace:fmt::internal
+FMT_API	fmt/bundled/format.h	/^#  define FMT_API /;"	d
+FMT_API	fmt/bundled/format.h	/^# define FMT_API$/;"	d
+FMT_ARG_TYPE_DEFAULT	fmt/bundled/format.h	/^# define FMT_ARG_TYPE_DEFAULT(/;"	d
+FMT_ASSERT	fmt/bundled/format.h	/^# define FMT_ASSERT(/;"	d
+FMT_ASSIGN_char	fmt/bundled/format.h	/^# define FMT_ASSIGN_char(/;"	d
+FMT_ASSIGN_wchar_t	fmt/bundled/format.h	/^# define FMT_ASSIGN_wchar_t(/;"	d
+FMT_BUILTIN_CLZ	fmt/bundled/format.h	/^# define FMT_BUILTIN_CLZ(/;"	d
+FMT_BUILTIN_CLZLL	fmt/bundled/format.h	/^# define FMT_BUILTIN_CLZLL(/;"	d
+FMT_CATCH	fmt/bundled/format.cc	/^# define FMT_CATCH(/;"	d	file:
+FMT_CONCAT	fmt/bundled/format.h	/^#define FMT_CONCAT(/;"	d
+FMT_CONCAT_	fmt/bundled/format.h	/^# define FMT_CONCAT_(/;"	d
+FMT_DEFINE_INT_FORMATTERS	fmt/bundled/format.h	/^#define FMT_DEFINE_INT_FORMATTERS(/;"	d
+FMT_DELETED_OR_UNDEFINED	fmt/bundled/format.h	/^# define FMT_DELETED_OR_UNDEFINED /;"	d
+FMT_DELETED_OR_UNDEFINED	fmt/bundled/format.h	/^# define FMT_DELETED_OR_UNDEFINED$/;"	d
+FMT_DETECTED_NOEXCEPT	fmt/bundled/format.h	/^# define FMT_DETECTED_NOEXCEPT /;"	d
+FMT_DISABLE_CONVERSION_TO_INT	fmt/bundled/format.h	/^#define FMT_DISABLE_CONVERSION_TO_INT(/;"	d
+FMT_DISALLOW_COPY_AND_ASSIGN	fmt/bundled/format.h	/^# define FMT_DISALLOW_COPY_AND_ASSIGN(/;"	d
+FMT_DISPATCH	fmt/bundled/format.h	/^#define FMT_DISPATCH(/;"	d
+FMT_DTOR_NOEXCEPT	fmt/bundled/format.h	/^    ~FormatError() FMT_DTOR_NOEXCEPT;$/;"	m	class:fmt::FormatError
+FMT_DTOR_NOEXCEPT	fmt/bundled/format.h	/^    ~RuntimeError() FMT_DTOR_NOEXCEPT;$/;"	m	class:fmt::internal::RuntimeError
+FMT_DTOR_NOEXCEPT	fmt/bundled/format.h	/^    ~SystemError() FMT_DTOR_NOEXCEPT;$/;"	m	class:SystemError
+FMT_DTOR_NOEXCEPT	fmt/bundled/format.h	/^# define FMT_DTOR_NOEXCEPT /;"	d
+FMT_EXCEPTIONS	fmt/bundled/format.h	/^# define FMT_EXCEPTIONS /;"	d
+FMT_FORMAT_H_	fmt/bundled/format.h	/^#define FMT_FORMAT_H_$/;"	d
+FMT_FOR_EACH1	fmt/bundled/format.h	/^#define FMT_FOR_EACH1(/;"	d
+FMT_FOR_EACH10	fmt/bundled/format.h	/^#define FMT_FOR_EACH10(/;"	d
+FMT_FOR_EACH2	fmt/bundled/format.h	/^#define FMT_FOR_EACH2(/;"	d
+FMT_FOR_EACH3	fmt/bundled/format.h	/^#define FMT_FOR_EACH3(/;"	d
+FMT_FOR_EACH4	fmt/bundled/format.h	/^#define FMT_FOR_EACH4(/;"	d
+FMT_FOR_EACH5	fmt/bundled/format.h	/^#define FMT_FOR_EACH5(/;"	d
+FMT_FOR_EACH6	fmt/bundled/format.h	/^#define FMT_FOR_EACH6(/;"	d
+FMT_FOR_EACH7	fmt/bundled/format.h	/^#define FMT_FOR_EACH7(/;"	d
+FMT_FOR_EACH8	fmt/bundled/format.h	/^#define FMT_FOR_EACH8(/;"	d
+FMT_FOR_EACH9	fmt/bundled/format.h	/^#define FMT_FOR_EACH9(/;"	d
+FMT_GCC_EXTENSION	fmt/bundled/format.h	/^# define FMT_GCC_EXTENSION /;"	d
+FMT_GCC_EXTENSION	fmt/bundled/format.h	/^# define FMT_GCC_EXTENSION$/;"	d
+FMT_GCC_VERSION	fmt/bundled/format.h	/^# define FMT_GCC_VERSION /;"	d
+FMT_GEN	fmt/bundled/format.h	/^# define FMT_GEN(/;"	d
+FMT_GEN1	fmt/bundled/format.h	/^# define FMT_GEN1(/;"	d
+FMT_GEN10	fmt/bundled/format.h	/^# define FMT_GEN10(/;"	d
+FMT_GEN11	fmt/bundled/format.h	/^# define FMT_GEN11(/;"	d
+FMT_GEN12	fmt/bundled/format.h	/^# define FMT_GEN12(/;"	d
+FMT_GEN13	fmt/bundled/format.h	/^# define FMT_GEN13(/;"	d
+FMT_GEN14	fmt/bundled/format.h	/^# define FMT_GEN14(/;"	d
+FMT_GEN15	fmt/bundled/format.h	/^# define FMT_GEN15(/;"	d
+FMT_GEN15	fmt/bundled/format.h	/^inline uint64_t make_type(FMT_GEN15(FMT_ARG_TYPE_DEFAULT))$/;"	f	namespace:fmt
+FMT_GEN2	fmt/bundled/format.h	/^# define FMT_GEN2(/;"	d
+FMT_GEN3	fmt/bundled/format.h	/^# define FMT_GEN3(/;"	d
+FMT_GEN4	fmt/bundled/format.h	/^# define FMT_GEN4(/;"	d
+FMT_GEN5	fmt/bundled/format.h	/^# define FMT_GEN5(/;"	d
+FMT_GEN6	fmt/bundled/format.h	/^# define FMT_GEN6(/;"	d
+FMT_GEN7	fmt/bundled/format.h	/^# define FMT_GEN7(/;"	d
+FMT_GEN8	fmt/bundled/format.h	/^# define FMT_GEN8(/;"	d
+FMT_GEN9	fmt/bundled/format.h	/^# define FMT_GEN9(/;"	d
+FMT_GNUC_LIBSTD_VERSION	fmt/bundled/format.h	/^# define FMT_GNUC_LIBSTD_VERSION /;"	d
+FMT_HAS_BUILTIN	fmt/bundled/format.h	/^# define FMT_HAS_BUILTIN(/;"	d
+FMT_HAS_CPP_ATTRIBUTE	fmt/bundled/format.h	/^# define FMT_HAS_CPP_ATTRIBUTE(/;"	d
+FMT_HAS_FEATURE	fmt/bundled/format.h	/^# define FMT_HAS_FEATURE(/;"	d
+FMT_HAS_GXX_CXX11	fmt/bundled/format.h	/^#  define FMT_HAS_GXX_CXX11 /;"	d
+FMT_HEADER_ONLY	fmt/fmt.h	/^#define FMT_HEADER_ONLY$/;"	d
+FMT_ICC_VERSION	fmt/bundled/format.h	/^# define FMT_ICC_VERSION /;"	d
+FMT_MAKE_ARG	fmt/bundled/format.h	/^# define FMT_MAKE_ARG(/;"	d
+FMT_MAKE_ARG_TYPE	fmt/bundled/format.h	/^# define FMT_MAKE_ARG_TYPE(/;"	d
+FMT_MAKE_STR_VALUE	fmt/bundled/format.h	/^#define FMT_MAKE_STR_VALUE(/;"	d
+FMT_MAKE_TEMPLATE_ARG	fmt/bundled/format.h	/^# define FMT_MAKE_TEMPLATE_ARG(/;"	d
+FMT_MAKE_VALUE	fmt/bundled/format.h	/^#define FMT_MAKE_VALUE(/;"	d
+FMT_MAKE_VALUE_	fmt/bundled/format.h	/^#define FMT_MAKE_VALUE_(/;"	d
+FMT_MAKE_WSTR_VALUE	fmt/bundled/format.h	/^#define FMT_MAKE_WSTR_VALUE(/;"	d
+FMT_MSC_VER	fmt/bundled/format.h	/^# define FMT_MSC_VER /;"	d
+FMT_NOEXCEPT	fmt/bundled/format.h	/^                                  fmt::StringRef message) FMT_NOEXCEPT;$/;"	m	namespace:fmt::internal
+FMT_NOEXCEPT	fmt/bundled/format.h	/^#  define FMT_NOEXCEPT /;"	d
+FMT_NOEXCEPT	fmt/bundled/format.h	/^#  define FMT_NOEXCEPT$/;"	d
+FMT_NULL	fmt/bundled/format.h	/^#  define FMT_NULL /;"	d
+FMT_OSTREAM_H_	fmt/bundled/ostream.h	/^#define FMT_OSTREAM_H_$/;"	d
+FMT_OVERRIDE	fmt/bundled/format.h	/^    FMT_API void grow(std::size_t size) FMT_OVERRIDE;$/;"	m	class:fmt::internal::FixedBuffer
+FMT_OVERRIDE	fmt/bundled/format.h	/^    void grow(std::size_t size) FMT_OVERRIDE;$/;"	m	class:fmt::internal::MemoryBuffer
+FMT_OVERRIDE	fmt/bundled/format.h	/^#  define FMT_OVERRIDE /;"	d
+FMT_OVERRIDE	fmt/bundled/format.h	/^#  define FMT_OVERRIDE$/;"	d
+FMT_POWERS_OF_10	fmt/bundled/format.cc	/^#define FMT_POWERS_OF_10(/;"	d	file:
+FMT_PRINTF_H_	fmt/bundled/printf.h	/^#define FMT_PRINTF_H_$/;"	d
+FMT_SECURE_SCL	fmt/bundled/format.h	/^# define FMT_SECURE_SCL /;"	d
+FMT_SNPRINTF	fmt/bundled/format.cc	/^# define FMT_SNPRINTF /;"	d	file:
+FMT_SPECIALIZE_MAKE_UNSIGNED	fmt/bundled/format.h	/^#define FMT_SPECIALIZE_MAKE_UNSIGNED(/;"	d
+FMT_STATIC_ASSERT	fmt/bundled/format.h	/^# define FMT_STATIC_ASSERT(/;"	d
+FMT_SWPRINTF	fmt/bundled/format.cc	/^# define FMT_SWPRINTF /;"	d	file:
+FMT_THROW	fmt/bundled/format.h	/^#  define FMT_THROW(/;"	d
+FMT_TRY	fmt/bundled/format.cc	/^# define FMT_TRY /;"	d	file:
+FMT_UNUSED	fmt/bundled/format.h	/^# define FMT_UNUSED /;"	d
+FMT_UNUSED	fmt/bundled/format.h	/^# define FMT_UNUSED$/;"	d
+FMT_USE_DELETED_FUNCTIONS	fmt/bundled/format.h	/^# define FMT_USE_DELETED_FUNCTIONS /;"	d
+FMT_USE_EXTERN_TEMPLATES	fmt/bundled/format.h	/^# define FMT_USE_EXTERN_TEMPLATES /;"	d
+FMT_USE_EXTERN_TEMPLATES	fmt/bundled/format.h	/^# undef FMT_USE_EXTERN_TEMPLATES$/;"	d
+FMT_USE_NOEXCEPT	fmt/bundled/format.h	/^# define FMT_USE_NOEXCEPT /;"	d
+FMT_USE_RVALUE_REFERENCES	fmt/bundled/format.h	/^#  define FMT_USE_RVALUE_REFERENCES /;"	d
+FMT_USE_STATIC_ASSERT	fmt/bundled/format.h	/^# define FMT_USE_STATIC_ASSERT /;"	d
+FMT_USE_USER_DEFINED_LITERALS	fmt/bundled/format.h	/^# define FMT_USE_USER_DEFINED_LITERALS /;"	d
+FMT_USE_VARIADIC_TEMPLATES	fmt/bundled/format.h	/^# define FMT_USE_VARIADIC_TEMPLATES /;"	d
+FMT_USE_WINDOWS_H	fmt/bundled/format.h	/^# define FMT_USE_WINDOWS_H /;"	d
+FMT_USE_WINDOWS_H	fmt/fmt.h	/^#define FMT_USE_WINDOWS_H /;"	d
+FMT_VARIADIC_CTOR	fmt/bundled/format.h	/^# define FMT_VARIADIC_CTOR(/;"	d
+FMT_VARIADIC_VOID	fmt/bundled/format.h	/^# define FMT_VARIADIC_VOID(/;"	d
+FMT_VERSION	fmt/bundled/format.h	/^#define FMT_VERSION /;"	d
+FPUtil	fmt/bundled/format.h	/^typedef std::numeric_limits<fmt::internal::DummyInt> FPUtil;$/;"	t	namespace:fmt::internal
+F_formatter	details/pattern_formatter_impl.h	/^class F_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+False	fmt/bundled/format.h	/^struct False$/;"	s	namespace:fmt::internal
+FixedBuffer	fmt/bundled/format.h	/^    FixedBuffer(Char *array, std::size_t size): fmt::Buffer<Char>(array, size)$/;"	f	class:fmt::internal::FixedBuffer
+FixedBuffer	fmt/bundled/format.h	/^class FixedBuffer: public fmt::Buffer<Char>$/;"	c	namespace:fmt::internal
+FormatBuf	fmt/bundled/ostream.h	/^    FormatBuf(Buffer<Char> &buffer): buffer_(buffer), start_(&buffer[0])$/;"	f	class:fmt::internal::FormatBuf
+FormatBuf	fmt/bundled/ostream.h	/^class FormatBuf: public std::basic_streambuf<Char>$/;"	c	namespace:fmt::internal
+FormatError	fmt/bundled/format.h	/^    FormatError(const FormatError &ferr): std::runtime_error(ferr)$/;"	f	class:fmt::FormatError
+FormatError	fmt/bundled/format.h	/^    explicit FormatError(CStringRef message)$/;"	f	class:fmt::FormatError
+FormatError	fmt/bundled/format.h	/^class FormatError: public std::runtime_error$/;"	c	namespace:fmt
+FormatFunc	fmt/bundled/format.cc	/^		typedef void(*FormatFunc)(Writer &, int, StringRef);$/;"	t	namespace:fmt::__anon3	file:
+FormatFunc	fmt/bundled/format.h	/^    typedef void(*FormatFunc)($/;"	t	struct:fmt::internal::Value
+FormatInt	fmt/bundled/format.h	/^    explicit FormatInt(LongLong value)$/;"	f	class:FormatInt
+FormatInt	fmt/bundled/format.h	/^    explicit FormatInt(ULongLong value): str_(format_decimal(value))$/;"	f	class:FormatInt
+FormatInt	fmt/bundled/format.h	/^    explicit FormatInt(int value)$/;"	f	class:FormatInt
+FormatInt	fmt/bundled/format.h	/^    explicit FormatInt(long value)$/;"	f	class:FormatInt
+FormatInt	fmt/bundled/format.h	/^    explicit FormatInt(unsigned long value): str_(format_decimal(value))$/;"	f	class:FormatInt
+FormatInt	fmt/bundled/format.h	/^    explicit FormatInt(unsigned value): str_(format_decimal(value))$/;"	f	class:FormatInt
+FormatInt	fmt/bundled/format.h	/^class FormatInt$/;"	c
+FormatSigned	fmt/bundled/format.h	/^    void FormatSigned(LongLong value)$/;"	f	class:FormatInt
+FormatSpec	fmt/bundled/format.h	/^    FormatSpec($/;"	f	struct:fmt::FormatSpec
+FormatSpec	fmt/bundled/format.h	/^struct FormatSpec: AlignSpec$/;"	s	namespace:fmt
+FormatterBase	fmt/bundled/format.h	/^    explicit FormatterBase(const ArgList &args)$/;"	f	class:fmt::internal::FormatterBase
+FormatterBase	fmt/bundled/format.h	/^class FormatterBase$/;"	c	namespace:fmt::internal
+GREEN	fmt/bundled/format.h	/^    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE$/;"	e	enum:Color
+HASH_FLAG	fmt/bundled/format.h	/^    SIGN_FLAG = 1, PLUS_FLAG = 2, MINUS_FLAG = 4, HASH_FLAG = 8,$/;"	e	enum:fmt::__anon30
+H_formatter	details/pattern_formatter_impl.h	/^class H_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+INLINE_BUFFER_SIZE	fmt/bundled/format.h	/^    INLINE_BUFFER_SIZE = 500$/;"	e	enum:fmt::internal::__anon18
+INT	fmt/bundled/format.h	/^        INT, UINT, LONG_LONG, ULONG_LONG, BOOL, CHAR, LAST_INTEGER_TYPE = CHAR,$/;"	e	enum:fmt::internal::Value::Type
+I_formatter	details/pattern_formatter_impl.h	/^class I_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+IntChecker	fmt/bundled/printf.h	/^struct IntChecker$/;"	s	namespace:fmt::internal
+IntChecker	fmt/bundled/printf.h	/^struct IntChecker<true>$/;"	s	namespace:fmt::internal
+IntFormatSpec	fmt/bundled/format.h	/^    IntFormatSpec(T val, const SpecT &spec = SpecT())$/;"	f	class:fmt::IntFormatSpec
+IntFormatSpec	fmt/bundled/format.h	/^class IntFormatSpec: public SpecT$/;"	c	namespace:fmt
+IntTraits	fmt/bundled/format.h	/^struct IntTraits$/;"	s	namespace:fmt::internal
+IsZeroInt	fmt/bundled/printf.h	/^class IsZeroInt: public ArgVisitor<IsZeroInt, bool>$/;"	c	namespace:fmt::internal
+LAST_INTEGER_TYPE	fmt/bundled/format.h	/^        INT, UINT, LONG_LONG, ULONG_LONG, BOOL, CHAR, LAST_INTEGER_TYPE = CHAR,$/;"	e	enum:fmt::internal::Value::Type
+LAST_NUMERIC_TYPE	fmt/bundled/format.h	/^        DOUBLE, LONG_DOUBLE, LAST_NUMERIC_TYPE = LONG_DOUBLE,$/;"	e	enum:fmt::internal::Value::Type
+LConvCheck	fmt/bundled/format.h	/^    LConvCheck(int)$/;"	f	struct:fmt::internal::LConvCheck
+LConvCheck	fmt/bundled/format.h	/^template <typename T, T> struct LConvCheck$/;"	s	namespace:fmt::internal
+LONG_DOUBLE	fmt/bundled/format.h	/^        DOUBLE, LONG_DOUBLE, LAST_NUMERIC_TYPE = LONG_DOUBLE,$/;"	e	enum:fmt::internal::Value::Type
+LONG_LONG	fmt/bundled/format.h	/^        INT, UINT, LONG_LONG, ULONG_LONG, BOOL, CHAR, LAST_INTEGER_TYPE = CHAR,$/;"	e	enum:fmt::internal::Value::Type
+LongLong	fmt/bundled/format.h	/^FMT_GCC_EXTENSION typedef long long LongLong;$/;"	t	namespace:fmt
+MAGENTA	fmt/bundled/format.h	/^    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE$/;"	e	enum:Color
+MAX_PACKED_ARGS	fmt/bundled/format.h	/^        MAX_PACKED_ARGS = 16$/;"	e	enum:fmt::ArgList::__anon29
+MINUS_FLAG	fmt/bundled/format.h	/^    SIGN_FLAG = 1, PLUS_FLAG = 2, MINUS_FLAG = 4, HASH_FLAG = 8,$/;"	e	enum:fmt::__anon30
+M_formatter	details/pattern_formatter_impl.h	/^class M_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+MakeArg	fmt/bundled/format.h	/^    MakeArg()$/;"	f	class:fmt::internal::MakeArg
+MakeArg	fmt/bundled/format.h	/^    MakeArg(const T &value)$/;"	f	class:fmt::internal::MakeArg
+MakeArg	fmt/bundled/format.h	/^class MakeArg: public Arg$/;"	c	namespace:fmt::internal
+MakeUnsigned	fmt/bundled/format.h	/^struct MakeUnsigned$/;"	s	namespace:fmt::internal
+MakeValue	fmt/bundled/format.h	/^    MakeValue()$/;"	f	class:fmt::internal::MakeValue
+MakeValue	fmt/bundled/format.h	/^    MakeValue(const NamedArg<Char_> &value)$/;"	f	class:fmt::internal::MakeValue
+MakeValue	fmt/bundled/format.h	/^    MakeValue(const NamedArgWithType<Char_, T> &value)$/;"	f	class:fmt::internal::MakeValue
+MakeValue	fmt/bundled/format.h	/^    MakeValue(const T &value,$/;"	f	class:fmt::internal::MakeValue
+MakeValue	fmt/bundled/format.h	/^    MakeValue(long value)$/;"	f	class:fmt::internal::MakeValue
+MakeValue	fmt/bundled/format.h	/^    MakeValue(typename WCharHelper<wchar_t, Char>::Supported value)$/;"	f	class:fmt::internal::MakeValue
+MakeValue	fmt/bundled/format.h	/^    MakeValue(unsigned long value)$/;"	f	class:fmt::internal::MakeValue
+MakeValue	fmt/bundled/format.h	/^class MakeValue: public Arg$/;"	c	namespace:fmt::internal
+MapType	fmt/bundled/format.h	/^    std::pair<fmt::BasicStringRef<Char>, internal::Arg> > MapType;$/;"	t	class:fmt::internal::ArgMap
+MemoryBuffer	fmt/bundled/format.h	/^    MemoryBuffer(MemoryBuffer &&other)$/;"	f	class:fmt::internal::MemoryBuffer
+MemoryBuffer	fmt/bundled/format.h	/^    explicit MemoryBuffer(const Allocator &alloc = Allocator())$/;"	f	class:fmt::internal::MemoryBuffer
+MemoryBuffer	fmt/bundled/format.h	/^class MemoryBuffer: private Allocator, public Buffer<T>$/;"	c	namespace:fmt::internal
+MemoryWriter	fmt/bundled/format.h	/^typedef BasicMemoryWriter<char> MemoryWriter;$/;"	t
+NAMED_ARG	fmt/bundled/format.h	/^        NONE, NAMED_ARG,$/;"	e	enum:fmt::internal::Value::Type
+NOMINMAX	details/os.h	/^#define NOMINMAX /;"	d
+NOMINMAX	fmt/bundled/format.cc	/^#  define NOMINMAX$/;"	d	file:
+NOMINMAX	fmt/bundled/format.cc	/^#  undef NOMINMAX$/;"	d	file:
+NONE	fmt/bundled/format.h	/^        NONE, NAMED_ARG,$/;"	e	enum:fmt::internal::Value::Type
+NamedArg	fmt/bundled/format.h	/^    NamedArg(BasicStringRef<Char> argname, const T &value)$/;"	f	struct:fmt::internal::NamedArg
+NamedArg	fmt/bundled/format.h	/^struct NamedArg: Arg$/;"	s	namespace:fmt::internal
+NamedArgWithType	fmt/bundled/format.h	/^    NamedArgWithType(BasicStringRef<Char> argname, const T &value)$/;"	f	struct:fmt::internal::NamedArgWithType
+NamedArgWithType	fmt/bundled/format.h	/^struct NamedArgWithType: NamedArg<Char>$/;"	s	namespace:fmt::internal
+No	fmt/bundled/format.h	/^typedef char No[2];$/;"	t	namespace:fmt::internal
+NoThousandsSep	fmt/bundled/format.h	/^struct NoThousandsSep$/;"	s	namespace:fmt::internal
+Not	fmt/bundled/format.h	/^struct Not$/;"	s	namespace:fmt::internal
+Not	fmt/bundled/format.h	/^struct Not<false>$/;"	s	namespace:fmt::internal
+Null	fmt/bundled/format.h	/^struct Null$/;"	s	namespace:fmt::internal
+PLUS_FLAG	fmt/bundled/format.h	/^    SIGN_FLAG = 1, PLUS_FLAG = 2, MINUS_FLAG = 4, HASH_FLAG = 8,$/;"	e	enum:fmt::__anon30
+POINTER	fmt/bundled/format.h	/^        CSTRING, STRING, WSTRING, POINTER, CUSTOM$/;"	e	enum:fmt::internal::Value::Type
+POWERS_OF_10_32	fmt/bundled/format.cc	/^	const uint32_t internal::BasicData<T>::POWERS_OF_10_32[] = {$/;"	m	class:fmt::internal::BasicData	file:
+POWERS_OF_10_64	fmt/bundled/format.cc	/^	const uint64_t internal::BasicData<T>::POWERS_OF_10_64[] = {$/;"	m	class:fmt::internal::BasicData	file:
+Pair	fmt/bundled/format.h	/^    typedef typename MapType::value_type Pair;$/;"	t	class:fmt::internal::ArgMap
+PrecisionHandler	fmt/bundled/printf.h	/^class PrecisionHandler: public ArgVisitor<PrecisionHandler, int>$/;"	c	namespace:fmt::internal
+PrintfArgFormatter	fmt/bundled/printf.h	/^    PrintfArgFormatter(BasicWriter<Char> &w, FormatSpec &s)$/;"	f	class:fmt::PrintfArgFormatter
+PrintfArgFormatter	fmt/bundled/printf.h	/^class PrintfArgFormatter$/;"	c	namespace:fmt
+PrintfFormatter	fmt/bundled/printf.h	/^    explicit PrintfFormatter(const ArgList &al, BasicWriter<Char> &w)$/;"	f	class:fmt::PrintfFormatter
+PrintfFormatter	fmt/bundled/printf.h	/^class PrintfFormatter: private internal::FormatterBase$/;"	c	namespace:fmt
+RED	fmt/bundled/format.h	/^    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE$/;"	e	enum:Color
+RED	sinks/wincolor_sink.h	/^    const WORD RED = FOREGROUND_RED;$/;"	m	class:spdlog::sinks::wincolor_sink
+RESET_COLOR	fmt/bundled/format.cc	/^		const char RESET_COLOR[] = "\\x1b[0m";$/;"	m	namespace:fmt::__anon3	file:
+R_formatter	details/pattern_formatter_impl.h	/^class R_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+RuntimeError	fmt/bundled/format.h	/^    RuntimeError(): std::runtime_error("")$/;"	f	class:fmt::internal::RuntimeError
+RuntimeError	fmt/bundled/format.h	/^    RuntimeError(const RuntimeError &rerr): std::runtime_error(rerr)$/;"	f	class:fmt::internal::RuntimeError
+RuntimeError	fmt/bundled/format.h	/^class RuntimeError: public std::runtime_error$/;"	c	namespace:fmt::internal
+SIGN_FLAG	fmt/bundled/format.h	/^    SIGN_FLAG = 1, PLUS_FLAG = 2, MINUS_FLAG = 4, HASH_FLAG = 8,$/;"	e	enum:fmt::__anon30
+SPDLOG_CONSTEXPR	common.h	/^#define SPDLOG_CONSTEXPR /;"	d
+SPDLOG_CONSTEXPR	common.h	/^#define SPDLOG_CONSTEXPR$/;"	d
+SPDLOG_DEBUG	spdlog.h	/^#define SPDLOG_DEBUG(/;"	d
+SPDLOG_DEPRECATED	common.h	/^#define SPDLOG_DEPRECATED /;"	d
+SPDLOG_DEPRECATED	common.h	/^#define SPDLOG_DEPRECATED$/;"	d
+SPDLOG_EOL	details/os.h	/^#define SPDLOG_EOL /;"	d
+SPDLOG_FILENAME_T	details/os.h	/^#define SPDLOG_FILENAME_T(/;"	d
+SPDLOG_NOEXCEPT	common.h	/^#define SPDLOG_NOEXCEPT /;"	d
+SPDLOG_NOEXCEPT	details/async_log_helper.h	/^async_msg(async_msg&& other) SPDLOG_NOEXCEPT:$/;"	m	struct:spdlog::details::async_log_helper::async_msg
+SPDLOG_STR_H	spdlog.h	/^#define SPDLOG_STR_H(/;"	d
+SPDLOG_STR_HELPER	spdlog.h	/^#define SPDLOG_STR_HELPER(/;"	d
+SPDLOG_TRACE	spdlog.h	/^#define SPDLOG_TRACE(/;"	d
+SPDLOG_VERSION	spdlog.h	/^#define SPDLOG_VERSION /;"	d
+STRING	fmt/bundled/format.h	/^        CSTRING, STRING, WSTRING, POINTER, CUSTOM$/;"	e	enum:fmt::internal::Value::Type
+S_formatter	details/pattern_formatter_impl.h	/^class S_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+SignChecker	fmt/bundled/format.h	/^struct SignChecker$/;"	s	namespace:fmt::internal
+SignChecker	fmt/bundled/format.h	/^struct SignChecker<false>$/;"	s	namespace:fmt::internal
+StrFormatSpec	fmt/bundled/format.h	/^    StrFormatSpec(const Char *str, unsigned width, FillChar fill)$/;"	f	class:fmt::StrFormatSpec
+StrFormatSpec	fmt/bundled/format.h	/^class StrFormatSpec: public AlignSpec$/;"	c	namespace:fmt
+StringRef	fmt/bundled/format.h	/^typedef BasicStringRef<char> StringRef;$/;"	t	namespace:fmt
+StringValue	fmt/bundled/format.h	/^    struct StringValue$/;"	s	struct:fmt::internal::Value
+Supported	fmt/bundled/format.h	/^    typedef Null<T> Supported;$/;"	t	struct:fmt::internal::WCharHelper
+Supported	fmt/bundled/format.h	/^    typedef T Supported;$/;"	t	struct:fmt::internal::WCharHelper
+SystemError	fmt/bundled/format.h	/^    SystemError()$/;"	f	class:SystemError
+SystemError	fmt/bundled/format.h	/^    SystemError(int error_code, CStringRef message)$/;"	f	class:SystemError
+SystemError	fmt/bundled/format.h	/^class SystemError: public internal::RuntimeError$/;"	c
+T_formatter	details/pattern_formatter_impl.h	/^class T_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+ThousandsSep	fmt/bundled/format.h	/^    explicit ThousandsSep(fmt::StringRef sep): sep_(sep), digit_index_(0)$/;"	f	class:fmt::internal::ThousandsSep
+ThousandsSep	fmt/bundled/format.h	/^class ThousandsSep$/;"	c	namespace:fmt::internal
+Type	fmt/bundled/format.h	/^    enum Type$/;"	g	struct:fmt::internal::Value
+Type	fmt/bundled/format.h	/^    typedef Arg Type[N + 1]; \/\/ +1 for the list end Arg::NONE$/;"	t	struct:fmt::ArgArray
+Type	fmt/bundled/format.h	/^    typedef T Type;$/;"	t	struct:fmt::internal::MakeUnsigned
+Type	fmt/bundled/format.h	/^    typedef uint32_t Type;$/;"	t	struct:fmt::internal::TypeSelector
+Type	fmt/bundled/format.h	/^    typedef uint64_t Type;$/;"	t	struct:fmt::internal::TypeSelector
+TypeSelector	fmt/bundled/format.h	/^    TypeSelector<std::numeric_limits<T>::digits <= 32>::Type MainType;$/;"	t	struct:fmt::internal::IntTraits
+TypeSelector	fmt/bundled/format.h	/^struct TypeSelector$/;"	s	namespace:fmt::internal
+TypeSelector	fmt/bundled/format.h	/^struct TypeSelector<false>$/;"	s	namespace:fmt::internal
+TypeSpec	fmt/bundled/format.h	/^struct TypeSpec: EmptySpec$/;"	s	namespace:fmt
+UINT	fmt/bundled/format.h	/^        INT, UINT, LONG_LONG, ULONG_LONG, BOOL, CHAR, LAST_INTEGER_TYPE = CHAR,$/;"	e	enum:fmt::internal::Value::Type
+ULONG_LONG	fmt/bundled/format.h	/^        INT, UINT, LONG_LONG, ULONG_LONG, BOOL, CHAR, LAST_INTEGER_TYPE = CHAR,$/;"	e	enum:fmt::internal::Value::Type
+ULongLong	fmt/bundled/format.h	/^FMT_GCC_EXTENSION typedef unsigned long long ULongLong;$/;"	t	namespace:fmt
+UTF16ToUTF8	fmt/bundled/format.cc	/^	FMT_FUNC internal::UTF16ToUTF8::UTF16ToUTF8(WStringRef s)$/;"	f	class:fmt::internal::UTF16ToUTF8
+UTF16ToUTF8	fmt/bundled/format.h	/^    UTF16ToUTF8()$/;"	f	class:fmt::internal::UTF16ToUTF8
+UTF16ToUTF8	fmt/bundled/format.h	/^class UTF16ToUTF8$/;"	c	namespace:fmt::internal
+UTF8ToUTF16	fmt/bundled/format.cc	/^	FMT_FUNC internal::UTF8ToUTF16::UTF8ToUTF16(StringRef s)$/;"	f	class:fmt::internal::UTF8ToUTF16
+UTF8ToUTF16	fmt/bundled/format.h	/^class UTF8ToUTF16$/;"	c	namespace:fmt::internal
+Unsupported	fmt/bundled/format.h	/^    typedef Null<T> Unsupported;$/;"	t	struct:fmt::internal::WCharHelper
+Unsupported	fmt/bundled/format.h	/^    typedef T Unsupported;$/;"	t	struct:fmt::internal::WCharHelper
+Value	fmt/bundled/format.h	/^struct Value$/;"	s	namespace:fmt::internal
+WArrayWriter	fmt/bundled/format.h	/^typedef BasicArrayWriter<wchar_t> WArrayWriter;$/;"	t
+WCStringRef	fmt/bundled/format.h	/^typedef BasicCStringRef<wchar_t> WCStringRef;$/;"	t	namespace:fmt
+WCharHelper	fmt/bundled/format.h	/^struct WCharHelper$/;"	s	namespace:fmt::internal
+WCharHelper	fmt/bundled/format.h	/^struct WCharHelper<T, wchar_t>$/;"	s	namespace:fmt::internal
+WHITE	fmt/bundled/format.h	/^    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE$/;"	e	enum:Color
+WHITE	sinks/wincolor_sink.h	/^    const WORD WHITE = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;$/;"	m	class:spdlog::sinks::wincolor_sink
+WIN32_LEAN_AND_MEAN	details/os.h	/^#define WIN32_LEAN_AND_MEAN$/;"	d
+WMemoryWriter	fmt/bundled/format.h	/^typedef BasicMemoryWriter<wchar_t> WMemoryWriter;$/;"	t
+WSTRING	fmt/bundled/format.h	/^        CSTRING, STRING, WSTRING, POINTER, CUSTOM$/;"	e	enum:fmt::internal::Value::Type
+WStringRef	fmt/bundled/format.h	/^typedef BasicStringRef<wchar_t> WStringRef;$/;"	t	namespace:fmt
+WWriter	fmt/bundled/format.h	/^typedef BasicWriter<wchar_t> WWriter;$/;"	t	namespace:fmt
+WidthHandler	fmt/bundled/printf.h	/^    explicit WidthHandler(FormatSpec &spec): spec_(spec)$/;"	f	class:fmt::internal::WidthHandler
+WidthHandler	fmt/bundled/printf.h	/^class WidthHandler: public ArgVisitor<WidthHandler, unsigned>$/;"	c	namespace:fmt::internal
+WidthSpec	fmt/bundled/format.h	/^    WidthSpec(unsigned width, wchar_t fill): width_(width), fill_(fill)$/;"	f	struct:fmt::WidthSpec
+WidthSpec	fmt/bundled/format.h	/^struct WidthSpec$/;"	s	namespace:fmt
+WindowsError	fmt/bundled/format.h	/^    WindowsError(int error_code, CStringRef message)$/;"	f	class:WindowsError
+WindowsError	fmt/bundled/format.h	/^class WindowsError: public SystemError$/;"	c
+Writer	fmt/bundled/format.h	/^typedef BasicWriter<char> Writer;$/;"	t	namespace:fmt
+YELLOW	fmt/bundled/format.h	/^    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE$/;"	e	enum:Color
+YELLOW	sinks/wincolor_sink.h	/^    const WORD YELLOW = FOREGROUND_RED | FOREGROUND_GREEN;$/;"	m	class:spdlog::sinks::wincolor_sink
+Y_formatter	details/pattern_formatter_impl.h	/^class Y_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+Yes	fmt/bundled/format.h	/^typedef char Yes[1];$/;"	t	namespace:fmt::internal
+__has_feature	details/os.h	/^#define __has_feature(/;"	d
+_async_log_helper	async_logger.h	/^    std::unique_ptr<details::async_log_helper> _async_log_helper;$/;"	m	class:spdlog::async_logger
+_async_mode	details/registry.h	/^    bool _async_mode = false;$/;"	m	class:spdlog::details::registry_t
+_async_q_size	details/registry.h	/^    size_t _async_q_size = 0;$/;"	m	class:spdlog::details::registry_t
+_base_filename	sinks/file_sinks.h	/^    filename_t _base_filename;$/;"	m	class:spdlog::sinks::daily_file_sink
+_base_filename	sinks/file_sinks.h	/^    filename_t _base_filename;$/;"	m	class:spdlog::sinks::rotating_file_sink
+_ch	details/pattern_formatter_impl.h	/^    char _ch;$/;"	m	class:spdlog::details::ch_formatter
+_current_size	sinks/file_sinks.h	/^    std::size_t _current_size;$/;"	m	class:spdlog::sinks::rotating_file_sink
+_default_err_handler	details/logger_impl.h	/^inline void spdlog::logger::_default_err_handler(const std::string &msg)$/;"	f	class:spdlog::logger
+_ecvt_s	fmt/bundled/format.h	/^inline DummyInt _ecvt_s(...)$/;"	f	namespace:fmt::internal
+_err_handler	details/async_log_helper.h	/^    log_err_handler _err_handler;$/;"	m	class:spdlog::details::async_log_helper
+_err_handler	details/registry.h	/^    log_err_handler _err_handler;$/;"	m	class:spdlog::details::registry_t
+_err_handler	logger.h	/^    log_err_handler _err_handler;$/;"	m	class:spdlog::logger
+_extension	sinks/file_sinks.h	/^    filename_t _extension;$/;"	m	class:spdlog::sinks::daily_file_sink
+_extension	sinks/file_sinks.h	/^    filename_t _extension;$/;"	m	class:spdlog::sinks::rotating_file_sink
+_fd	details/file_helper.h	/^    FILE* _fd;$/;"	m	class:spdlog::details::file_helper
+_file_helper	sinks/file_sinks.h	/^    details::file_helper _file_helper;$/;"	m	class:spdlog::sinks::daily_file_sink
+_file_helper	sinks/file_sinks.h	/^    details::file_helper _file_helper;$/;"	m	class:spdlog::sinks::rotating_file_sink
+_file_helper	sinks/file_sinks.h	/^    details::file_helper _file_helper;$/;"	m	class:spdlog::sinks::simple_file_sink
+_filename	details/file_helper.h	/^    filename_t _filename;$/;"	m	class:spdlog::details::file_helper
+_finite	fmt/bundled/format.h	/^inline DummyInt _finite(...)$/;"	f	namespace:fmt::internal
+_flush_interval_ms	details/async_log_helper.h	/^    const std::chrono::milliseconds _flush_interval_ms;$/;"	m	class:spdlog::details::async_log_helper
+_flush_interval_ms	details/registry.h	/^    std::chrono::milliseconds _flush_interval_ms;$/;"	m	class:spdlog::details::registry_t
+_flush_level	logger.h	/^    spdlog::level_t _flush_level;$/;"	m	class:spdlog::logger
+_flush_requested	details/async_log_helper.h	/^    bool _flush_requested;$/;"	m	class:spdlog::details::async_log_helper
+_force_flush	sinks/file_sinks.h	/^    bool _force_flush;$/;"	m	class:spdlog::sinks::simple_file_sink
+_force_flush	sinks/ostream_sink.h	/^    bool _force_flush;$/;"	m	class:spdlog::sinks::ostream_sink
+_formatter	details/async_log_helper.h	/^    formatter_ptr _formatter;$/;"	m	class:spdlog::details::async_log_helper
+_formatter	details/registry.h	/^    formatter_ptr _formatter;$/;"	m	class:spdlog::details::registry_t
+_formatter	logger.h	/^    formatter_ptr _formatter;$/;"	m	class:spdlog::logger
+_formatters	formatter.h	/^    std::vector<std::unique_ptr<details::flag_formatter>> _formatters;$/;"	m	class:spdlog::pattern_formatter
+_ident	sinks/syslog_sink.h	/^    const std::string _ident;$/;"	m	class:spdlog::sinks::syslog_sink
+_isnan	fmt/bundled/format.h	/^inline DummyInt _isnan(...)$/;"	f	namespace:fmt::internal
+_last_err_time	logger.h	/^    std::atomic<time_t> _last_err_time;$/;"	m	class:spdlog::logger
+_last_update	details/pattern_formatter_impl.h	/^    log_clock::time_point _last_update;$/;"	m	class:spdlog::details::z_formatter
+_level	details/registry.h	/^    level::level_enum _level = level::info;$/;"	m	class:spdlog::details::registry_t
+_level	logger.h	/^    spdlog::level_t _level;$/;"	m	class:spdlog::logger
+_level	sinks/sink.h	/^    level_t _level;$/;"	m	class:spdlog::sinks::sink
+_loggers	details/registry.h	/^    std::unordered_map <std::string, std::shared_ptr<logger>> _loggers;$/;"	m	class:spdlog::details::registry_t
+_max_files	sinks/file_sinks.h	/^    std::size_t _max_files;$/;"	m	class:spdlog::sinks::rotating_file_sink
+_max_size	sinks/file_sinks.h	/^    std::size_t _max_size;$/;"	m	class:spdlog::sinks::rotating_file_sink
+_msg	common.h	/^    std::string _msg;$/;"	m	class:spdlog::spdlog_ex
+_mutex	details/pattern_formatter_impl.h	/^    std::mutex _mutex;$/;"	m	class:spdlog::details::z_formatter
+_mutex	details/registry.h	/^    Mutex _mutex;$/;"	m	class:spdlog::details::registry_t
+_mutex	sinks/base_sink.h	/^    Mutex _mutex;$/;"	m	class:spdlog::sinks::base_sink
+_name	logger.h	/^    const std::string _name;$/;"	m	class:spdlog::logger
+_next_rotation_tp	sinks/file_sinks.h	/^    std::chrono::system_clock::time_point _next_rotation_tp()$/;"	f	class:spdlog::sinks::daily_file_sink
+_offset_minutes	details/pattern_formatter_impl.h	/^    int _offset_minutes;$/;"	m	class:spdlog::details::z_formatter
+_ostream	sinks/ostream_sink.h	/^    std::ostream& _ostream;$/;"	m	class:spdlog::sinks::ostream_sink
+_overflow_policy	details/async_log_helper.h	/^    const async_overflow_policy _overflow_policy;$/;"	m	class:spdlog::details::async_log_helper
+_overflow_policy	details/registry.h	/^    async_overflow_policy _overflow_policy = async_overflow_policy::block_retry;$/;"	m	class:spdlog::details::registry_t
+_pattern	formatter.h	/^    const std::string _pattern;$/;"	m	class:spdlog::pattern_formatter
+_priorities	sinks/syslog_sink.h	/^    std::array<int, 7> _priorities;$/;"	m	class:spdlog::sinks::syslog_sink
+_q	details/async_log_helper.h	/^    q_type _q;$/;"	m	class:spdlog::details::async_log_helper
+_rotate	sinks/file_sinks.h	/^    void _rotate()$/;"	f	class:spdlog::sinks::rotating_file_sink
+_rotation_h	sinks/file_sinks.h	/^    int _rotation_h;$/;"	m	class:spdlog::sinks::daily_file_sink
+_rotation_m	sinks/file_sinks.h	/^    int _rotation_m;$/;"	m	class:spdlog::sinks::daily_file_sink
+_rotation_tp	sinks/file_sinks.h	/^    std::chrono::system_clock::time_point _rotation_tp;$/;"	m	class:spdlog::sinks::daily_file_sink
+_set_formatter	details/async_logger_impl.h	/^inline void spdlog::async_logger::_set_formatter(spdlog::formatter_ptr msg_formatter)$/;"	f	class:spdlog::async_logger
+_set_formatter	details/logger_impl.h	/^inline void spdlog::logger::_set_formatter(formatter_ptr msg_formatter)$/;"	f	class:spdlog::logger
+_set_pattern	details/async_logger_impl.h	/^inline void spdlog::async_logger::_set_pattern(const std::string& pattern)$/;"	f	class:spdlog::async_logger
+_set_pattern	details/logger_impl.h	/^inline void spdlog::logger::_set_pattern(const std::string& pattern)$/;"	f	class:spdlog::logger
+_should_flush_on	details/logger_impl.h	/^inline bool spdlog::logger::_should_flush_on(const details::log_msg &msg)$/;"	f	class:spdlog::logger
+_sink_it	details/async_logger_impl.h	/^inline void spdlog::async_logger::_sink_it(details::log_msg& msg)$/;"	f	class:spdlog::async_logger
+_sink_it	details/logger_impl.h	/^inline void spdlog::logger::_sink_it(details::log_msg& msg)$/;"	f	class:spdlog::logger
+_sinks	details/async_log_helper.h	/^    std::vector<std::shared_ptr<sinks::sink>> _sinks;$/;"	m	class:spdlog::details::async_log_helper
+_sinks	logger.h	/^    std::vector<sink_ptr> _sinks;$/;"	m	class:spdlog::logger
+_sinks	sinks/dist_sink.h	/^    std::vector<std::shared_ptr<sink>> _sinks;$/;"	m	class:spdlog::sinks::dist_sink
+_str	details/pattern_formatter_impl.h	/^    std::string _str;$/;"	m	class:spdlog::details::aggregate_formatter
+_tag	sinks/android_sink.h	/^    std::string _tag;$/;"	m	class:spdlog::sinks::android_sink
+_terminate_requested	details/async_log_helper.h	/^    bool _terminate_requested;$/;"	m	class:spdlog::details::async_log_helper
+_thread_id	details/os.h	/^inline size_t _thread_id()$/;"	f	namespace:spdlog::details::os
+_worker_teardown_cb	details/async_log_helper.h	/^    const std::function<void()> _worker_teardown_cb;$/;"	m	class:spdlog::details::async_log_helper
+_worker_teardown_cb	details/registry.h	/^    std::function<void()> _worker_teardown_cb = nullptr;$/;"	m	class:spdlog::details::registry_t
+_worker_thread	details/async_log_helper.h	/^    std::thread _worker_thread;$/;"	m	class:spdlog::details::async_log_helper
+_worker_warmup_cb	details/async_log_helper.h	/^    const std::function<void()> _worker_warmup_cb;$/;"	m	class:spdlog::details::async_log_helper
+_worker_warmup_cb	details/registry.h	/^    std::function<void()> _worker_warmup_cb = nullptr;$/;"	m	class:spdlog::details::registry_t
+a_formatter	details/pattern_formatter_impl.h	/^class a_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+add_ch	details/pattern_formatter_impl.h	/^    void add_ch(char ch)$/;"	f	class:spdlog::details::aggregate_formatter
+add_sink	sinks/dist_sink.h	/^    void add_sink(std::shared_ptr<sink> sink)$/;"	f	class:spdlog::sinks::dist_sink
+aggregate_formatter	details/pattern_formatter_impl.h	/^    aggregate_formatter()$/;"	f	class:spdlog::details::aggregate_formatter
+aggregate_formatter	details/pattern_formatter_impl.h	/^class aggregate_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+align	fmt/bundled/format.h	/^    Alignment align() const$/;"	f	struct:fmt::AlignSpec
+align	fmt/bundled/format.h	/^    Alignment align() const$/;"	f	struct:fmt::TypeSpec
+align_	fmt/bundled/format.h	/^    Alignment align_;$/;"	m	struct:fmt::AlignSpec
+ampm	details/pattern_formatter_impl.h	/^static const char* ampm(const tm& t)$/;"	f	namespace:spdlog::details
+android_logger	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::android_logger(const std::string& logger_name, const std::string& tag)$/;"	f	class:spdlog
+android_sink	sinks/android_sink.h	/^    explicit android_sink(const std::string& tag = "spdlog"): _tag(tag) {}$/;"	f	class:spdlog::sinks::android_sink
+android_sink	sinks/android_sink.h	/^class android_sink : public sink$/;"	c	namespace:spdlog::sinks
+ansicolor_sink	sinks/ansicolor_sink.h	/^class ansicolor_sink : public sink$/;"	c	namespace:spdlog::sinks
+ansicolor_sink	sinks/ansicolor_sink.h	/^inline ansicolor_sink::ansicolor_sink(sink_ptr wrapped_sink) : sink_(wrapped_sink)$/;"	f	class:spdlog::sinks::ansicolor_sink
+append	fmt/bundled/format.h	/^void Buffer<T>::append(const U *begin, const U *end)$/;"	f	class:fmt::Buffer
+append_float_length	fmt/bundled/format.h	/^    void append_float_length(Char *&, T)$/;"	f	class:BasicWriter
+append_float_length	fmt/bundled/format.h	/^    void append_float_length(Char *&format_ptr, long double)$/;"	f	class:BasicWriter
+apply_all	details/registry.h	/^    void apply_all(std::function<void(std::shared_ptr<logger>)> fun)$/;"	f	class:spdlog::details::registry_t
+apply_all	details/spdlog_impl.h	/^inline void spdlog::apply_all(std::function<void(std::shared_ptr<logger>)> fun)$/;"	f	class:spdlog
+approx_size	details/mpmc_bounded_q.h	/^    size_t approx_size()$/;"	f	class:spdlog::details::mpmc_bounded_queue
+arg	fmt/bundled/format.h	/^inline internal::NamedArgWithType<char, T> arg(StringRef name, const T &arg)$/;"	f
+arg	fmt/bundled/format.h	/^inline internal::NamedArgWithType<wchar_t, T> arg(WStringRef name, const T &arg)$/;"	f
+arg_	fmt/bundled/printf.h	/^    internal::Arg &arg_;$/;"	m	class:fmt::internal::ArgConverter
+arg_	fmt/bundled/printf.h	/^    internal::Arg &arg_;$/;"	m	class:fmt::internal::CharConverter
+args	fmt/bundled/format.h	/^    const ArgList &args() const$/;"	f	class:fmt::internal::FormatterBase
+args_	fmt/bundled/format.h	/^        const internal::Arg *args_;$/;"	m	union:fmt::ArgList::__anon28
+args_	fmt/bundled/format.h	/^    ArgList args_;$/;"	m	class:fmt::internal::FormatterBase
+async_log_helper	details/async_log_helper.h	/^class async_log_helper$/;"	c	namespace:spdlog::details
+async_log_helper	details/async_log_helper.h	/^inline spdlog::details::async_log_helper::async_log_helper($/;"	f	class:spdlog::details::async_log_helper
+async_logger	async_logger.h	/^class async_logger :public logger$/;"	c	namespace:spdlog
+async_logger	details/async_logger_impl.h	/^inline spdlog::async_logger::async_logger(const std::string& logger_name,$/;"	f	class:spdlog::async_logger
+async_msg	details/async_log_helper.h	/^        async_msg(async_msg_type m_type) :msg_type(m_type)$/;"	f	struct:spdlog::details::async_log_helper::async_msg
+async_msg	details/async_log_helper.h	/^        async_msg(const details::log_msg& m) :$/;"	f	struct:spdlog::details::async_log_helper::async_msg
+async_msg	details/async_log_helper.h	/^    struct async_msg$/;"	s	class:spdlog::details::async_log_helper
+async_msg_type	details/async_log_helper.h	/^    enum class async_msg_type$/;"	c	class:spdlog::details::async_log_helper
+async_overflow_policy	common.h	/^enum class async_overflow_policy$/;"	c	namespace:spdlog
+b_formatter	details/pattern_formatter_impl.h	/^class b_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+base_sink	sinks/base_sink.h	/^    base_sink():_mutex() {}$/;"	f	class:spdlog::sinks::base_sink
+base_sink	sinks/base_sink.h	/^class base_sink:public sink$/;"	c	namespace:spdlog::sinks
+basic_logger_mt	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::basic_logger_mt(const std::string& logger_name, const filename_t& filename, bool truncate)$/;"	f	class:spdlog
+basic_logger_st	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::basic_logger_st(const std::string& logger_name, const filename_t& filename, bool truncate)$/;"	f	class:spdlog
+blink	sinks/ansicolor_sink.h	/^    const std::string blink      = "\\033[5m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+block_retry	common.h	/^    block_retry, \/\/ Block \/ yield \/ sleep until message can be enqueued$/;"	m	class:spdlog::async_overflow_policy
+blue	sinks/ansicolor_sink.h	/^    const std::string blue       = "\\033[34m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+bold	sinks/ansicolor_sink.h	/^    const std::string bold       = "\\033[1m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+buffer_	details/mpmc_bounded_q.h	/^    cell_t* const           buffer_;$/;"	m	class:spdlog::details::mpmc_bounded_queue
+buffer_	fmt/bundled/format.h	/^        : BasicWriter<Char>(buffer_), buffer_(array, SIZE)$/;"	f	class:BasicArrayWriter
+buffer_	fmt/bundled/format.h	/^    Buffer<Char> &buffer_;$/;"	m	class:BasicWriter
+buffer_	fmt/bundled/format.h	/^    MemoryBuffer<char, INLINE_BUFFER_SIZE> buffer_;$/;"	m	class:fmt::internal::UTF16ToUTF8
+buffer_	fmt/bundled/format.h	/^    MemoryBuffer<wchar_t, INLINE_BUFFER_SIZE> buffer_;$/;"	m	class:fmt::internal::UTF8ToUTF16
+buffer_	fmt/bundled/format.h	/^    internal::FixedBuffer<Char> buffer_;$/;"	m	class:BasicArrayWriter
+buffer_	fmt/bundled/format.h	/^    internal::MemoryBuffer<Char, internal::INLINE_BUFFER_SIZE, Allocator> buffer_;$/;"	m	class:BasicMemoryWriter
+buffer_	fmt/bundled/format.h	/^    mutable char buffer_[BUFFER_SIZE];$/;"	m	class:FormatInt
+buffer_	fmt/bundled/ostream.h	/^    Buffer<Char> &buffer_;$/;"	m	class:fmt::internal::FormatBuf
+buffer_mask_	details/mpmc_bounded_q.h	/^    size_t const            buffer_mask_;$/;"	m	class:spdlog::details::mpmc_bounded_queue
+c_formatter	details/pattern_formatter_impl.h	/^class c_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+c_str	fmt/bundled/format.h	/^    const Char *c_str() const$/;"	f	class:BasicWriter
+c_str	fmt/bundled/format.h	/^    const Char *c_str() const$/;"	f	class:fmt::BasicCStringRef
+c_str	fmt/bundled/format.h	/^    const char *c_str() const$/;"	f	class:FormatInt
+c_str	fmt/bundled/format.h	/^    const char *c_str() const$/;"	f	class:fmt::internal::UTF16ToUTF8
+c_str	fmt/bundled/format.h	/^    const wchar_t *c_str() const$/;"	f	class:fmt::internal::UTF8ToUTF16
+cache_refresh	details/pattern_formatter_impl.h	/^    const std::chrono::seconds cache_refresh = std::chrono::seconds(5);$/;"	m	class:spdlog::details::z_formatter
+cacheline_pad_t	details/mpmc_bounded_q.h	/^    typedef char            cacheline_pad_t [cacheline_size];$/;"	t	class:spdlog::details::mpmc_bounded_queue
+cacheline_size	details/mpmc_bounded_q.h	/^    static size_t const     cacheline_size = 64;$/;"	m	class:spdlog::details::mpmc_bounded_queue
+calc_filename	sinks/file_sinks.h	/^    static filename_t calc_filename(const filename_t& basename, const filename_t& extension)$/;"	f	struct:spdlog::sinks::dateonly_daily_file_name_calculator
+calc_filename	sinks/file_sinks.h	/^    static filename_t calc_filename(const filename_t& basename, const filename_t& extension)$/;"	f	struct:spdlog::sinks::default_daily_file_name_calculator
+calc_filename	sinks/file_sinks.h	/^    static filename_t calc_filename(const filename_t& filename, std::size_t index, const filename_t& extension)$/;"	f	class:spdlog::sinks::rotating_file_sink
+capacity	fmt/bundled/format.h	/^    std::size_t capacity() const$/;"	f	class:fmt::Buffer
+capacity_	fmt/bundled/format.h	/^    std::size_t capacity_;$/;"	m	class:fmt::Buffer
+cast	fmt/bundled/format.h	/^    static Char cast(int value)$/;"	f	class:fmt::internal::BasicCharTraits
+cell_t	details/mpmc_bounded_q.h	/^    struct cell_t$/;"	s	class:spdlog::details::mpmc_bounded_queue
+ch_formatter	details/pattern_formatter_impl.h	/^    explicit ch_formatter(char ch): _ch(ch)$/;"	f	class:spdlog::details::ch_formatter
+ch_formatter	details/pattern_formatter_impl.h	/^class ch_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+check_no_auto_index	fmt/bundled/format.h	/^    bool check_no_auto_index(const char *&error)$/;"	f	class:fmt::internal::FormatterBase
+close	details/file_helper.h	/^    void close()$/;"	f	class:spdlog::details::file_helper
+clz	fmt/bundled/format.h	/^inline uint32_t clz(uint32_t x)$/;"	f	namespace:fmt::internal
+clzll	fmt/bundled/format.h	/^inline uint32_t clzll(uint64_t x)$/;"	f	namespace:fmt::internal
+colors_	sinks/ansicolor_sink.h	/^    std::map<level::level_enum, std::string> colors_;$/;"	m	class:spdlog::sinks::ansicolor_sink
+colors_	sinks/wincolor_sink.h	/^    std::map<level::level_enum, WORD> colors_;$/;"	m	class:spdlog::sinks::wincolor_sink
+compare	fmt/bundled/format.h	/^    int compare(BasicStringRef other) const$/;"	f	class:fmt::BasicStringRef
+compile_pattern	details/pattern_formatter_impl.h	/^inline void spdlog::pattern_formatter::compile_pattern(const std::string& pattern)$/;"	f	class:spdlog::pattern_formatter
+concealed	sinks/ansicolor_sink.h	/^    const std::string concealed  = "\\033[8m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+const_check	fmt/bundled/format.h	/^inline T const_check(T value)$/;"	f	namespace:fmt::internal
+convert	fmt/bundled/format.cc	/^	FMT_FUNC int internal::UTF16ToUTF8::convert(WStringRef s)$/;"	f	class:fmt::internal::UTF16ToUTF8
+convert	fmt/bundled/format.h	/^    static char convert(char value)$/;"	f	class:fmt::internal::CharTraits
+convert	fmt/bundled/format.h	/^    static wchar_t convert(char value)$/;"	f	class:fmt::internal::CharTraits
+convert	fmt/bundled/format.h	/^    static wchar_t convert(wchar_t value)$/;"	f	class:fmt::internal::CharTraits
+convert_to_android	sinks/android_sink.h	/^    static android_LogPriority convert_to_android(spdlog::level::level_enum level)$/;"	f	class:spdlog::sinks::android_sink
+count_digits	fmt/bundled/format.h	/^inline unsigned count_digits(uint32_t n)$/;"	f	namespace:fmt::internal
+create	details/registry.h	/^    std::shared_ptr<logger> create(const std::string& logger_name, const It& sinks_begin, const It& sinks_end)$/;"	f	class:spdlog::details::registry_t
+create	details/registry.h	/^    std::shared_ptr<logger> create(const std::string& logger_name, sink_ptr sink)$/;"	f	class:spdlog::details::registry_t
+create	details/registry.h	/^    std::shared_ptr<logger> create(const std::string& logger_name, sinks_init_list sinks)$/;"	f	class:spdlog::details::registry_t
+create	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::create(const std::string& logger_name, Args... args)$/;"	f	class:spdlog
+create	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::create(const std::string& logger_name, const It& sinks_begin, const It& sinks_end)$/;"	f	class:spdlog
+create	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::create(const std::string& logger_name, const spdlog::sink_ptr& sink)$/;"	f	class:spdlog
+create	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::create(const std::string& logger_name, spdlog::sinks_init_list sinks)$/;"	f	class:spdlog
+critical	common.h	/^    critical = 5,$/;"	e	enum:spdlog::level::__anon1
+critical	details/logger_impl.h	/^inline void spdlog::logger::critical(const T& msg)$/;"	f	class:spdlog::logger
+critical	details/logger_impl.h	/^inline void spdlog::logger::critical(const char* fmt, const Args&... args)$/;"	f	class:spdlog::logger
+custom	fmt/bundled/format.h	/^        CustomValue custom;$/;"	m	union:fmt::internal::Value::__anon19
+cyan	sinks/ansicolor_sink.h	/^    const std::string cyan       = "\\033[36m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+d_formatter	details/pattern_formatter_impl.h	/^class d_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+daily_file_sink	sinks/file_sinks.h	/^    daily_file_sink($/;"	f	class:spdlog::sinks::daily_file_sink
+daily_file_sink	sinks/file_sinks.h	/^class daily_file_sink :public base_sink < Mutex >$/;"	c	namespace:spdlog::sinks
+daily_file_sink_mt	sinks/file_sinks.h	/^typedef daily_file_sink<std::mutex> daily_file_sink_mt;$/;"	t	namespace:spdlog::sinks
+daily_file_sink_st	sinks/file_sinks.h	/^typedef daily_file_sink<details::null_mutex> daily_file_sink_st;$/;"	t	namespace:spdlog::sinks
+daily_logger_mt	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::daily_logger_mt(const std::string& logger_name, const filename_t& filename, int hour, int minute)$/;"	f	class:spdlog
+daily_logger_st	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::daily_logger_st(const std::string& logger_name, const filename_t& filename, int hour, int minute)$/;"	f	class:spdlog
+dark	sinks/ansicolor_sink.h	/^    const std::string dark       = "\\033[2m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+data	fmt/bundled/format.h	/^    const Char *data() const$/;"	f	class:fmt::BasicStringRef
+data	fmt/bundled/format.h	/^    const char *data() const$/;"	f	class:FormatInt
+data	fmt/bundled/format.h	/^    int data[2];$/;"	m	struct:fmt::internal::DummyInt
+data_	details/mpmc_bounded_q.h	/^        T                     data_;$/;"	m	struct:spdlog::details::mpmc_bounded_queue::cell_t
+data_	fmt/bundled/format.h	/^    T data_[SIZE];$/;"	m	class:fmt::internal::MemoryBuffer
+data_	fmt/bundled/format.h	/^    const Char *data_;$/;"	m	class:fmt::BasicCStringRef
+data_	fmt/bundled/format.h	/^    const Char *data_;$/;"	m	class:fmt::BasicStringRef
+dateonly_daily_file_name_calculator	sinks/file_sinks.h	/^struct dateonly_daily_file_name_calculator$/;"	s	namespace:spdlog::sinks
+deallocate	fmt/bundled/format.h	/^    void deallocate()$/;"	f	class:fmt::internal::MemoryBuffer
+debug	common.h	/^    debug = 1,$/;"	e	enum:spdlog::level::__anon1
+debug	details/logger_impl.h	/^inline void spdlog::logger::debug(const T& msg)$/;"	f	class:spdlog::logger
+debug	details/logger_impl.h	/^inline void spdlog::logger::debug(const char* fmt, const Args&... args)$/;"	f	class:spdlog::logger
+default_daily_file_name_calculator	sinks/file_sinks.h	/^struct default_daily_file_name_calculator$/;"	s	namespace:spdlog::sinks
+dequeue	details/mpmc_bounded_q.h	/^    bool dequeue(T& data)$/;"	f	class:spdlog::details::mpmc_bounded_queue
+dequeue_pos_	details/mpmc_bounded_q.h	/^    std::atomic<size_t>     dequeue_pos_;$/;"	m	class:spdlog::details::mpmc_bounded_queue
+details	async_logger.h	/^namespace details$/;"	n	namespace:spdlog
+details	common.h	/^namespace details$/;"	n	namespace:spdlog
+details	details/async_log_helper.h	/^namespace details$/;"	n	namespace:spdlog
+details	details/file_helper.h	/^namespace details$/;"	n	namespace:spdlog
+details	details/log_msg.h	/^namespace details$/;"	n	namespace:spdlog
+details	details/mpmc_bounded_q.h	/^namespace details$/;"	n	namespace:spdlog
+details	details/null_mutex.h	/^namespace details$/;"	n	namespace:spdlog
+details	details/os.h	/^namespace details$/;"	n	namespace:spdlog
+details	details/pattern_formatter_impl.h	/^namespace details$/;"	n	namespace:spdlog
+details	details/registry.h	/^namespace details$/;"	n	namespace:spdlog
+details	formatter.h	/^namespace details$/;"	n	namespace:spdlog
+digit_index_	fmt/bundled/format.h	/^    unsigned digit_index_;$/;"	m	class:fmt::internal::ThousandsSep
+dist_sink	sinks/dist_sink.h	/^    explicit dist_sink() :_sinks() {}$/;"	f	class:spdlog::sinks::dist_sink
+dist_sink	sinks/dist_sink.h	/^class dist_sink: public base_sink<Mutex>$/;"	c	namespace:spdlog::sinks
+dist_sink_mt	sinks/dist_sink.h	/^typedef dist_sink<std::mutex> dist_sink_mt;$/;"	t	namespace:spdlog::sinks
+dist_sink_st	sinks/dist_sink.h	/^typedef dist_sink<details::null_mutex> dist_sink_st;$/;"	t	namespace:spdlog::sinks
+do_get_arg	fmt/bundled/format.cc	/^	FMT_FUNC Arg internal::FormatterBase::do_get_arg($/;"	f	class:fmt::internal::FormatterBase
+double_value	fmt/bundled/format.h	/^        double double_value;$/;"	m	union:fmt::internal::Value::__anon19
+drop	details/registry.h	/^    void drop(const std::string& logger_name)$/;"	f	class:spdlog::details::registry_t
+drop	details/spdlog_impl.h	/^inline void spdlog::drop(const std::string &name)$/;"	f	class:spdlog
+drop_all	details/registry.h	/^    void drop_all()$/;"	f	class:spdlog::details::registry_t
+drop_all	details/spdlog_impl.h	/^inline void spdlog::drop_all()$/;"	f	class:spdlog
+e_formatter	details/pattern_formatter_impl.h	/^class e_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+enable_conversion	fmt/bundled/format.h	/^        enable_conversion = sizeof(fmt::internal::convert(get<T>())) == sizeof(Yes)$/;"	e	enum:fmt::internal::ConvertToInt::__anon23
+enqueue	details/mpmc_bounded_q.h	/^    bool enqueue(T&& data)$/;"	f	class:spdlog::details::mpmc_bounded_queue
+enqueue_pos_	details/mpmc_bounded_q.h	/^    std::atomic<size_t>     enqueue_pos_;$/;"	m	class:spdlog::details::mpmc_bounded_queue
+eol	details/os.h	/^SPDLOG_CONSTEXPR static const char* eol = SPDLOG_EOL;$/;"	m	namespace:spdlog::details::os
+eol_size	details/os.h	/^SPDLOG_CONSTEXPR static int eol_size = sizeof(SPDLOG_EOL) - 1;$/;"	m	namespace:spdlog::details::os
+err	common.h	/^    err = 4,$/;"	e	enum:spdlog::level::__anon1
+errno_str	details/os.h	/^inline std::string errno_str(int err_num)$/;"	f	namespace:spdlog::details::os
+error	details/logger_impl.h	/^inline void spdlog::logger::error(const T& msg)$/;"	f	class:spdlog::logger
+error	details/logger_impl.h	/^inline void spdlog::logger::error(const char* fmt, const Args&... args)$/;"	f	class:spdlog::logger
+error_code	fmt/bundled/format.h	/^    int error_code() const$/;"	f	class:SystemError
+error_code_	fmt/bundled/format.h	/^    int error_code_;$/;"	m	class:SystemError
+error_handler	details/logger_impl.h	/^inline spdlog::log_err_handler spdlog::logger::error_handler()$/;"	f	class:spdlog::logger
+f_formatter	details/pattern_formatter_impl.h	/^class f_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+file_exists	details/file_helper.h	/^    static bool file_exists(const filename_t& name)$/;"	f	class:spdlog::details::file_helper
+file_exists	details/os.h	/^inline bool file_exists(const filename_t& filename)$/;"	f	namespace:spdlog::details::os
+file_helper	details/file_helper.h	/^    explicit file_helper() :$/;"	f	class:spdlog::details::file_helper
+file_helper	details/file_helper.h	/^class file_helper$/;"	c	namespace:spdlog::details
+filename	details/file_helper.h	/^    const filename_t& filename() const$/;"	f	class:spdlog::details::file_helper
+filename_to_str	details/os.h	/^inline std::string filename_to_str(const filename_t& filename)$/;"	f	namespace:spdlog::details::os
+filesize	details/os.h	/^inline size_t filesize(FILE *f)$/;"	f	namespace:spdlog::details::os
+fill	fmt/bundled/format.h	/^    char fill() const$/;"	f	struct:fmt::TypeSpec
+fill	fmt/bundled/format.h	/^    wchar_t fill() const$/;"	f	struct:fmt::WidthSpec
+fill_	fmt/bundled/format.h	/^    wchar_t fill_;$/;"	m	struct:fmt::WidthSpec
+fill_log_msg	details/async_log_helper.h	/^        void fill_log_msg(log_msg &msg)$/;"	f	struct:spdlog::details::async_log_helper::async_msg
+fill_padding	fmt/bundled/format.h	/^BasicWriter<Char>::fill_padding($/;"	f	class:BasicWriter
+find	fmt/bundled/format.h	/^    const internal::Arg *find(const fmt::BasicStringRef<Char> &name) const$/;"	f	class:fmt::internal::ArgMap
+fits_in_int	fmt/bundled/printf.h	/^    static bool fits_in_int(T value)$/;"	f	struct:fmt::internal::IntChecker
+fits_in_int	fmt/bundled/printf.h	/^    static bool fits_in_int(bool)$/;"	f	struct:fmt::internal::IntChecker
+fits_in_int	fmt/bundled/printf.h	/^    static bool fits_in_int(int)$/;"	f	struct:fmt::internal::IntChecker
+flag	fmt/bundled/format.h	/^    bool flag(unsigned f) const$/;"	f	struct:fmt::FormatSpec
+flag	fmt/bundled/format.h	/^    bool flag(unsigned) const$/;"	f	struct:fmt::AlignTypeSpec
+flag	fmt/bundled/format.h	/^    bool flag(unsigned) const$/;"	f	struct:fmt::TypeSpec
+flag_formatter	details/pattern_formatter_impl.h	/^class flag_formatter$/;"	c	namespace:spdlog::details
+flags_	fmt/bundled/format.h	/^    unsigned flags_;$/;"	m	struct:fmt::FormatSpec
+flush	details/async_log_helper.h	/^        flush,$/;"	m	class:spdlog::details::async_log_helper::async_msg_type
+flush	details/async_log_helper.h	/^inline void spdlog::details::async_log_helper::flush(bool wait_for_q)$/;"	f	class:spdlog::details::async_log_helper
+flush	details/async_logger_impl.h	/^inline void spdlog::async_logger::flush()$/;"	f	class:spdlog::async_logger
+flush	details/file_helper.h	/^    void flush()$/;"	f	class:spdlog::details::file_helper
+flush	details/logger_impl.h	/^inline void spdlog::logger::flush()$/;"	f	class:spdlog::logger
+flush	sinks/ansicolor_sink.h	/^inline void ansicolor_sink::flush()$/;"	f	class:spdlog::sinks::ansicolor_sink
+flush_on	details/logger_impl.h	/^inline void spdlog::logger::flush_on(level::level_enum log_level)$/;"	f	class:spdlog::logger
+fmt	fmt/bundled/format.cc	/^namespace fmt {$/;"	n	file:
+fmt	fmt/bundled/format.h	/^namespace fmt$/;"	n
+fmt	fmt/bundled/ostream.cc	/^namespace fmt {$/;"	n	file:
+fmt	fmt/bundled/ostream.h	/^namespace fmt$/;"	n
+fmt	fmt/bundled/printf.h	/^namespace fmt$/;"	n
+fopen_s	details/os.h	/^inline int fopen_s(FILE** fp, const filename_t& filename, const filename_t& mode)$/;"	f	namespace:spdlog::details::os
+format	details/pattern_formatter_impl.h	/^inline void spdlog::pattern_formatter::format(details::log_msg& msg)$/;"	f	class:spdlog::pattern_formatter
+format	fmt/bundled/format.h	/^        FormatFunc format;$/;"	m	struct:fmt::internal::Value::CustomValue
+format	fmt/bundled/format.h	/^inline std::string format(CStringRef format_str, ArgList args)$/;"	f
+format	fmt/bundled/format.h	/^inline std::wstring format(WCStringRef format_str, ArgList args)$/;"	f
+format	fmt/bundled/printf.h	/^void PrintfFormatter<Char, AF>::format(BasicCStringRef<Char> format_str)$/;"	f	class:fmt::PrintfFormatter
+format_	fmt/bundled/format.h	/^    const Char *format_;$/;"	m	class:fmt::BasicArgFormatter
+format_arg	fmt/bundled/format.h	/^void format_arg(Formatter &, const Char *, const T &)$/;"	f	namespace:fmt::internal
+format_arg	fmt/bundled/ostream.h	/^void format_arg(BasicFormatter<Char, ArgFormatter> &f,$/;"	f	namespace:fmt
+format_custom_arg	fmt/bundled/format.h	/^    static void format_custom_arg($/;"	f	class:fmt::internal::MakeValue
+format_decimal	fmt/bundled/format.h	/^    char *format_decimal(ULongLong value)$/;"	f	class:FormatInt
+format_decimal	fmt/bundled/format.h	/^inline void format_decimal(Char *buffer, UInt value, unsigned num_digits)$/;"	f	namespace:fmt::internal
+format_decimal	fmt/bundled/format.h	/^inline void format_decimal(Char *buffer, UInt value, unsigned num_digits,$/;"	f	namespace:fmt::internal
+format_decimal	fmt/bundled/format.h	/^inline void format_decimal(char *&buffer, T value)$/;"	f
+format_float	fmt/bundled/format.cc	/^	int internal::CharTraits<char>::format_float($/;"	f	class:fmt::internal::CharTraits
+format_float	fmt/bundled/format.cc	/^	int internal::CharTraits<wchar_t>::format_float($/;"	f	class:fmt::internal::CharTraits
+formatted	details/log_msg.h	/^    fmt::MemoryWriter formatted;$/;"	m	struct:spdlog::details::log_msg
+formatter	details/registry.h	/^    void formatter(formatter_ptr f)$/;"	f	class:spdlog::details::registry_t
+formatter	formatter.h	/^class formatter$/;"	c	namespace:spdlog
+formatter_	fmt/bundled/format.h	/^    BasicFormatter<Char, Impl> &formatter_;$/;"	m	class:fmt::BasicArgFormatter
+fprintf	fmt/bundled/printf.h	/^inline int fprintf(std::ostream &os, CStringRef format_str, ArgList args)$/;"	f	namespace:fmt
+full_formatter	details/pattern_formatter_impl.h	/^class full_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+get	details/registry.h	/^    std::shared_ptr<logger> get(const std::string& logger_name)$/;"	f	class:spdlog::details::registry_t
+get	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::get(const std::string& name)$/;"	f	class:spdlog
+get	fmt/bundled/format.h	/^    static Char *get(Char *p)$/;"	f	class:BasicWriter
+get	fmt/bundled/format.h	/^    static Char *get(CharPtr p)$/;"	f	class:BasicWriter
+get_allocator	fmt/bundled/format.h	/^    Allocator get_allocator() const$/;"	f	class:fmt::internal::MemoryBuffer
+get_arg	fmt/bundled/format.h	/^    Arg get_arg(unsigned arg_index, const char *&error)$/;"	f	class:fmt::internal::FormatterBase
+get_arg	fmt/bundled/printf.h	/^internal::Arg PrintfFormatter<Char, AF>::get_arg(const Char *s,$/;"	f	class:fmt::PrintfFormatter
+get_cached_offset	details/pattern_formatter_impl.h	/^    int get_cached_offset(const log_msg& msg, const std::tm& tm_time)$/;"	f	class:spdlog::details::z_formatter
+gmtime	details/os.h	/^inline std::tm gmtime()$/;"	f	namespace:spdlog::details::os
+gmtime	details/os.h	/^inline std::tm gmtime(const std::time_t &time_tt)$/;"	f	namespace:spdlog::details::os
+green	sinks/ansicolor_sink.h	/^    const std::string green      = "\\033[32m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+grey	sinks/ansicolor_sink.h	/^    const std::string grey       = "\\033[30m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+grow	fmt/bundled/format.cc	/^	void internal::FixedBuffer<Char>::grow(std::size_t)$/;"	f	class:fmt::internal::FixedBuffer
+grow	fmt/bundled/format.h	/^void MemoryBuffer<T, SIZE, Allocator>::grow(std::size_t size)$/;"	f	class:fmt::internal::MemoryBuffer
+grow_buffer	fmt/bundled/format.h	/^    CharPtr grow_buffer(std::size_t n)$/;"	f	class:BasicWriter
+handle_flag	details/pattern_formatter_impl.h	/^inline void spdlog::pattern_formatter::handle_flag(char flag)$/;"	f	class:spdlog::pattern_formatter
+handle_flush_interval	details/async_log_helper.h	/^inline void spdlog::details::async_log_helper::handle_flush_interval(log_clock::time_point& now, log_clock::time_point& last_flush)$/;"	f	class:spdlog::details::async_log_helper
+info	common.h	/^    info = 2,$/;"	e	enum:spdlog::level::__anon1
+info	details/logger_impl.h	/^inline void spdlog::logger::info(const T& msg)$/;"	f	class:spdlog::logger
+info	details/logger_impl.h	/^inline void spdlog::logger::info(const char* fmt, const Args&... args)$/;"	f	class:spdlog::logger
+init	fmt/bundled/format.cc	/^	FMT_FUNC void SystemError::init($/;"	f	class:fmt::SystemError
+init	fmt/bundled/format.cc	/^	FMT_FUNC void WindowsError::init($/;"	f	class:fmt::WindowsError
+init	fmt/bundled/format.cc	/^	void internal::ArgMap<Char>::init(const ArgList &args)$/;"	f	class:fmt::internal::ArgMap
+instance	details/registry.h	/^    static registry_t<Mutex>& instance()$/;"	f	class:spdlog::details::registry_t
+instance	sinks/stdout_sinks.h	/^    static std::shared_ptr<MyType> instance()$/;"	f	class:spdlog::sinks::stderr_sink
+instance	sinks/stdout_sinks.h	/^    static std::shared_ptr<MyType> instance()$/;"	f	class:spdlog::sinks::stdout_sink
+int_type	fmt/bundled/ostream.h	/^    typedef typename std::basic_streambuf<Char>::int_type int_type;$/;"	t	class:fmt::internal::FormatBuf
+int_value	fmt/bundled/format.h	/^        int int_value;$/;"	m	union:fmt::internal::Value::__anon19
+internal	fmt/bundled/format.cc	/^	namespace internal {$/;"	n	namespace:fmt	file:
+internal	fmt/bundled/format.h	/^namespace internal$/;"	n	namespace:fmt
+internal	fmt/bundled/ostream.cc	/^	namespace internal {$/;"	n	namespace:fmt	file:
+internal	fmt/bundled/ostream.h	/^namespace internal$/;"	n	namespace:fmt
+internal	fmt/bundled/printf.h	/^namespace internal$/;"	n	namespace:fmt
+intmax_t	fmt/bundled/format.h	/^typedef __int64          intmax_t;$/;"	t
+is_negative	fmt/bundled/format.h	/^    static bool is_negative(T value)$/;"	f	struct:fmt::internal::SignChecker
+is_negative	fmt/bundled/format.h	/^    static bool is_negative(T)$/;"	f	struct:fmt::internal::SignChecker
+is_negative	fmt/bundled/format.h	/^inline bool is_negative(T value)$/;"	f	namespace:fmt::internal
+is_same	fmt/bundled/printf.h	/^struct is_same$/;"	s	namespace:fmt::internal
+is_same	fmt/bundled/printf.h	/^struct is_same<T, T>$/;"	s	namespace:fmt::internal
+isinf	fmt/bundled/format.h	/^inline DummyInt isinf(...)$/;"	f	namespace:fmt::internal
+isinfinity	fmt/bundled/format.h	/^    static bool isinfinity(T x)$/;"	f	class:std::numeric_limits
+isnan	fmt/bundled/format.h	/^inline DummyInt isnan(...)$/;"	f	namespace:fmt::internal
+isnegative	fmt/bundled/format.h	/^    static bool isnegative(double x)$/;"	f	class:std::numeric_limits
+isnotanumber	fmt/bundled/format.h	/^    static bool isnotanumber(T x)$/;"	f	class:std::numeric_limits
+level	common.h	/^namespace level$/;"	n	namespace:spdlog
+level	details/async_log_helper.h	/^        level::level_enum level;$/;"	m	struct:spdlog::details::async_log_helper::async_msg
+level	details/log_msg.h	/^    level::level_enum level;$/;"	m	struct:spdlog::details::log_msg
+level	details/logger_impl.h	/^inline spdlog::level::level_enum spdlog::logger::level() const$/;"	f	class:spdlog::logger
+level	sinks/sink.h	/^inline level::level_enum sink::level() const$/;"	f	class:spdlog::sinks::sink
+level_enum	common.h	/^} level_enum;$/;"	t	namespace:spdlog::level	typeref:enum:spdlog::level::__anon1
+level_formatter	details/pattern_formatter_impl.h	/^class level_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+load	details/null_mutex.h	/^    int load(std::memory_order) const$/;"	f	struct:spdlog::details::null_atomic_int
+localtime	details/os.h	/^inline std::tm localtime()$/;"	f	namespace:spdlog::details::os
+localtime	details/os.h	/^inline std::tm localtime(const std::time_t &time_tt)$/;"	f	namespace:spdlog::details::os
+lock	details/null_mutex.h	/^    void lock() {}$/;"	f	struct:spdlog::details::null_mutex
+log	details/async_log_helper.h	/^        log,$/;"	m	class:spdlog::details::async_log_helper::async_msg_type
+log	details/async_log_helper.h	/^inline void spdlog::details::async_log_helper::log(const details::log_msg& msg)$/;"	f	class:spdlog::details::async_log_helper
+log	details/logger_impl.h	/^inline void spdlog::logger::log(level::level_enum lvl, const T& msg)$/;"	f	class:spdlog::logger
+log	details/logger_impl.h	/^inline void spdlog::logger::log(level::level_enum lvl, const char* fmt, const Args&... args)$/;"	f	class:spdlog::logger
+log	details/logger_impl.h	/^inline void spdlog::logger::log(level::level_enum lvl, const char* msg)$/;"	f	class:spdlog::logger
+log	sinks/ansicolor_sink.h	/^inline void ansicolor_sink::log(const details::log_msg& msg)$/;"	f	class:spdlog::sinks::ansicolor_sink
+log_msg	details/log_msg.h	/^    log_msg(const std::string *loggers_name, level::level_enum lvl) : logger_name(loggers_name), level(lvl)$/;"	f	struct:spdlog::details::log_msg
+log_msg	details/log_msg.h	/^struct log_msg$/;"	s	namespace:spdlog::details
+logger	details/logger_impl.h	/^inline spdlog::logger::logger(const std::string& logger_name, const It& begin, const It& end):$/;"	f	class:spdlog::logger
+logger	details/logger_impl.h	/^inline spdlog::logger::logger(const std::string& logger_name, sinks_init_list sinks_list):$/;"	f	class:spdlog::logger
+logger	details/logger_impl.h	/^inline spdlog::logger::logger(const std::string& logger_name, spdlog::sink_ptr single_sink):$/;"	f	class:spdlog::logger
+logger	logger.h	/^class logger$/;"	c	namespace:spdlog
+logger_name	details/async_log_helper.h	/^        std::string logger_name;$/;"	m	struct:spdlog::details::async_log_helper::async_msg
+logger_name	details/log_msg.h	/^    const std::string *logger_name;$/;"	m	struct:spdlog::details::log_msg
+long_double_value	fmt/bundled/format.h	/^        long double long_double_value;$/;"	m	union:fmt::internal::Value::__anon19
+long_long_value	fmt/bundled/format.h	/^        LongLong long_long_value;$/;"	m	union:fmt::internal::Value::__anon19
+m_formatter	details/pattern_formatter_impl.h	/^class m_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+magenta	sinks/ansicolor_sink.h	/^    const std::string magenta    = "\\033[35m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+make	fmt/bundled/format.h	/^    static Arg make(const T &value)$/;"	f	struct:fmt::ArgArray
+make	fmt/bundled/format.h	/^static Value make(const T &value)$/;"	f	namespace:fmt::internal
+make_ptr	fmt/bundled/format.h	/^inline T *make_ptr(T *ptr, std::size_t)$/;"	f	namespace:fmt::internal
+make_ptr	fmt/bundled/format.h	/^inline stdext::checked_array_iterator<T*> make_ptr(T *ptr, std::size_t size)$/;"	f	namespace:fmt::internal
+make_type	fmt/bundled/format.h	/^inline uint64_t make_type()$/;"	f	namespace:fmt::internal
+make_type	fmt/bundled/format.h	/^inline uint64_t make_type(const Arg &first, const Args & ... tail)$/;"	f	namespace:fmt
+make_type	fmt/bundled/format.h	/^inline uint64_t make_type(const T &arg)$/;"	f	namespace:fmt::internal
+map_	fmt/bundled/format.h	/^    MapType map_;$/;"	m	class:fmt::internal::ArgMap
+map_	fmt/bundled/format.h	/^    internal::ArgMap<Char> map_;$/;"	m	class:fmt::BasicFormatter
+max_size_	details/mpmc_bounded_q.h	/^    size_t const max_size_;$/;"	m	class:spdlog::details::mpmc_bounded_queue
+move	details/async_log_helper.h	/^                    msg_type(std::move(other.msg_type))$/;"	f	struct:spdlog::details::async_log_helper::async_msg
+move	fmt/bundled/format.h	/^    void move(MemoryBuffer &other)$/;"	f	class:fmt::internal::MemoryBuffer
+mpmc_bounded_queue	details/mpmc_bounded_q.h	/^    mpmc_bounded_queue(size_t buffer_size)$/;"	f	class:spdlog::details::mpmc_bounded_queue
+mpmc_bounded_queue	details/mpmc_bounded_q.h	/^class mpmc_bounded_queue$/;"	c	namespace:spdlog::details
+msg_type	details/async_log_helper.h	/^        async_msg_type msg_type;$/;"	m	struct:spdlog::details::async_log_helper::async_msg
+msvc_sink	sinks/msvc_sink.h	/^    explicit msvc_sink()$/;"	f	class:spdlog::sinks::msvc_sink
+msvc_sink	sinks/msvc_sink.h	/^class msvc_sink : public base_sink < Mutex >$/;"	c	namespace:spdlog::sinks
+msvc_sink_mt	sinks/msvc_sink.h	/^typedef msvc_sink<std::mutex> msvc_sink_mt;$/;"	t	namespace:spdlog::sinks
+msvc_sink_st	sinks/msvc_sink.h	/^typedef msvc_sink<details::null_mutex> msvc_sink_st;$/;"	t	namespace:spdlog::sinks
+name	details/logger_impl.h	/^inline const std::string& spdlog::logger::name() const$/;"	f	class:spdlog::logger
+name	fmt/bundled/format.h	/^    BasicStringRef<Char> name;$/;"	m	struct:fmt::internal::NamedArg
+name_formatter	details/pattern_formatter_impl.h	/^class name_formatter:public flag_formatter$/;"	c	namespace:spdlog::details::__anon2
+next_arg	fmt/bundled/format.h	/^    Arg next_arg(const char *&error)$/;"	f	class:fmt::internal::FormatterBase
+next_arg_index_	fmt/bundled/format.h	/^    int next_arg_index_;$/;"	m	class:fmt::internal::FormatterBase
+now	details/os.h	/^inline spdlog::log_clock::time_point now()$/;"	f	namespace:spdlog::details::os
+null_atomic_int	details/null_mutex.h	/^    null_atomic_int(int val):value(val)$/;"	f	struct:spdlog::details::null_atomic_int
+null_atomic_int	details/null_mutex.h	/^struct null_atomic_int$/;"	s	namespace:spdlog::details
+null_mutex	details/null_mutex.h	/^struct null_mutex$/;"	s	namespace:spdlog::details
+null_sink	sinks/null_sink.h	/^class null_sink : public base_sink < Mutex >$/;"	c	namespace:spdlog::sinks
+null_sink_mt	sinks/null_sink.h	/^typedef null_sink<details::null_mutex> null_sink_mt;$/;"	t	namespace:spdlog::sinks
+null_sink_st	sinks/null_sink.h	/^typedef null_sink<details::null_mutex> null_sink_st;$/;"	t	namespace:spdlog::sinks
+numeric_limits	fmt/bundled/format.h	/^class numeric_limits<fmt::internal::DummyInt>:$/;"	c	namespace:std
+off	common.h	/^    off = 6$/;"	e	enum:spdlog::level::__anon1
+on_blue	sinks/ansicolor_sink.h	/^    const std::string on_blue    = "\\033[44m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+on_cyan	sinks/ansicolor_sink.h	/^    const std::string on_cyan    = "\\033[46m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+on_green	sinks/ansicolor_sink.h	/^    const std::string on_green   = "\\033[42m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+on_grey	sinks/ansicolor_sink.h	/^    const std::string on_grey    = "\\033[40m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+on_magenta	sinks/ansicolor_sink.h	/^    const std::string on_magenta = "\\033[45m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+on_red	sinks/ansicolor_sink.h	/^    const std::string on_red     = "\\033[41m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+on_white	sinks/ansicolor_sink.h	/^    const std::string on_white   = "\\033[47m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+on_yellow	sinks/ansicolor_sink.h	/^    const std::string on_yellow  = "\\033[43m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+open	details/file_helper.h	/^    void open(const filename_t& fname, bool truncate = false)$/;"	f	class:spdlog::details::file_helper
+open_interval	details/file_helper.h	/^    const int open_interval = 10;$/;"	m	class:spdlog::details::file_helper
+open_tries	details/file_helper.h	/^    const int open_tries = 5;$/;"	m	class:spdlog::details::file_helper
+operator !=	details/os.h	/^inline bool operator!=(const std::tm& tm1, const std::tm& tm2)$/;"	f	namespace:spdlog::details::os
+operator !=	fmt/bundled/format.h	/^    friend bool operator!=(BasicStringRef lhs, BasicStringRef rhs)$/;"	f	class:fmt::BasicStringRef
+operator ()	fmt/bundled/format.h	/^    void operator()(Char *&buffer)$/;"	f	class:fmt::internal::ThousandsSep
+operator ()	fmt/bundled/format.h	/^    void operator()(Char *)$/;"	f	struct:fmt::internal::NoThousandsSep
+operator <	fmt/bundled/format.h	/^    friend bool operator<(BasicStringRef lhs, BasicStringRef rhs)$/;"	f	class:fmt::BasicStringRef
+operator <<	fmt/bundled/format.h	/^    BasicWriter &operator<<($/;"	f	class:BasicWriter
+operator <<	fmt/bundled/format.h	/^    BasicWriter &operator<<(IntFormatSpec<T, Spec, FillChar> spec)$/;"	f	class:BasicWriter
+operator <<	fmt/bundled/format.h	/^    BasicWriter &operator<<(LongLong value)$/;"	f	class:BasicWriter
+operator <<	fmt/bundled/format.h	/^    BasicWriter &operator<<(ULongLong value)$/;"	f	class:BasicWriter
+operator <<	fmt/bundled/format.h	/^    BasicWriter &operator<<(char value)$/;"	f	class:BasicWriter
+operator <<	fmt/bundled/format.h	/^    BasicWriter &operator<<(const StrFormatSpec<StrChar> &spec)$/;"	f	class:BasicWriter
+operator <<	fmt/bundled/format.h	/^    BasicWriter &operator<<(double value)$/;"	f	class:BasicWriter
+operator <<	fmt/bundled/format.h	/^    BasicWriter &operator<<(fmt::BasicStringRef<Char> value)$/;"	f	class:BasicWriter
+operator <<	fmt/bundled/format.h	/^    BasicWriter &operator<<(int value)$/;"	f	class:BasicWriter
+operator <<	fmt/bundled/format.h	/^    BasicWriter &operator<<(long double value)$/;"	f	class:BasicWriter
+operator <<	fmt/bundled/format.h	/^    BasicWriter &operator<<(long value)$/;"	f	class:BasicWriter
+operator <<	fmt/bundled/format.h	/^    BasicWriter &operator<<(unsigned long value)$/;"	f	class:BasicWriter
+operator <<	fmt/bundled/format.h	/^    BasicWriter &operator<<(unsigned value)$/;"	f	class:BasicWriter
+operator <=	fmt/bundled/format.h	/^    friend bool operator<=(BasicStringRef lhs, BasicStringRef rhs)$/;"	f	class:fmt::BasicStringRef
+operator =	fmt/bundled/format.h	/^    BasicMemoryWriter &operator=(BasicMemoryWriter &&other)$/;"	f	class:BasicMemoryWriter
+operator =	fmt/bundled/format.h	/^    MemoryBuffer &operator=(MemoryBuffer &&other)$/;"	f	class:fmt::internal::MemoryBuffer
+operator ==	details/os.h	/^inline bool operator==(const std::tm& tm1, const std::tm& tm2)$/;"	f	namespace:spdlog::details::os
+operator ==	fmt/bundled/format.h	/^    friend bool operator==(BasicStringRef lhs, BasicStringRef rhs)$/;"	f	class:fmt::BasicStringRef
+operator >	fmt/bundled/format.h	/^    friend bool operator>(BasicStringRef lhs, BasicStringRef rhs)$/;"	f	class:fmt::BasicStringRef
+operator >=	fmt/bundled/format.h	/^    friend bool operator>=(BasicStringRef lhs, BasicStringRef rhs)$/;"	f	class:fmt::BasicStringRef
+operator StringRef	fmt/bundled/format.h	/^    operator StringRef() const$/;"	f	class:fmt::internal::UTF16ToUTF8
+operator WStringRef	fmt/bundled/format.h	/^    operator WStringRef() const$/;"	f	class:fmt::internal::UTF8ToUTF16
+operator []	fmt/bundled/format.h	/^    T &operator[](std::size_t index)$/;"	f	class:fmt::Buffer
+operator []	fmt/bundled/format.h	/^    const T &operator[](std::size_t index) const$/;"	f	class:fmt::Buffer
+operator []	fmt/bundled/format.h	/^    internal::Arg operator[](unsigned index) const$/;"	f	class:fmt::ArgList
+operator int	fmt/bundled/format.h	/^    operator int() const$/;"	f	struct:fmt::internal::DummyInt
+os	common.h	/^namespace os$/;"	n	namespace:spdlog::details
+os	details/os.h	/^namespace os$/;"	n	namespace:spdlog::details
+ostream_sink	sinks/ostream_sink.h	/^    explicit ostream_sink(std::ostream& os, bool force_flush=false) :_ostream(os), _force_flush(force_flush) {}$/;"	f	class:spdlog::sinks::ostream_sink
+ostream_sink	sinks/ostream_sink.h	/^class ostream_sink: public base_sink<Mutex>$/;"	c	namespace:spdlog::sinks
+ostream_sink_mt	sinks/ostream_sink.h	/^typedef ostream_sink<std::mutex> ostream_sink_mt;$/;"	t	namespace:spdlog::sinks
+ostream_sink_st	sinks/ostream_sink.h	/^typedef ostream_sink<details::null_mutex> ostream_sink_st;$/;"	t	namespace:spdlog::sinks
+other	details/async_log_helper.h	/^        async_msg& operator=(const async_msg& other) = delete;$/;"	m	struct:spdlog::details::async_log_helper::async_msg
+other	details/log_msg.h	/^    log_msg& operator=(log_msg&& other) = delete;$/;"	m	struct:spdlog::details::log_msg
+other	details/log_msg.h	/^    log_msg(const log_msg& other)  = delete;$/;"	m	struct:spdlog::details::log_msg
+other	details/log_msg.h	/^    log_msg(log_msg&& other) = delete;$/;"	m	struct:spdlog::details::log_msg
+other	sinks/ansicolor_sink.h	/^    ansicolor_sink& operator=(const ansicolor_sink& other) = delete;$/;"	m	class:spdlog::sinks::ansicolor_sink
+other	sinks/ansicolor_sink.h	/^    ansicolor_sink(const ansicolor_sink& other) = delete;$/;"	m	class:spdlog::sinks::ansicolor_sink
+other	sinks/wincolor_sink.h	/^    wincolor_sink& operator=(const wincolor_sink& other) = delete;$/;"	m	class:spdlog::sinks::wincolor_sink
+other	sinks/wincolor_sink.h	/^    wincolor_sink(const wincolor_sink& other) = delete;$/;"	m	class:spdlog::sinks::wincolor_sink
+out_handle_	sinks/wincolor_sink.h	/^    HANDLE out_handle_;$/;"	m	class:spdlog::sinks::wincolor_sink
+overflow	fmt/bundled/ostream.h	/^    int_type overflow(int_type ch = traits_type::eof())$/;"	f	class:fmt::internal::FormatBuf
+override	async_logger.h	/^    void _set_formatter(spdlog::formatter_ptr msg_formatter) override;$/;"	m	class:spdlog::async_logger
+override	async_logger.h	/^    void _set_pattern(const std::string& pattern) override;$/;"	m	class:spdlog::async_logger
+override	async_logger.h	/^    void _sink_it(details::log_msg& msg) override;$/;"	m	class:spdlog::async_logger
+override	async_logger.h	/^    void flush() override;$/;"	m	class:spdlog::async_logger
+override	formatter.h	/^    void format(details::log_msg& msg) override;$/;"	m	class:spdlog::pattern_formatter
+override	sinks/ansicolor_sink.h	/^    virtual void flush() override;$/;"	m	class:spdlog::sinks::ansicolor_sink
+override	sinks/ansicolor_sink.h	/^    virtual void log(const details::log_msg& msg) override;$/;"	m	class:spdlog::sinks::ansicolor_sink
+p_formatter	details/pattern_formatter_impl.h	/^class p_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+pad	fmt/bundled/format.h	/^inline StrFormatSpec<Char> pad($/;"	f	namespace:fmt
+pad	fmt/bundled/format.h	/^inline StrFormatSpec<wchar_t> pad($/;"	f	namespace:fmt
+pad0_	details/mpmc_bounded_q.h	/^    cacheline_pad_t         pad0_;$/;"	m	class:spdlog::details::mpmc_bounded_queue
+pad1_	details/mpmc_bounded_q.h	/^    cacheline_pad_t         pad1_;$/;"	m	class:spdlog::details::mpmc_bounded_queue
+pad2_	details/mpmc_bounded_q.h	/^    cacheline_pad_t         pad2_;$/;"	m	class:spdlog::details::mpmc_bounded_queue
+pad3_	details/mpmc_bounded_q.h	/^    cacheline_pad_t         pad3_;$/;"	m	class:spdlog::details::mpmc_bounded_queue
+pad_n_join	details/pattern_formatter_impl.h	/^static fmt::MemoryWriter& pad_n_join(fmt::MemoryWriter& w, int v1, int v2, char sep)$/;"	f	namespace:spdlog::details
+pad_n_join	details/pattern_formatter_impl.h	/^static fmt::MemoryWriter& pad_n_join(fmt::MemoryWriter& w, int v1, int v2, int v3, char sep)$/;"	f	namespace:spdlog::details
+parse_flags	fmt/bundled/printf.h	/^void PrintfFormatter<Char, AF>::parse_flags(FormatSpec &spec, const Char *&s)$/;"	f	class:fmt::PrintfFormatter
+parse_header	fmt/bundled/printf.h	/^unsigned PrintfFormatter<Char, AF>::parse_header($/;"	f	class:fmt::PrintfFormatter
+pattern_formatter	details/pattern_formatter_impl.h	/^inline spdlog::pattern_formatter::pattern_formatter(const std::string& pattern)$/;"	f	class:spdlog::pattern_formatter
+pattern_formatter	formatter.h	/^class pattern_formatter : public formatter$/;"	c	namespace:spdlog
+pid	details/os.h	/^inline int pid()$/;"	f	namespace:spdlog::details::os
+pid_formatter	details/pattern_formatter_impl.h	/^class pid_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+pointer	fmt/bundled/format.h	/^        const void *pointer;$/;"	m	union:fmt::internal::Value::__anon19
+precision	fmt/bundled/format.h	/^    int precision() const$/;"	f	struct:fmt::AlignSpec
+precision	fmt/bundled/format.h	/^    int precision() const$/;"	f	struct:fmt::FormatSpec
+precision	fmt/bundled/format.h	/^    int precision() const$/;"	f	struct:fmt::TypeSpec
+precision_	fmt/bundled/format.h	/^    int precision_;$/;"	m	struct:fmt::FormatSpec
+prepare_int_buffer	fmt/bundled/format.h	/^    CharPtr prepare_int_buffer(unsigned num_digits,$/;"	f	class:BasicWriter
+prepare_int_buffer	fmt/bundled/format.h	/^BasicWriter<Char>::prepare_int_buffer($/;"	f	class:BasicWriter
+prevent_child_fd	details/os.h	/^inline void prevent_child_fd(FILE *f)$/;"	f	namespace:spdlog::details::os
+print	fmt/bundled/format.cc	/^	FMT_FUNC void print(CStringRef format_str, ArgList args)$/;"	f	namespace:fmt
+print	fmt/bundled/format.cc	/^	FMT_FUNC void print(std::FILE *f, CStringRef format_str, ArgList args)$/;"	f	namespace:fmt
+print	fmt/bundled/ostream.cc	/^	FMT_FUNC void print(std::ostream &os, CStringRef format_str, ArgList args)$/;"	f	namespace:fmt
+print_colored	fmt/bundled/format.cc	/^	FMT_FUNC void print_colored(Color c, CStringRef format, ArgList args)$/;"	f	namespace:fmt
+printf	fmt/bundled/printf.h	/^inline int printf(CStringRef format, ArgList args)$/;"	f	namespace:fmt
+printf	fmt/bundled/printf.h	/^void printf(BasicWriter<Char> &w, BasicCStringRef<Char> format, ArgList args)$/;"	f	namespace:fmt
+process_next_msg	details/async_log_helper.h	/^inline bool spdlog::details::async_log_helper::process_next_msg(log_clock::time_point& last_pop, log_clock::time_point& last_flush)$/;"	f	class:spdlog::details::async_log_helper
+ptr_	fmt/bundled/format.h	/^    T *ptr_;$/;"	m	class:fmt::Buffer
+push_back	fmt/bundled/format.h	/^    void push_back(const T &value)$/;"	f	class:fmt::Buffer
+push_msg	details/async_log_helper.h	/^inline void spdlog::details::async_log_helper::push_msg(details::async_log_helper::async_msg&& new_msg)$/;"	f	class:spdlog::details::async_log_helper
+r_formatter	details/pattern_formatter_impl.h	/^class r_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+raw	details/log_msg.h	/^    fmt::MemoryWriter raw;$/;"	m	struct:spdlog::details::log_msg
+red	sinks/ansicolor_sink.h	/^    const std::string red        = "\\033[31m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+register_logger	details/registry.h	/^    void register_logger(std::shared_ptr<logger> logger)$/;"	f	class:spdlog::details::registry_t
+register_logger	details/spdlog_impl.h	/^inline void spdlog::register_logger(std::shared_ptr<logger> logger)$/;"	f	class:spdlog
+registry	details/registry.h	/^typedef registry_t<spdlog::details::null_mutex> registry;$/;"	t	namespace:spdlog::details
+registry	details/registry.h	/^typedef registry_t<std::mutex> registry;$/;"	t	namespace:spdlog::details
+registry_t	details/registry.h	/^    registry_t<Mutex>() {}$/;"	f	class:spdlog::details::registry_t
+registry_t	details/registry.h	/^template <class Mutex> class registry_t$/;"	c	namespace:spdlog::details
+remove	details/os.h	/^inline int remove(const filename_t &filename)$/;"	f	namespace:spdlog::details::os
+remove_sink	sinks/dist_sink.h	/^    void remove_sink(std::shared_ptr<sink> sink)$/;"	f	class:spdlog::sinks::dist_sink
+rename	details/os.h	/^inline int rename(const filename_t& filename1, const filename_t& filename2)$/;"	f	namespace:spdlog::details::os
+reopen	details/file_helper.h	/^    void reopen(bool truncate)$/;"	f	class:spdlog::details::file_helper
+report_unhandled_arg	fmt/bundled/format.h	/^    void report_unhandled_arg()$/;"	f	class:fmt::ArgVisitor
+report_unhandled_arg	fmt/bundled/printf.h	/^    void report_unhandled_arg()$/;"	f	class:fmt::internal::PrecisionHandler
+report_unhandled_arg	fmt/bundled/printf.h	/^    void report_unhandled_arg()$/;"	f	class:fmt::internal::WidthHandler
+report_unknown_type	fmt/bundled/format.cc	/^	FMT_FUNC void internal::report_unknown_type(char code, const char *type)$/;"	f	class:fmt::internal
+reserve	fmt/bundled/format.h	/^    void reserve(std::size_t capacity)$/;"	f	class:fmt::Buffer
+reset	sinks/ansicolor_sink.h	/^    const std::string reset      = "\\033[00m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+resize	fmt/bundled/format.h	/^    void resize(std::size_t new_size)$/;"	f	class:fmt::Buffer
+reverse	sinks/ansicolor_sink.h	/^    const std::string reverse    = "\\033[7m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+rotating_file_sink	sinks/file_sinks.h	/^    rotating_file_sink(const filename_t &base_filename, const filename_t &extension,$/;"	f	class:spdlog::sinks::rotating_file_sink
+rotating_file_sink	sinks/file_sinks.h	/^class rotating_file_sink : public base_sink < Mutex >$/;"	c	namespace:spdlog::sinks
+rotating_file_sink_mt	sinks/file_sinks.h	/^typedef rotating_file_sink<std::mutex> rotating_file_sink_mt;$/;"	t	namespace:spdlog::sinks
+rotating_file_sink_st	sinks/file_sinks.h	/^typedef rotating_file_sink<details::null_mutex>rotating_file_sink_st;$/;"	t	namespace:spdlog::sinks
+rotating_logger_mt	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::rotating_logger_mt(const std::string& logger_name, const filename_t& filename, size_t max_file_size, size_t max_files)$/;"	f	class:spdlog
+rotating_logger_st	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::rotating_logger_st(const std::string& logger_name, const filename_t& filename, size_t max_file_size, size_t max_files)$/;"	f	class:spdlog
+sep_	fmt/bundled/format.h	/^    fmt::StringRef sep_;$/;"	m	class:fmt::internal::ThousandsSep
+sequence_	details/mpmc_bounded_q.h	/^        std::atomic<size_t>   sequence_;$/;"	m	struct:spdlog::details::mpmc_bounded_queue::cell_t
+set_async_mode	details/registry.h	/^    void set_async_mode(size_t q_size, const async_overflow_policy overflow_policy, const std::function<void()>& worker_warmup_cb, const std::chrono::milliseconds& flush_interval_ms, const std::function<void()>& worker_teardown_cb)$/;"	f	class:spdlog::details::registry_t
+set_async_mode	details/spdlog_impl.h	/^inline void spdlog::set_async_mode(size_t queue_size, const async_overflow_policy overflow_policy, const std::function<void()>& worker_warmup_cb, const std::chrono::milliseconds& flush_interval_ms, const std::function<void()>& worker_teardown_cb)$/;"	f	class:spdlog
+set_color	sinks/ansicolor_sink.h	/^inline void ansicolor_sink::set_color(level::level_enum color_level, const std::string& color)$/;"	f	class:spdlog::sinks::ansicolor_sink
+set_color	sinks/wincolor_sink.h	/^    void set_color(level::level_enum level, WORD color)$/;"	f	class:spdlog::sinks::wincolor_sink
+set_console_attribs	sinks/wincolor_sink.h	/^    WORD set_console_attribs(WORD attribs)$/;"	f	class:spdlog::sinks::wincolor_sink
+set_error_handler	details/logger_impl.h	/^inline void spdlog::logger::set_error_handler(spdlog::log_err_handler err_handler)$/;"	f	class:spdlog::logger
+set_error_handler	details/registry.h	/^    void set_error_handler(log_err_handler handler)$/;"	f	class:spdlog::details::registry_t
+set_error_handler	details/spdlog_impl.h	/^inline void spdlog::set_error_handler(log_err_handler handler)$/;"	f	class:spdlog
+set_force_flush	sinks/file_sinks.h	/^    void set_force_flush(bool force_flush)$/;"	f	class:spdlog::sinks::simple_file_sink
+set_formatter	details/async_log_helper.h	/^inline void spdlog::details::async_log_helper::set_formatter(formatter_ptr msg_formatter)$/;"	f	class:spdlog::details::async_log_helper
+set_formatter	details/logger_impl.h	/^inline void spdlog::logger::set_formatter(spdlog::formatter_ptr msg_formatter)$/;"	f	class:spdlog::logger
+set_formatter	details/spdlog_impl.h	/^inline void spdlog::set_formatter(spdlog::formatter_ptr f)$/;"	f	class:spdlog
+set_level	details/logger_impl.h	/^inline void spdlog::logger::set_level(spdlog::level::level_enum log_level)$/;"	f	class:spdlog::logger
+set_level	details/registry.h	/^    void set_level(level::level_enum log_level)$/;"	f	class:spdlog::details::registry_t
+set_level	details/spdlog_impl.h	/^inline void spdlog::set_level(level::level_enum log_level)$/;"	f	class:spdlog
+set_level	sinks/sink.h	/^inline void sink::set_level(level::level_enum log_level)$/;"	f	class:spdlog::sinks::sink
+set_pattern	details/logger_impl.h	/^inline void spdlog::logger::set_pattern(const std::string& pattern)$/;"	f	class:spdlog::logger
+set_pattern	details/registry.h	/^    void set_pattern(const std::string& pattern)$/;"	f	class:spdlog::details::registry_t
+set_pattern	details/spdlog_impl.h	/^inline void spdlog::set_pattern(const std::string& format_string)$/;"	f	class:spdlog
+set_string	fmt/bundled/format.h	/^    void set_string(StringRef str)$/;"	f	class:fmt::internal::MakeValue
+set_string	fmt/bundled/format.h	/^    void set_string(WStringRef str)$/;"	f	class:fmt::internal::MakeValue
+set_sync_mode	details/registry.h	/^    void set_sync_mode()$/;"	f	class:spdlog::details::registry_t
+set_sync_mode	details/spdlog_impl.h	/^inline void spdlog::set_sync_mode()$/;"	f	class:spdlog
+short_level_formatter	details/pattern_formatter_impl.h	/^class short_level_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+should_log	details/logger_impl.h	/^inline bool spdlog::logger::should_log(spdlog::level::level_enum msg_level) const$/;"	f	class:spdlog::logger
+should_log	sinks/sink.h	/^inline bool sink::should_log(level::level_enum msg_level) const$/;"	f	class:spdlog::sinks::sink
+signbit	fmt/bundled/format.h	/^inline DummyInt signbit(...)$/;"	f	namespace:fmt::internal
+simple_file_sink	sinks/file_sinks.h	/^    explicit simple_file_sink(const filename_t &filename, bool truncate = false):_force_flush(false)$/;"	f	class:spdlog::sinks::simple_file_sink
+simple_file_sink	sinks/file_sinks.h	/^class simple_file_sink : public base_sink < Mutex >$/;"	c	namespace:spdlog::sinks
+simple_file_sink_mt	sinks/file_sinks.h	/^typedef simple_file_sink<std::mutex> simple_file_sink_mt;$/;"	t	namespace:spdlog::sinks
+simple_file_sink_st	sinks/file_sinks.h	/^typedef simple_file_sink<details::null_mutex> simple_file_sink_st;$/;"	t	namespace:spdlog::sinks
+sink	sinks/sink.h	/^    sink()$/;"	f	class:spdlog::sinks::sink
+sink	sinks/sink.h	/^class sink$/;"	c	namespace:spdlog::sinks
+sink_	sinks/ansicolor_sink.h	/^    sink_ptr sink_;$/;"	m	class:spdlog::sinks::ansicolor_sink
+sinks	common.h	/^namespace sinks$/;"	n	namespace:spdlog
+sinks	details/logger_impl.h	/^inline const std::vector<spdlog::sink_ptr>& spdlog::logger::sinks() const$/;"	f	class:spdlog::logger
+sinks	sinks/android_sink.h	/^namespace sinks$/;"	n	namespace:spdlog
+sinks	sinks/ansicolor_sink.h	/^namespace sinks$/;"	n	namespace:spdlog
+sinks	sinks/base_sink.h	/^namespace sinks$/;"	n	namespace:spdlog
+sinks	sinks/dist_sink.h	/^namespace sinks$/;"	n	namespace:spdlog
+sinks	sinks/file_sinks.h	/^namespace sinks$/;"	n	namespace:spdlog
+sinks	sinks/msvc_sink.h	/^namespace sinks$/;"	n	namespace:spdlog
+sinks	sinks/null_sink.h	/^namespace sinks$/;"	n	namespace:spdlog
+sinks	sinks/ostream_sink.h	/^namespace sinks$/;"	n	namespace:spdlog
+sinks	sinks/sink.h	/^namespace sinks$/;"	n	namespace:spdlog
+sinks	sinks/stdout_sinks.h	/^namespace sinks$/;"	n	namespace:spdlog
+sinks	sinks/syslog_sink.h	/^namespace sinks$/;"	n	namespace:spdlog
+sinks	sinks/wincolor_sink.h	/^namespace sinks$/;"	n	namespace:spdlog
+size	details/file_helper.h	/^    size_t size()$/;"	f	class:spdlog::details::file_helper
+size	fmt/bundled/format.h	/^        std::size_t size;$/;"	m	struct:fmt::internal::Value::StringValue
+size	fmt/bundled/format.h	/^    size_t size() const$/;"	f	class:fmt::internal::UTF16ToUTF8
+size	fmt/bundled/format.h	/^    size_t size() const$/;"	f	class:fmt::internal::UTF8ToUTF16
+size	fmt/bundled/format.h	/^    std::size_t size() const$/;"	f	class:BasicWriter
+size	fmt/bundled/format.h	/^    std::size_t size() const$/;"	f	class:FormatInt
+size	fmt/bundled/format.h	/^    std::size_t size() const$/;"	f	class:fmt::BasicStringRef
+size	fmt/bundled/format.h	/^    std::size_t size() const$/;"	f	class:fmt::Buffer
+size	fmt/bundled/ostream.h	/^    size_t size() const$/;"	f	class:fmt::internal::FormatBuf
+size_	fmt/bundled/format.h	/^    std::size_t size_;$/;"	m	class:fmt::BasicStringRef
+size_	fmt/bundled/format.h	/^    std::size_t size_;$/;"	m	class:fmt::Buffer
+sleep_or_yield	details/async_log_helper.h	/^inline void spdlog::details::async_log_helper::sleep_or_yield(const spdlog::log_clock::time_point& now, const spdlog::log_clock::time_point& last_op_time)$/;"	f	class:spdlog::details::async_log_helper
+spdlog	async_logger.h	/^namespace spdlog$/;"	n
+spdlog	common.h	/^namespace spdlog$/;"	n
+spdlog	details/async_log_helper.h	/^namespace spdlog$/;"	n
+spdlog	details/file_helper.h	/^namespace spdlog$/;"	n
+spdlog	details/log_msg.h	/^namespace spdlog$/;"	n
+spdlog	details/mpmc_bounded_q.h	/^namespace spdlog$/;"	n
+spdlog	details/null_mutex.h	/^namespace spdlog$/;"	n
+spdlog	details/os.h	/^namespace spdlog$/;"	n
+spdlog	details/pattern_formatter_impl.h	/^namespace spdlog$/;"	n
+spdlog	details/registry.h	/^namespace spdlog$/;"	n
+spdlog	formatter.h	/^namespace spdlog$/;"	n
+spdlog	logger.h	/^namespace spdlog$/;"	n
+spdlog	sinks/android_sink.h	/^namespace spdlog$/;"	n
+spdlog	sinks/ansicolor_sink.h	/^namespace spdlog$/;"	n
+spdlog	sinks/base_sink.h	/^namespace spdlog$/;"	n
+spdlog	sinks/dist_sink.h	/^namespace spdlog$/;"	n
+spdlog	sinks/file_sinks.h	/^namespace spdlog$/;"	n
+spdlog	sinks/msvc_sink.h	/^namespace spdlog$/;"	n
+spdlog	sinks/null_sink.h	/^namespace spdlog$/;"	n
+spdlog	sinks/ostream_sink.h	/^namespace spdlog$/;"	n
+spdlog	sinks/sink.h	/^namespace spdlog$/;"	n
+spdlog	sinks/stdout_sinks.h	/^namespace spdlog$/;"	n
+spdlog	sinks/syslog_sink.h	/^namespace spdlog$/;"	n
+spdlog	sinks/wincolor_sink.h	/^namespace spdlog$/;"	n
+spdlog	spdlog.h	/^namespace spdlog$/;"	n
+spdlog_ex	common.h	/^    spdlog_ex(const std::string& msg):_msg(msg)$/;"	f	class:spdlog::spdlog_ex
+spdlog_ex	common.h	/^    spdlog_ex(const std::string& msg, int last_errno)$/;"	f	class:spdlog::spdlog_ex
+spdlog_ex	common.h	/^class spdlog_ex: public std::exception$/;"	c	namespace:spdlog
+spec	fmt/bundled/format.h	/^    FormatSpec &spec()$/;"	f	class:fmt::internal::ArgFormatterBase
+spec_	fmt/bundled/format.h	/^    FormatSpec &spec_;$/;"	m	class:fmt::internal::ArgFormatterBase
+spec_	fmt/bundled/printf.h	/^    FormatSpec &spec_;$/;"	m	class:fmt::internal::WidthHandler
+sprintf	fmt/bundled/printf.h	/^inline std::string sprintf(CStringRef format, ArgList args)$/;"	f	namespace:fmt
+sprintf	fmt/bundled/printf.h	/^inline std::wstring sprintf(WCStringRef format, ArgList args)$/;"	f	namespace:fmt
+sstring	fmt/bundled/format.h	/^        StringValue<signed char> sstring;$/;"	m	union:fmt::internal::Value::__anon19
+start_	fmt/bundled/ostream.h	/^    Char *start_;$/;"	m	class:fmt::internal::FormatBuf
+std	fmt/bundled/format.h	/^namespace std$/;"	n
+stderr_color_mt	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::stderr_color_mt(const std::string& logger_name)$/;"	f	class:spdlog
+stderr_color_st	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::stderr_color_st(const std::string& logger_name)$/;"	f	class:spdlog
+stderr_logger_mt	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::stderr_logger_mt(const std::string& logger_name)$/;"	f	class:spdlog
+stderr_logger_st	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::stderr_logger_st(const std::string& logger_name)$/;"	f	class:spdlog
+stderr_sink	sinks/stdout_sinks.h	/^    stderr_sink()$/;"	f	class:spdlog::sinks::stderr_sink
+stderr_sink	sinks/stdout_sinks.h	/^class stderr_sink: public base_sink<Mutex>$/;"	c	namespace:spdlog::sinks
+stderr_sink_mt	sinks/stdout_sinks.h	/^typedef stderr_sink<std::mutex> stderr_sink_mt;$/;"	t	namespace:spdlog::sinks
+stderr_sink_st	sinks/stdout_sinks.h	/^typedef stderr_sink<details::null_mutex> stderr_sink_st;$/;"	t	namespace:spdlog::sinks
+stdout_color_mt	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::stdout_color_mt(const std::string& logger_name)$/;"	f	class:spdlog
+stdout_color_st	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::stdout_color_st(const std::string& logger_name)$/;"	f	class:spdlog
+stdout_logger_mt	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::stdout_logger_mt(const std::string& logger_name)$/;"	f	class:spdlog
+stdout_logger_st	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::stdout_logger_st(const std::string& logger_name)$/;"	f	class:spdlog
+stdout_sink	sinks/stdout_sinks.h	/^    stdout_sink()$/;"	f	class:spdlog::sinks::stdout_sink
+stdout_sink	sinks/stdout_sinks.h	/^class stdout_sink: public base_sink<Mutex>$/;"	c	namespace:spdlog::sinks
+stdout_sink_mt	sinks/stdout_sinks.h	/^typedef stdout_sink<std::mutex> stdout_sink_mt;$/;"	t	namespace:spdlog::sinks
+stdout_sink_st	sinks/stdout_sinks.h	/^typedef stdout_sink<details::null_mutex> stdout_sink_st;$/;"	t	namespace:spdlog::sinks
+store	details/null_mutex.h	/^    void store(int val)$/;"	f	struct:spdlog::details::null_atomic_int
+str	fmt/bundled/format.h	/^    const Char *str() const$/;"	f	class:fmt::StrFormatSpec
+str	fmt/bundled/format.h	/^    std::basic_string<Char> str() const$/;"	f	class:BasicWriter
+str	fmt/bundled/format.h	/^    std::string str() const$/;"	f	class:FormatInt
+str	fmt/bundled/format.h	/^    std::string str() const$/;"	f	class:fmt::internal::UTF16ToUTF8
+str	fmt/bundled/format.h	/^    std::wstring str() const$/;"	f	class:fmt::internal::UTF8ToUTF16
+str_	fmt/bundled/format.h	/^    char *str_;$/;"	m	class:FormatInt
+str_	fmt/bundled/format.h	/^    const Char *str_;$/;"	m	class:fmt::StrFormatSpec
+strerror_r	fmt/bundled/format.cc	/^static inline fmt::internal::Null<> strerror_r(int, char *, ...)$/;"	f	file:
+strerror_s	fmt/bundled/format.cc	/^static inline fmt::internal::Null<> strerror_s(char *, std::size_t, ...)$/;"	f	file:
+string	fmt/bundled/format.h	/^        StringValue<char> string;$/;"	m	union:fmt::internal::Value::__anon19
+syslog_logger	details/spdlog_impl.h	/^inline std::shared_ptr<spdlog::logger> spdlog::syslog_logger(const std::string& logger_name, const std::string& syslog_ident, int syslog_option)$/;"	f	class:spdlog
+syslog_prio_from_level	sinks/syslog_sink.h	/^    int syslog_prio_from_level(const details::log_msg &msg) const$/;"	f	class:spdlog::sinks::syslog_sink
+syslog_sink	sinks/syslog_sink.h	/^    syslog_sink(const std::string& ident = "", int syslog_option=0, int syslog_facility=LOG_USER):$/;"	f	class:spdlog::sinks::syslog_sink
+syslog_sink	sinks/syslog_sink.h	/^class syslog_sink : public sink$/;"	c	namespace:spdlog::sinks
+t_formatter	details/pattern_formatter_impl.h	/^class t_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+thousands_sep	fmt/bundled/format.h	/^inline StringRef thousands_sep($/;"	f	namespace:fmt::internal
+thousands_sep	fmt/bundled/format.h	/^inline fmt::StringRef thousands_sep(...)$/;"	f	namespace:fmt::internal
+thread_id	details/async_log_helper.h	/^        size_t thread_id;$/;"	m	struct:spdlog::details::async_log_helper::async_msg
+thread_id	details/log_msg.h	/^    size_t thread_id;$/;"	m	struct:spdlog::details::log_msg
+thread_id	details/os.h	/^inline size_t thread_id()$/;"	f	namespace:spdlog::details::os
+throw_if_exists	details/registry.h	/^    void throw_if_exists(const std::string &logger_name)$/;"	f	class:spdlog::details::registry_t
+time	details/async_log_helper.h	/^        log_clock::time_point time;$/;"	m	struct:spdlog::details::async_log_helper::async_msg
+time	details/log_msg.h	/^    log_clock::time_point time;$/;"	m	struct:spdlog::details::log_msg
+to12h	details/pattern_formatter_impl.h	/^static int to12h(const tm& t)$/;"	f	namespace:spdlog::details
+to_short_str	common.h	/^inline const char* to_short_str(spdlog::level::level_enum l)$/;"	f	namespace:spdlog::level
+to_str	common.h	/^inline const char* to_str(spdlog::level::level_enum l)$/;"	f	namespace:spdlog::level
+to_string	fmt/bundled/format.h	/^    std::basic_string<Char> to_string() const$/;"	f	class:fmt::BasicStringRef
+to_unsigned	fmt/bundled/format.h	/^inline typename MakeUnsigned<Int>::Type to_unsigned(Int value)$/;"	f	namespace:fmt::internal
+trace	common.h	/^    trace = 0,$/;"	e	enum:spdlog::level::__anon1
+trace	details/logger_impl.h	/^inline void spdlog::logger::trace(const T& msg)$/;"	f	class:spdlog::logger
+trace	details/logger_impl.h	/^inline void spdlog::logger::trace(const char* fmt, const Args&... args)$/;"	f	class:spdlog::logger
+traits_type	fmt/bundled/ostream.h	/^    typedef typename std::basic_streambuf<Char>::traits_type traits_type;$/;"	t	class:fmt::internal::FormatBuf
+try_lock	details/null_mutex.h	/^    bool try_lock()$/;"	f	struct:spdlog::details::null_mutex
+txt	details/async_log_helper.h	/^        std::string txt;$/;"	m	struct:spdlog::details::async_log_helper::async_msg
+type	fmt/bundled/format.h	/^    Type type;$/;"	m	struct:fmt::internal::Arg
+type	fmt/bundled/format.h	/^    char type() const$/;"	f	struct:fmt::AlignTypeSpec
+type	fmt/bundled/format.h	/^    char type() const$/;"	f	struct:fmt::FormatSpec
+type	fmt/bundled/format.h	/^    char type() const$/;"	f	struct:fmt::TypeSpec
+type	fmt/bundled/format.h	/^    internal::Arg::Type type(unsigned index) const$/;"	f	class:fmt::ArgList
+type	fmt/bundled/format.h	/^    static internal::Arg::Type type(uint64_t types, unsigned index)$/;"	f	class:fmt::ArgList
+type	fmt/bundled/format.h	/^    static uint64_t type(const NamedArg<Char_> &)$/;"	f	class:fmt::internal::MakeValue
+type	fmt/bundled/format.h	/^    static uint64_t type(const NamedArgWithType<Char_, T> &)$/;"	f	class:fmt::internal::MakeValue
+type	fmt/bundled/format.h	/^    static uint64_t type(const T &)$/;"	f	class:fmt::internal::MakeValue
+type	fmt/bundled/format.h	/^    static uint64_t type(long)$/;"	f	class:fmt::internal::MakeValue
+type	fmt/bundled/format.h	/^    static uint64_t type(unsigned long)$/;"	f	class:fmt::internal::MakeValue
+type	fmt/bundled/format.h	/^    static uint64_t type(wchar_t)$/;"	f	class:fmt::internal::MakeValue
+type	fmt/bundled/format.h	/^    typedef F type;$/;"	t	struct:fmt::internal::Conditional
+type	fmt/bundled/format.h	/^    typedef T type;$/;"	t	struct:fmt::internal::Conditional
+type	fmt/bundled/format.h	/^    typedef T type;$/;"	t	struct:fmt::internal::EnableIf
+type	fmt/bundled/format.h	/^    uint64_t type;$/;"	m	struct:fmt::ArgType
+type_	fmt/bundled/format.h	/^    char type_;$/;"	m	struct:fmt::FormatSpec
+type_	fmt/bundled/printf.h	/^    wchar_t type_;$/;"	m	class:fmt::internal::ArgConverter
+types	fmt/bundled/format.h	/^    uint64_t types() const$/;"	f	class:fmt::ArgList
+types_	fmt/bundled/format.h	/^    uint64_t types_;$/;"	m	class:fmt::ArgList
+uint32_t	fmt/bundled/format.h	/^typedef unsigned __int32 uint32_t;$/;"	t
+uint64_t	fmt/bundled/format.h	/^typedef unsigned __int64 uint64_t;$/;"	t
+uint_value	fmt/bundled/format.h	/^        unsigned uint_value;$/;"	m	union:fmt::internal::Value::__anon19
+ulong_long_value	fmt/bundled/format.h	/^        ULongLong ulong_long_value;$/;"	m	union:fmt::internal::Value::__anon19
+underline	sinks/ansicolor_sink.h	/^    const std::string underline  = "\\033[4m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+unlock	details/null_mutex.h	/^    void unlock() {}$/;"	f	struct:spdlog::details::null_mutex
+ustring	fmt/bundled/format.h	/^        StringValue<unsigned char> ustring;$/;"	m	union:fmt::internal::Value::__anon19
+utc_minutes_offset	details/os.h	/^inline int utc_minutes_offset(const std::tm& tm = details::os::localtime())$/;"	f	namespace:spdlog::details::os
+v_formatter	details/pattern_formatter_impl.h	/^class v_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+value	details/null_mutex.h	/^    int value;$/;"	m	struct:spdlog::details::null_atomic_int
+value	fmt/bundled/format.h	/^        const Char *value;$/;"	m	struct:fmt::internal::Value::StringValue
+value	fmt/bundled/format.h	/^        const void *value;$/;"	m	struct:fmt::internal::Value::CustomValue
+value	fmt/bundled/format.h	/^        value = 0$/;"	e	enum:fmt::internal::False::__anon27
+value	fmt/bundled/format.h	/^        value = 0$/;"	e	enum:fmt::internal::Not::__anon25
+value	fmt/bundled/format.h	/^        value = 1$/;"	e	enum:fmt::internal::Not::__anon26
+value	fmt/bundled/format.h	/^        value = ConvertToIntImpl2<T, enable_conversion>::value$/;"	e	enum:fmt::internal::ConvertToInt::__anon24
+value	fmt/bundled/format.h	/^        value = ConvertToIntImpl<T, !std::numeric_limits<T>::is_specialized>::value$/;"	e	enum:fmt::internal::ConvertToIntImpl2::__anon22
+value	fmt/bundled/format.h	/^        value = ENABLE_CONVERSION$/;"	e	enum:fmt::internal::ConvertToIntImpl::__anon20
+value	fmt/bundled/format.h	/^        value = false$/;"	e	enum:fmt::internal::ConvertToIntImpl2::__anon21
+value	fmt/bundled/format.h	/^    T value() const$/;"	f	class:fmt::IntFormatSpec
+value	fmt/bundled/ostream.h	/^        value = sizeof(convert(get<DummyStream>() << get<T>())) == sizeof(No)$/;"	e	enum:fmt::internal::ConvertToIntImpl::__anon32
+value	fmt/bundled/printf.h	/^        value = 0$/;"	e	enum:fmt::internal::is_same::__anon33
+value	fmt/bundled/printf.h	/^        value = 1$/;"	e	enum:fmt::internal::is_same::__anon34
+value_	fmt/bundled/format.h	/^    T value_;$/;"	m	class:fmt::IntFormatSpec
+values_	fmt/bundled/format.h	/^        const internal::Value *values_;$/;"	m	union:fmt::ArgList::__anon28
+visit	fmt/bundled/format.h	/^    Result visit(const Arg &arg)$/;"	f	class:fmt::ArgVisitor
+visit_any_double	fmt/bundled/format.h	/^    Result visit_any_double(T)$/;"	f	class:fmt::ArgVisitor
+visit_any_double	fmt/bundled/format.h	/^    void visit_any_double(T value)$/;"	f	class:fmt::internal::ArgFormatterBase
+visit_any_int	fmt/bundled/format.h	/^    Result visit_any_int(T)$/;"	f	class:fmt::ArgVisitor
+visit_any_int	fmt/bundled/format.h	/^    void visit_any_int(T value)$/;"	f	class:fmt::internal::ArgFormatterBase
+visit_any_int	fmt/bundled/printf.h	/^    bool visit_any_int(T value)$/;"	f	class:fmt::internal::IsZeroInt
+visit_any_int	fmt/bundled/printf.h	/^    int visit_any_int(T value)$/;"	f	class:fmt::internal::PrecisionHandler
+visit_any_int	fmt/bundled/printf.h	/^    unsigned visit_any_int(T value)$/;"	f	class:fmt::internal::WidthHandler
+visit_any_int	fmt/bundled/printf.h	/^    void visit_any_int(T value)$/;"	f	class:fmt::internal::CharConverter
+visit_any_int	fmt/bundled/printf.h	/^    void visit_any_int(U value)$/;"	f	class:fmt::internal::ArgConverter
+visit_bool	fmt/bundled/format.h	/^    Result visit_bool(bool value)$/;"	f	class:fmt::ArgVisitor
+visit_bool	fmt/bundled/format.h	/^    void visit_bool(bool value)$/;"	f	class:fmt::internal::ArgFormatterBase
+visit_bool	fmt/bundled/printf.h	/^    void visit_bool(bool value)$/;"	f	class:fmt::BasicPrintfArgFormatter
+visit_bool	fmt/bundled/printf.h	/^    void visit_bool(bool value)$/;"	f	class:fmt::internal::ArgConverter
+visit_char	fmt/bundled/format.h	/^    Result visit_char(int value)$/;"	f	class:fmt::ArgVisitor
+visit_char	fmt/bundled/format.h	/^    void visit_char(int value)$/;"	f	class:fmt::internal::ArgFormatterBase
+visit_char	fmt/bundled/printf.h	/^    void visit_char(int value)$/;"	f	class:fmt::BasicPrintfArgFormatter
+visit_cstring	fmt/bundled/format.h	/^    Result visit_cstring(const char *)$/;"	f	class:fmt::ArgVisitor
+visit_cstring	fmt/bundled/format.h	/^    void visit_cstring(const char *value)$/;"	f	class:fmt::internal::ArgFormatterBase
+visit_cstring	fmt/bundled/printf.h	/^    void visit_cstring(const char *value)$/;"	f	class:fmt::BasicPrintfArgFormatter
+visit_custom	fmt/bundled/format.h	/^    Result visit_custom(Arg::CustomValue)$/;"	f	class:fmt::ArgVisitor
+visit_custom	fmt/bundled/format.h	/^    void visit_custom(internal::Arg::CustomValue c)$/;"	f	class:fmt::BasicArgFormatter
+visit_custom	fmt/bundled/printf.h	/^    void visit_custom(internal::Arg::CustomValue c)$/;"	f	class:fmt::BasicPrintfArgFormatter
+visit_double	fmt/bundled/format.h	/^    Result visit_double(double value)$/;"	f	class:fmt::ArgVisitor
+visit_int	fmt/bundled/format.h	/^    Result visit_int(int value)$/;"	f	class:fmt::ArgVisitor
+visit_long_double	fmt/bundled/format.h	/^    Result visit_long_double(long double value)$/;"	f	class:fmt::ArgVisitor
+visit_long_long	fmt/bundled/format.h	/^    Result visit_long_long(LongLong value)$/;"	f	class:fmt::ArgVisitor
+visit_pointer	fmt/bundled/format.h	/^    Result visit_pointer(const void *)$/;"	f	class:fmt::ArgVisitor
+visit_pointer	fmt/bundled/format.h	/^    void visit_pointer(const void *value)$/;"	f	class:fmt::internal::ArgFormatterBase
+visit_pointer	fmt/bundled/printf.h	/^    void visit_pointer(const void *value)$/;"	f	class:fmt::BasicPrintfArgFormatter
+visit_string	fmt/bundled/format.h	/^    Result visit_string(Arg::StringValue<char>)$/;"	f	class:fmt::ArgVisitor
+visit_string	fmt/bundled/format.h	/^    void visit_string(Arg::StringValue<char> value)$/;"	f	class:fmt::internal::ArgFormatterBase
+visit_uint	fmt/bundled/format.h	/^    Result visit_uint(unsigned value)$/;"	f	class:fmt::ArgVisitor
+visit_ulong_long	fmt/bundled/format.h	/^    Result visit_ulong_long(ULongLong value)$/;"	f	class:fmt::ArgVisitor
+visit_unhandled_arg	fmt/bundled/format.h	/^    Result visit_unhandled_arg()$/;"	f	class:fmt::ArgVisitor
+visit_wstring	fmt/bundled/format.h	/^    Result visit_wstring(Arg::StringValue<wchar_t>)$/;"	f	class:fmt::ArgVisitor
+visit_wstring	fmt/bundled/format.h	/^    void visit_wstring(Arg::StringValue<Char> value)$/;"	f	class:fmt::internal::ArgFormatterBase
+wait_empty_q	details/async_log_helper.h	/^inline void spdlog::details::async_log_helper::wait_empty_q()$/;"	f	class:spdlog::details::async_log_helper
+warn	common.h	/^    warn = 3,$/;"	e	enum:spdlog::level::__anon1
+warn	details/logger_impl.h	/^inline void spdlog::logger::warn(const T& msg)$/;"	f	class:spdlog::logger
+warn	details/logger_impl.h	/^inline void spdlog::logger::warn(const char* fmt, const Args&... args)$/;"	f	class:spdlog::logger
+white	sinks/ansicolor_sink.h	/^    const std::string white      = "\\033[37m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+width	fmt/bundled/format.h	/^    unsigned width() const$/;"	f	struct:fmt::TypeSpec
+width	fmt/bundled/format.h	/^    unsigned width() const$/;"	f	struct:fmt::WidthSpec
+width_	fmt/bundled/format.h	/^    unsigned width_;$/;"	m	struct:fmt::WidthSpec
+wincolor_sink	sinks/wincolor_sink.h	/^    wincolor_sink(HANDLE std_handle): out_handle_(std_handle)$/;"	f	class:spdlog::sinks::wincolor_sink
+wincolor_sink	sinks/wincolor_sink.h	/^class wincolor_sink: public  base_sink<Mutex>$/;"	c	namespace:spdlog::sinks
+wincolor_stderr_sink	sinks/wincolor_sink.h	/^    wincolor_stderr_sink() : wincolor_sink<Mutex>(GetStdHandle(STD_ERROR_HANDLE))$/;"	f	class:spdlog::sinks::wincolor_stderr_sink
+wincolor_stderr_sink	sinks/wincolor_sink.h	/^class wincolor_stderr_sink: public wincolor_sink<Mutex>$/;"	c	namespace:spdlog::sinks
+wincolor_stderr_sink_mt	sinks/wincolor_sink.h	/^typedef wincolor_stderr_sink<std::mutex> wincolor_stderr_sink_mt;$/;"	t	namespace:spdlog::sinks
+wincolor_stderr_sink_st	sinks/wincolor_sink.h	/^typedef wincolor_stderr_sink<details::null_mutex> wincolor_stderr_sink_st;$/;"	t	namespace:spdlog::sinks
+wincolor_stdout_sink	sinks/wincolor_sink.h	/^    wincolor_stdout_sink() : wincolor_sink<Mutex>(GetStdHandle(STD_OUTPUT_HANDLE))$/;"	f	class:spdlog::sinks::wincolor_stdout_sink
+wincolor_stdout_sink	sinks/wincolor_sink.h	/^class wincolor_stdout_sink: public wincolor_sink<Mutex>$/;"	c	namespace:spdlog::sinks
+wincolor_stdout_sink_mt	sinks/wincolor_sink.h	/^typedef wincolor_stdout_sink<std::mutex> wincolor_stdout_sink_mt;$/;"	t	namespace:spdlog::sinks
+wincolor_stdout_sink_st	sinks/wincolor_sink.h	/^typedef wincolor_stdout_sink<details::null_mutex> wincolor_stdout_sink_st;$/;"	t	namespace:spdlog::sinks
+worker_loop	details/async_log_helper.h	/^inline void spdlog::details::async_log_helper::worker_loop()$/;"	f	class:spdlog::details::async_log_helper
+write	details/file_helper.h	/^    void write(const log_msg& msg)$/;"	f	class:spdlog::details::file_helper
+write	fmt/bundled/format.h	/^    void write(BasicCStringRef<Char> format, ArgList args)$/;"	f	class:BasicWriter
+write	fmt/bundled/format.h	/^    void write(BasicWriter<Char> &w, const Char *start, const Char *end)$/;"	f	class:fmt::internal::FormatterBase
+write	fmt/bundled/format.h	/^    void write(bool value)$/;"	f	class:fmt::internal::ArgFormatterBase
+write	fmt/bundled/format.h	/^    void write(const char *value)$/;"	f	class:fmt::internal::ArgFormatterBase
+write	fmt/bundled/ostream.cc	/^		FMT_FUNC void write(std::ostream &os, Writer &w)$/;"	f	namespace:fmt::internal
+write_decimal	fmt/bundled/format.h	/^    void write_decimal(Int value)$/;"	f	class:BasicWriter
+write_double	fmt/bundled/format.h	/^void BasicWriter<Char>::write_double(T value, const FormatSpec &spec)$/;"	f	class:BasicWriter
+write_int	fmt/bundled/format.h	/^void BasicWriter<Char>::write_int(T value, Spec spec)$/;"	f	class:BasicWriter
+write_null_pointer	fmt/bundled/printf.h	/^    void write_null_pointer()$/;"	f	class:fmt::BasicPrintfArgFormatter
+write_pointer	fmt/bundled/format.h	/^    void write_pointer(const void *p)$/;"	f	class:fmt::internal::ArgFormatterBase
+write_str	fmt/bundled/format.h	/^typename BasicWriter<Char>::CharPtr BasicWriter<Char>::write_str($/;"	f	class:BasicWriter
+write_str	fmt/bundled/format.h	/^void BasicWriter<Char>::write_str($/;"	f	class:BasicWriter
+write_unsigned_decimal	fmt/bundled/format.h	/^    Char *write_unsigned_decimal(UInt value, unsigned prefix_size = 0)$/;"	f	class:BasicWriter
+writer	fmt/bundled/format.h	/^    BasicWriter<Char> &writer()$/;"	f	class:fmt::BasicFormatter
+writer	fmt/bundled/format.h	/^    BasicWriter<Char> &writer()$/;"	f	class:fmt::internal::ArgFormatterBase
+writer_	fmt/bundled/format.h	/^    BasicWriter<Char> &writer_;$/;"	m	class:fmt::BasicFormatter
+writer_	fmt/bundled/format.h	/^    BasicWriter<Char> &writer_;$/;"	m	class:fmt::internal::ArgFormatterBase
+writer_	fmt/bundled/printf.h	/^    BasicWriter<Char> &writer_;$/;"	m	class:fmt::PrintfFormatter
+wstring	fmt/bundled/format.h	/^        StringValue<wchar_t> wstring;$/;"	m	union:fmt::internal::Value::__anon19
+yellow	sinks/ansicolor_sink.h	/^    const std::string yellow     = "\\033[33m";$/;"	m	class:spdlog::sinks::ansicolor_sink
+z_formatter	details/pattern_formatter_impl.h	/^    z_formatter():_last_update(std::chrono::seconds(0))$/;"	f	class:spdlog::details::z_formatter
+z_formatter	details/pattern_formatter_impl.h	/^class z_formatter:public flag_formatter$/;"	c	namespace:spdlog::details
+~BasicWriter	fmt/bundled/format.h	/^    virtual ~BasicWriter()$/;"	f	class:BasicWriter
+~Buffer	fmt/bundled/format.h	/^    virtual ~Buffer()$/;"	f	class:fmt::Buffer
+~MemoryBuffer	fmt/bundled/format.h	/^    ~MemoryBuffer()$/;"	f	class:fmt::internal::MemoryBuffer
+~ansicolor_sink	sinks/ansicolor_sink.h	/^inline ansicolor_sink::~ansicolor_sink()$/;"	f	class:spdlog::sinks::ansicolor_sink
+~async_log_helper	details/async_log_helper.h	/^inline spdlog::details::async_log_helper::~async_log_helper()$/;"	f	class:spdlog::details::async_log_helper
+~file_helper	details/file_helper.h	/^    ~file_helper()$/;"	f	class:spdlog::details::file_helper
+~flag_formatter	details/pattern_formatter_impl.h	/^    virtual ~flag_formatter()$/;"	f	class:spdlog::details::flag_formatter
+~formatter	formatter.h	/^    virtual ~formatter() {}$/;"	f	class:spdlog::formatter
+~mpmc_bounded_queue	details/mpmc_bounded_q.h	/^    ~mpmc_bounded_queue()$/;"	f	class:spdlog::details::mpmc_bounded_queue
+~sink	sinks/sink.h	/^    virtual ~sink() {}$/;"	f	class:spdlog::sinks::sink
+~syslog_sink	sinks/syslog_sink.h	/^    ~syslog_sink()$/;"	f	class:spdlog::sinks::syslog_sink
+~wincolor_sink	sinks/wincolor_sink.h	/^    virtual ~wincolor_sink()$/;"	f	class:spdlog::sinks::wincolor_sink

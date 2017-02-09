@@ -18,8 +18,10 @@
 #include "src/suspicion.hpp"
 #include "src/handler.hpp"
 #include "src/node.hpp"
+#include "src/message/header.hpp"
 #include "src/message/message_generated.h"
 #include "src/hybrid_runner.hpp"
+#include "src/logger.hpp"
 #include "src/broadcast.hpp"
 #include "thirdparty/asio/include/asio.hpp"
 #include "thirdparty/asio/include/asio/steady_timer.hpp"
@@ -34,9 +36,8 @@ public:
       dominant_(0),
       node_num_(0),
       is_leaving_(false),
-      hybrid_runner_(conf.Port_, handle_header, handle_body, 0, handle_packet) {
-        // TODO: get header size
-    }
+      hybrid_runner_(conf.Port_, handle_header,
+                     handle_body, HEADER_SIZE, handle_packet) {}
 
     // sync with the first available peer and call Alive()
     // Returned value: indicates how many members the cluster has
@@ -59,8 +60,11 @@ public:
         alive.Port_ = conf_.Port_;
         alive.Dominant_ = nextDominant();
         aliveNode(alive, true);
-        // TODO:
 
+        // randomly probe every 1 sec
+        hybrid_runner_.AddTicker(1000, std::bind(&gossiper::probe, this));
+        // gossip every 1 sec
+        hybrid_runner_.AddTicker(1000, std::bind(&gossiper::gossip, this));
         hybrid_runner_.Run();
         return true;
     }
@@ -205,12 +209,12 @@ private:
 
     // probe randomly ping one known node via udp
     void probe() {
-
+        logger->info("start to probe...\n");
     }
 
     // broadcast local state to other nodes via udp
     void gossip() {
-
+        logger->info("start to gossip...\n");
     }
 
     // sync state with remote node via tcp
