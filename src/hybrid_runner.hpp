@@ -49,13 +49,15 @@ public:
     void Run() {
         // start the tcp server
         tcp_svr_.Start();
+        std::cout << "tcp server start ...\n";
         // start the udp server
         udp_svr_.Start();
+        std::cout << "udp server start ...\n";
 
 
-        std::thread([this]() {
+        std::thread ([this]() {
             io_service_.run();
-        });
+        }).detach();
     }
 
     asio::io_service* GetIoSvc() {
