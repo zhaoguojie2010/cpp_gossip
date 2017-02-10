@@ -7,7 +7,6 @@
 
 #include <string>
 #include <cstdio>
-#include "types.hpp"
 
 namespace gossip {
 
@@ -32,11 +31,11 @@ struct config {
 
     short Indirect_checks_;
 
-    uint32 Probe_interval_; // in ms
-    uint32 Probe_timeout_;
+    uint32_t Probe_interval_; // in ms
+    uint32_t Probe_timeout_;
 
-    uint32 Gossip_interval_;
-    uint32 Gossip_node_num_;
+    uint32_t Gossip_interval_;
+    uint32_t Gossip_node_num_;
 
 };
 

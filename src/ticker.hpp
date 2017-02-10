@@ -15,7 +15,7 @@ public:
     typedef std::function<void()> callback;
 public:
     // Tick calls op every timeout milliseconds
-    virtual void Tick(uint32 timeout, callback op) = 0;
+    virtual void Tick(uint32_t timeout, callback op) = 0;
 
     // Stop
     virtual void Stop() = 0;
@@ -30,7 +30,7 @@ public:
 
     }
 
-    virtual void Tick(uint32 timeout, callback op) {
+    virtual void Tick(uint32_t timeout, callback op) {
         op_ = op;
         timeout_ = std::chrono::milliseconds(timeout);
         timer_.expires_from_now(timeout_);

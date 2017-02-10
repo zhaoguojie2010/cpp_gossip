@@ -9,11 +9,11 @@
 #include <set>
 #include <thread>
 #include <vector>
+#include <cstdint>
 #include "asio.hpp"
 #include "src/ticker.hpp"
 #include "src/network/tcp/runner.hpp"
 #include "src/network/udp/runner.hpp"
-#include "src/types.hpp"
 
 namespace gossip {
 
@@ -31,7 +31,7 @@ using asio::ip::udp;
 class HybridRunner {
 public:
     HybridRunner(short port, ::gossip::tcp::header_handler handle_header,
-                 ::gossip::tcp::body_handler handle_body, uint32 header_size,
+                 ::gossip::tcp::body_handler handle_body, uint32_t header_size,
                  ::gossip::udp::packet_handler handle_packet)
     : io_service_(),
       tcp_svr_(port, handle_header,
@@ -40,7 +40,7 @@ public:
 
     }
 
-    void AddTicker(uint32 interval, typename Ticker::callback cb) {
+    void AddTicker(uint32_t interval, typename Ticker::callback cb) {
         auto ticker = new AsioTicker(io_service_);
         ticker->Tick(interval, cb);
         tickers_.push_back(ticker);

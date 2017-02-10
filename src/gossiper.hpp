@@ -222,11 +222,11 @@ private:
 
     }
 
-    uint64 nextDominant(uint64 shift = 1) {
+    uint64_t nextDominant(uint64_t shift = 1) {
         return dominant_.fetch_add(shift, std::memory_order_relaxed) + shift;
     }
 
-    uint64 nextSeqNum() {
+    uint64_t nextSeqNum() {
         return seq_num_.fetch_add(1, std::memory_order_relaxed) + 1;
     }
 
@@ -267,7 +267,7 @@ private:
     }
 
     // object if we're accused of being suspect or dead
-    void fuckyou(uint64 dominant) {
+    void fuckyou(uint64_t dominant) {
         node_state alive;
         alive.Name_ = conf_.Name_;
         alive.IP_ = conf_.Addr_;
@@ -287,15 +287,15 @@ private:
 private:
     config& conf_;
 
-    std::atomic<uint64> seq_num_; // typically use for ping
-    std::atomic<uint64> dominant_;
+    std::atomic<uint64_t> seq_num_; // typically use for ping
+    std::atomic<uint64_t> dominant_;
     bool is_leaving_;
 
     HybridRunner hybrid_runner_;
 
     std::mutex node_lock_;
     std::unordered_map<std::string, node_state_ptr> node_map_;
-    std::atomic<uint32> node_num_;
+    std::atomic<uint32_t> node_num_;
 
     std::mutex suspicion_lock_;
     std::unordered_map<std::string, suspicion_ptr> suspicions_;

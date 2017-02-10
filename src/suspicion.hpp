@@ -8,6 +8,7 @@
 #include "string"
 #include <set>
 #include <functional>
+#include <cstdint>
 
 #include "thirdparty/asio/include/asio.hpp"
 #include "thirdparty/asio/include/asio/steady_timer.hpp"
@@ -17,8 +18,8 @@ class suspicion :public asio::steady_timer {
 public:
     typedef std::function<void()> callback;
 public:
-    suspicion(uint32 node_num, callback convict,
-              asio::io_service *io_svc, uint32 timeout)
+    suspicion(uint32_t node_num, callback convict,
+              asio::io_service *io_svc, uint32_t timeout)
     : asio::steady_timer(*io_svc),
       confirm_(0),
       need_confirm_(std::log(node_num) * 3),
@@ -50,10 +51,10 @@ public:
 private:
     // indicates the number of confirms we'd like to see
     // before the suspicion is convicted.
-    uint32 need_confirm_;
+    uint32_t need_confirm_;
 
     // indicates the number of confirms we've seen so far
-    uint32 confirm_;
+    uint32_t confirm_;
 
     std::mutex mtx_;
     // rule out duplicated confirms from the same node

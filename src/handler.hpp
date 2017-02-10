@@ -5,9 +5,10 @@
 #ifndef CPPGOSSIP_HANDLER_HPP
 #define CPPGOSSIP_HANDLER_HPP
 
-#include "thirdparty/portable_endian.h"
 #include "src/message/header.hpp"
 #include "src/logger.hpp"
+#include "src/message/message_generated.h"
+#include "thirdparty/portable_endian.h"
 
 namespace gossip {
 
@@ -23,7 +24,13 @@ std::size_t handle_header(char* buff, std::size_t size) {
     return std::atoi(buff);
 }
 
-std::size_t handle_body(char*, std::size_t, char*, std::size_t) {
+std::size_t handle_body(char *buff, std::size_t size,
+                        char *resp_buff, std::size_t resp_size) {
+    /*
+    auto node_info = message::GetNodeState(
+        reinterpret_cast<uint8_t*>(buff)
+    );
+     */
     return 0;
 }
 

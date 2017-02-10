@@ -5,6 +5,7 @@
 #ifndef CPPGOSSIP_NODE_HPP
 #define CPPGOSSIP_NODE_HPP
 
+#include <cstdint>
 #include "src/message/message_generated.h"
 namespace gossip {
 
@@ -12,10 +13,10 @@ struct node_state {
     std::string Name_;
     std::string IP_;
     std::string Port_;
-    uint64 Dominant_;
+    uint64_t Dominant_;
     message::STATE State_;
     std::string From_;
-    uint64 Timestamp_;
+    uint64_t Timestamp_;
 
     node_state(){}
 

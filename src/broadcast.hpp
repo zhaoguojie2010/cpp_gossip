@@ -21,7 +21,7 @@ public:
     }
 
     // push the msg into the queue
-    void push(std::shared_ptr<node_state> msg, const uint32 node_num) {
+    void push(std::shared_ptr<node_state> msg, const uint32_t node_num) {
 
     }
 
@@ -29,7 +29,7 @@ private:
     // this is used to determine how many node each msg
     // will be broadcasted to. the formula is as follow:
     // broadcast_multi_ * log(node_num)
-    uint32 broadcast_multi_;
+    uint32_t broadcast_multi_;
 };
 
 }

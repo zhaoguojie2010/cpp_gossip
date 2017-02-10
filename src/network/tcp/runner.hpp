@@ -9,7 +9,6 @@
 #include <functional>
 #include <thread>
 #include <chrono>
-#include "src/types.hpp"
 #include "src/network/tcp/async_client.hpp"
 #include "src/network/tcp/blocking_client.hpp"
 #include "thirdparty/asio/include/asio.hpp"
@@ -24,7 +23,7 @@ typedef std::function<std::size_t(char*, std::size_t, char*, std::size_t)> body_
 class Session : public std::enable_shared_from_this<Session> {
 public:
     Session(tcp::socket socket, header_handler handle_header,
-            body_handler handle_body, uint32 header_size)
+            body_handler handle_body, uint32_t header_size)
         : socket_(std::move(socket)),
           header_size_(header_size),
           handle_header_(handle_header),
@@ -56,13 +55,13 @@ private:
                          asio::buffer(buff_, length),
                          [this, self, &length](std::error_code ec, std::size_t) {
                              if (!ec) {
-                                 uint32 resp_length = handle_body_(buff_, length, buff_, buff_size_);
+                                 uint32_t resp_length = handle_body_(buff_, length, buff_, buff_size_);
                                  doWriteResponse(resp_length);
                              }
                          });
     }
 
-    void doWriteResponse(uint32 length) {
+    void doWriteResponse(uint32_t length) {
         auto self(shared_from_this());
         asio::async_write(socket_,
                           asio::buffer(buff_, length),
@@ -73,7 +72,7 @@ private:
 
 private:
     tcp::socket socket_;
-    uint32 header_size_;
+    uint32_t header_size_;
     enum {
         buff_size_ = 65536
     };
@@ -86,7 +85,7 @@ private:
 class Server {
 public:
     Server(short port, header_handler handle_header,
-           body_handler handle_body, uint32 header_size,
+           body_handler handle_body, uint32_t header_size,
            asio::io_service &io_svc)
         : io_svc_(io_svc),
           acceptor_(io_svc_, tcp::endpoint(tcp::v4(), port)),
@@ -119,7 +118,7 @@ private:
     asio::io_service &io_svc_;
     tcp::acceptor acceptor_;
     tcp::socket socket_;
-    uint32 header_size_;
+    uint32_t header_size_;
     header_handler handle_header_;
     body_handler handle_body_;
 };
@@ -137,7 +136,7 @@ public:
     }
 
     bool PrepareServer(short port, header_handler handle_header,
-                       body_handler handle_body, uint32 header_size) {
+                       body_handler handle_body, uint32_t header_size) {
         if (tcp_svr_)
             return false;
         tcp_svr_ = new Server(port, handle_header, handle_body, header_size, io_svc_);
