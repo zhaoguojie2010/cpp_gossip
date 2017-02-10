@@ -18,12 +18,10 @@ void handle_header(char* buff, std::size_t size,
         logger->info("invalid header size: ", message::HEADER_SIZE);
         return;
     }
-    // don't need endian conversion since the first byte received
-    // is always the higher bit
-    // return be32toh(std::atoi(buff));
+    message::DecodeHeader(reinterpret_cast<uint8_t *>(buff), size, header);
 }
 
-std::size_t handle_body(uint32_t /*header type*/,
+std::size_t handle_body(uint32_t type,
                         char *buff, std::size_t size,
                         char *resp_buff, std::size_t resp_size) {
     /*
