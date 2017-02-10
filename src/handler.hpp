@@ -12,19 +12,19 @@
 
 namespace gossip {
 
-std::size_t handle_header(char* buff, std::size_t size) {
-    if (size != HEADER_SIZE) {
-        logger->info("invalid header size: ", 4);
-        return 0;
+void handle_header(char* buff, std::size_t size,
+                          message::Header &header) {
+    if (size != message::HEADER_SIZE) {
+        logger->info("invalid header size: ", message::HEADER_SIZE);
+        return;
     }
-    buff[HEADER_SIZE] = 0;
     // don't need endian conversion since the first byte received
     // is always the higher bit
     // return be32toh(std::atoi(buff));
-    return std::atoi(buff);
 }
 
-std::size_t handle_body(char *buff, std::size_t size,
+std::size_t handle_body(uint32_t /*header type*/,
+                        char *buff, std::size_t size,
                         char *resp_buff, std::size_t resp_size) {
     /*
     auto node_info = message::GetNodeState(

@@ -9,6 +9,7 @@
 #include <functional>
 #include <thread>
 #include <chrono>
+#include "src/message/header.hpp"
 #include "src/network/tcp/async_client.hpp"
 #include "src/network/tcp/blocking_client.hpp"
 #include "thirdparty/asio/include/asio.hpp"
@@ -17,8 +18,8 @@ namespace gossip {
 namespace tcp {
 using asio::ip::tcp;
 
-typedef std::function<std::size_t(char*, std::size_t)> header_handler;
-typedef std::function<std::size_t(char*, std::size_t, char*, std::size_t)> body_handler;
+typedef std::function<void(char*, std::size_t, message::Header&)> header_handler;
+typedef std::function<std::size_t(std::size_t ,char*, std::size_t, char*, std::size_t)> body_handler;
 
 class Session : public std::enable_shared_from_this<Session> {
 public:
@@ -40,7 +41,7 @@ private:
     void doReadHeader() {
         auto self(shared_from_this());
         asio::async_read(socket_,
-                         asio::buffer(buff_, header_size_),
+                         asio::buffer(in_buff_, header_size_),
                          [this, self](std::error_code ec, std::size_t) {
                              if (!ec) {
                                  doReadBody();
@@ -50,12 +51,16 @@ private:
 
     void doReadBody() {
         auto self(shared_from_this());
-        auto length = handle_header_(buff_, header_size_);
+        message::Header header;
+        handle_header_(in_buff_, header_size_, header);
         asio::async_read(socket_,
-                         asio::buffer(buff_, length),
-                         [this, self, &length](std::error_code ec, std::size_t) {
+                         asio::buffer(in_buff_, header.Body_length_),
+                         [this, self, &header](std::error_code ec, std::size_t) {
                              if (!ec) {
-                                 uint32_t resp_length = handle_body_(buff_, length, buff_, buff_size_);
+                                 uint32_t resp_length = handle_body_(
+                                     header.Type_,
+                                     in_buff_, header.Body_length_,
+                                     out_buff_, buff_size_);
                                  doWriteResponse(resp_length);
                              }
                          });
@@ -64,7 +69,7 @@ private:
     void doWriteResponse(uint32_t length) {
         auto self(shared_from_this());
         asio::async_write(socket_,
-                          asio::buffer(buff_, length),
+                          asio::buffer(out_buff_, length),
                           [this, self](std::error_code ec, std::size_t) {
                               // do nothing, wait for the Session to end
                           });
@@ -73,10 +78,9 @@ private:
 private:
     tcp::socket socket_;
     uint32_t header_size_;
-    enum {
-        buff_size_ = 65536
-    };
-    char buff_[buff_size_];
+    const static int buff_size_ = 65536;
+    char in_buff_[buff_size_];
+    char out_buff_[buff_size_];
 
     header_handler handle_header_;
     body_handler handle_body_;

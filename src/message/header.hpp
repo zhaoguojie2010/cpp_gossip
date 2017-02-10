@@ -8,7 +8,14 @@
 namespace gossip {
 namespace message {
 
-#define HEADER_SIZE 4
+#pragma pack(4)
+struct Header {
+    uint32_t Type_;
+    uint32_t Body_length_;
+};
+#pragma pack()
+
+const static uint32_t HEADER_SIZE = sizeof(struct Header);
 
 }
 }

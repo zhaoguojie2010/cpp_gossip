@@ -37,7 +37,7 @@ public:
       node_num_(0),
       is_leaving_(false),
       hybrid_runner_(conf.Port_, handle_header,
-                     handle_body, HEADER_SIZE, handle_packet) {}
+                     handle_body, message::HEADER_SIZE, handle_packet) {}
 
     // sync with the first available peer and call Alive()
     // Returned value: indicates how many members the cluster has
