@@ -17,10 +17,6 @@
 
 namespace gossip {
 
-using asio::ip::tcp;
-using asio::ip::udp;
-
-
 // hybridRunner consists of:
 // 1. tcp server
 // 2. udp broadcaster

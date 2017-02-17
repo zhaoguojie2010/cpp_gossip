@@ -11,8 +11,10 @@ namespace message {
 
 struct Node;
 struct NodeState;
+struct NodeStates;
 struct Ping;
 struct IndirectPing;
+struct Ack;
 
 enum STATE {
   STATE_ALIVE = 0,
@@ -26,6 +28,19 @@ inline const char **EnumNamesSTATE() {
 }
 
 inline const char *EnumNameSTATE(STATE e) { return EnumNamesSTATE()[static_cast<int>(e)]; }
+
+enum TYPE {
+  TYPE_PING = 0,
+  TYPE_INDIRECTPING = 1,
+  TYPE_SYNCSTATE = 2
+};
+
+inline const char **EnumNamesTYPE() {
+  static const char *names[] = { "PING", "INDIRECTPING", "SYNCSTATE", nullptr };
+  return names;
+}
+
+inline const char *EnumNameTYPE(TYPE e) { return EnumNamesTYPE()[static_cast<int>(e)]; }
 
 struct Node FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *name() const { return GetPointer<const flatbuffers::String *>(4); }
@@ -125,6 +140,37 @@ inline flatbuffers::Offset<NodeState> CreateNodeState(flatbuffers::FlatBufferBui
   return builder_.Finish();
 }
 
+struct NodeStates FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  const flatbuffers::Vector<flatbuffers::Offset<NodeState>> *nodes() const { return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<NodeState>> *>(4); }
+  flatbuffers::Vector<flatbuffers::Offset<NodeState>> *mutable_nodes() { return GetPointer<flatbuffers::Vector<flatbuffers::Offset<NodeState>> *>(4); }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* nodes */) &&
+           verifier.Verify(nodes()) &&
+           verifier.VerifyVectorOfTables(nodes()) &&
+           verifier.EndTable();
+  }
+};
+
+struct NodeStatesBuilder {
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_nodes(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<NodeState>>> nodes) { fbb_.AddOffset(4, nodes); }
+  NodeStatesBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
+  NodeStatesBuilder &operator=(const NodeStatesBuilder &);
+  flatbuffers::Offset<NodeStates> Finish() {
+    auto o = flatbuffers::Offset<NodeStates>(fbb_.EndTable(start_, 1));
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<NodeStates> CreateNodeStates(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<NodeState>>> nodes = 0) {
+  NodeStatesBuilder builder_(_fbb);
+  builder_.add_nodes(nodes);
+  return builder_.Finish();
+}
+
 struct Ping FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint64_t seqNo() const { return GetField<uint64_t>(4, 0); }
   bool mutate_seqNo(uint64_t seqNo) { return SetField(4, seqNo); }
@@ -197,13 +243,42 @@ inline flatbuffers::Offset<IndirectPing> CreateIndirectPing(flatbuffers::FlatBuf
   return builder_.Finish();
 }
 
-inline const gossip::message::NodeState *GetNodeState(const void *buf) { return flatbuffers::GetRoot<gossip::message::NodeState>(buf); }
+struct Ack FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  uint64_t seqNo() const { return GetField<uint64_t>(4, 0); }
+  bool mutate_seqNo(uint64_t seqNo) { return SetField(4, seqNo); }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint64_t>(verifier, 4 /* seqNo */) &&
+           verifier.EndTable();
+  }
+};
 
-inline NodeState *GetMutableNodeState(void *buf) { return flatbuffers::GetMutableRoot<NodeState>(buf); }
+struct AckBuilder {
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_seqNo(uint64_t seqNo) { fbb_.AddElement<uint64_t>(4, seqNo, 0); }
+  AckBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
+  AckBuilder &operator=(const AckBuilder &);
+  flatbuffers::Offset<Ack> Finish() {
+    auto o = flatbuffers::Offset<Ack>(fbb_.EndTable(start_, 1));
+    return o;
+  }
+};
 
-inline bool VerifyNodeStateBuffer(flatbuffers::Verifier &verifier) { return verifier.VerifyBuffer<gossip::message::NodeState>(); }
+inline flatbuffers::Offset<Ack> CreateAck(flatbuffers::FlatBufferBuilder &_fbb,
+   uint64_t seqNo = 0) {
+  AckBuilder builder_(_fbb);
+  builder_.add_seqNo(seqNo);
+  return builder_.Finish();
+}
 
-inline void FinishNodeStateBuffer(flatbuffers::FlatBufferBuilder &fbb, flatbuffers::Offset<gossip::message::NodeState> root) { fbb.Finish(root); }
+inline const gossip::message::NodeStates *GetNodeStates(const void *buf) { return flatbuffers::GetRoot<gossip::message::NodeStates>(buf); }
+
+inline NodeStates *GetMutableNodeStates(void *buf) { return flatbuffers::GetMutableRoot<NodeStates>(buf); }
+
+inline bool VerifyNodeStatesBuffer(flatbuffers::Verifier &verifier) { return verifier.VerifyBuffer<gossip::message::NodeStates>(); }
+
+inline void FinishNodeStatesBuffer(flatbuffers::FlatBufferBuilder &fbb, flatbuffers::Offset<gossip::message::NodeStates> root) { fbb.Finish(root); }
 
 }  // namespace message
 }  // namespace gossip

@@ -7,6 +7,12 @@ enum STATE:byte {
   DEAD
 }
 
+enum TYPE:uint {
+  PING,
+  INDIRECTPING,
+  SYNCSTATE
+}
+
 table Node {
   name:string;
   ip:string;
@@ -21,6 +27,10 @@ table NodeState {
   timeStamp:ulong;
 }
 
+table NodeStates {
+  nodes:[NodeState];
+}
+
 table Ping {
   seqNo:ulong;
   from:string;
@@ -31,4 +41,8 @@ table IndirectPing {
   target:Node;
 }
 
-root_type NodeState;
+table Ack {
+  seqNo:ulong;
+}
+
+root_type NodeStates;

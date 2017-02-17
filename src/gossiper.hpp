@@ -11,6 +11,7 @@
 #include <queue>
 #include <atomic>
 #include <string>
+#include <functional>
 #include <ctime>
 #include <cstdlib>
 
@@ -25,6 +26,7 @@
 #include "src/broadcast.hpp"
 #include "thirdparty/asio/include/asio.hpp"
 #include "thirdparty/asio/include/asio/steady_timer.hpp"
+#include "src/network/udp/async_client.hpp"
 
 namespace gossip {
 
@@ -89,9 +91,10 @@ private:
         // add it to node_map_
         if (state == nullptr) {
             state = std::make_shared<node_state>(a);
+            state->Dominant_ = 0;
+            state->State_ = message::STATE_DEAD;
 
-            setNodeState(alive_node_name, state);
-            node_num_.fetch_add(1, std::memory_order_relaxed);
+            addNodeState(alive_node_name, state);
 
             // notify join
             // TODO:
@@ -101,7 +104,7 @@ private:
             return;
         }
 
-        updateNodeState(state, a);
+        updateNodeState(alive_node_name, a);
 
         // clear suspicion if any
         suspicion_lock_.lock();
@@ -110,8 +113,8 @@ private:
 
         // if it's about us and this is not a initialization, then update
         // ourselves
-        if (!bootstrap && alive_node_name == state->Name_) {
-            dominant_ = state->Dominant_;
+        if (!bootstrap && alive_node_name == conf_.Name_) {
+            dominant_ = a.Dominant_;
         } else {
             // it's not about us or we just init ourselves, start broadcasting
             node_state alive(a);
@@ -159,21 +162,21 @@ private:
             broadcastSuspect();
         }
 
-        updateNodeState(state, s);
+        updateNodeState(suspect_node_name, s);
 
         // set up suspicion
-        node_lock_.lock();
-        auto node_num = node_map_.size();
-        node_lock_.unlock();
-
         suspicion::callback convict = [this, &s]() {
             node_state d(s);
             d.State_ = message::STATE_DEAD;
             deadNode(d);
         };
-        sus = std::make_shared<suspicion>(node_num, convict, hybrid_runner_.GetIoSvc(), 2000);
         suspicion_lock_.lock();
-        suspicions_[suspect_node_name] = sus;
+        // make sure the suspicion is not created by other threads(if any)
+        if (suspicions_.find(suspect_node_name) == suspicions_.end()) {
+            sus = std::make_shared<suspicion>(node_num_.load(std::memory_order_relaxed),
+                                              convict, hybrid_runner_.GetIoSvc(), 2000);
+            suspicions_[suspect_node_name] = sus;
+        }
         suspicion_lock_.unlock();
     }
 
@@ -193,6 +196,9 @@ private:
             return;
         }
 
+        updateNodeState(dead_node_name, d);
+        removeNodeState(dead_node_name);
+
         // if it's us, object
         if (dead_node_name == conf_.Name_ && !is_leaving_) {
             fuckyou(d.Dominant_);
@@ -210,6 +216,37 @@ private:
     // probe randomly ping one known node via udp
     void probe() {
         logger->info("start to probe...\n");
+        auto candi = randomNode(1);
+        auto node = getNodeState(candi[0]);
+        if (node->State_ == message::STATE_ALIVE &&
+            node->Name_ != conf_.Name_) {
+            probeNode(*node);
+        }
+    }
+
+    void probeNode(const node_state &node) {
+        std::size_t mtu = 1460;
+        char buff[mtu];
+        std::string host = node.IP_;
+        short port = std::stoi(node.Port_);
+        auto client = std::make_shared<udp::AsyncClient>(*hybrid_runner_.GetIoSvc());
+
+        // Waterfall defines the series of behaviors after ping packets
+        // is sent
+        client->Waterfall(
+            // if ping finish, start to receive pong
+            std::bind(&udp::AsyncClient::AsyncReceiveFrom,
+                      client, host, port, 1000),
+            // if sending ping timeout, just give up
+            nullptr,
+            // if pong is received, check if it's valid
+            nullptr, // TODO: check if ack is valid
+            // if pong timeout, start sending indirect ping packets
+            nullptr
+        );
+        // TODO: get ping
+        //int size = 10;
+        //client->AsyncSendTo(buff, size, host, port, 1000);
     }
 
     // broadcast local state to other nodes via udp
@@ -230,30 +267,52 @@ private:
         return seq_num_.fetch_add(1, std::memory_order_relaxed) + 1;
     }
 
+    // return a copy of node_state
     node_state_ptr getNodeState(std::string node_name) {
         node_state_ptr rst = nullptr;
         node_lock_.lock();
         auto search = node_map_.find(node_name);
         if (search != node_map_.end()) {
-            rst = search->second;
+            auto tmp = *(search->second);
+            rst = std::make_shared<node_state>(tmp);
         }
         node_lock_.unlock();
         return rst;
     }
 
 
-    void updateNodeState(node_state_ptr to, const node_state &from) {
+    void updateNodeState(std::string target_node_name, const node_state &from) {
         node_lock_.lock();
-        *to = from;
-        to->Timestamp_ = 0; // TODO: get timestamp
+        auto target = node_map_[target_node_name];
+        *target = from;
+        target->Timestamp_ = 0; // TODO: get timestamp
         node_lock_.unlock();
     }
 
-    void setNodeState(std::string node_name, node_state_ptr state) {
+    void addNodeState(const std::string &node_name, node_state_ptr state) {
         node_lock_.lock();
         node_map_[node_name] = state;
+        nodes_.push_back(node_name);
+        node_num_.fetch_add(1, std::memory_order_relaxed);
         node_lock_.unlock();
     }
+
+    void removeNodeState(const std::string &node_name) {
+        // when a node died, we don't remove it from the
+        // node_map_ yet, so that it could the last dominant
+        // when it joins the cluster again
+        node_lock_.lock();
+        int num = nodes_.size();
+        for (int i = 0; i < num; i++) {
+            if (nodes_[i].compare(node_name) == 0) {
+                std::swap(nodes_[i], nodes_[num-1]);
+                nodes_.pop_back();
+            }
+        }
+        node_lock_.unlock();
+    }
+
+
 
     suspicion_ptr getSuspicion(std::string node_name) {
         suspicion_ptr result = nullptr;
@@ -284,6 +343,18 @@ private:
         bc_queue_.push(std::make_shared<node_state>(std::move(alive)),
             node_num_.load(std::memory_order_relaxed));
     }
+
+    std::vector<std::string> randomNode(int num) {
+        std::vector<std::string> rst(num, "");
+        std::srand(std::time(0));
+        node_lock_.lock();
+        int siz = nodes_.size();
+        for (int i=0; i<num; i++) {
+            rst[i] = nodes_[rand()%siz];
+        }
+        node_lock_.unlock();
+        return rst;
+    }
 private:
     config& conf_;
 
@@ -295,6 +366,8 @@ private:
 
     std::mutex node_lock_;
     std::unordered_map<std::string, node_state_ptr> node_map_;
+    // used to randomly select nodes to gossip
+    std::vector<std::string> nodes_;
     std::atomic<uint32_t> node_num_;
 
     std::mutex suspicion_lock_;

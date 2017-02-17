@@ -3,8 +3,8 @@
 //
 // This is a modified version of asio example code
 
-#ifndef CPPGOSSIP_ASYNC_CLIENT_HPP
-#define CPPGOSSIP_ASYNC_CLIENT_HPP
+#ifndef CPPGOSSIP_ASYNC_TCP_CLIENT_HPP
+#define CPPGOSSIP_ASYNC_TCP_CLIENT_HPP
 
 namespace gossip {
 namespace tcp {
@@ -173,4 +173,4 @@ private:
 }
 }
 
-#endif //CPPGOSSIP_ASYNC_CLIENT_HPP
+#endif //CPPGOSSIP_ASYNC_TCP_CLIENT_HPP

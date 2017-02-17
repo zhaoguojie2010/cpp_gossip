@@ -48,6 +48,10 @@ public:
         return result;
     }
 
+    ~suspicion() {
+        cancel();
+    }
+
 private:
     // indicates the number of confirms we'd like to see
     // before the suspicion is convicted.
