@@ -6,6 +6,7 @@
 #define CPPGOSSIP_ASYNC_UDP_CLIENT_HPP
 
 #include <chrono>
+#include <iostream>
 #include <memory>
 #include "asio.hpp"
 #include "asio/steady_timer.hpp"
@@ -30,6 +31,10 @@ public:
     void AsyncSendTo(char *buff, std::size_t size,
                 const std::string &host, short port,
                 uint32_t timeout = 0) {
+        if (size > mtu_) {
+            std::cout << "datagram size too large" << std::endl;
+            return;
+        }
         auto self(shared_from_this());
         if (timeout > 0) {
             deadline_.expires_from_now(std::chrono::milliseconds(timeout));

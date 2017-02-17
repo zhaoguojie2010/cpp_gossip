@@ -14,7 +14,7 @@ struct NodeState;
 struct NodeStates;
 struct Ping;
 struct IndirectPing;
-struct Ack;
+struct Pong;
 
 enum STATE {
   STATE_ALIVE = 0,
@@ -31,12 +31,13 @@ inline const char *EnumNameSTATE(STATE e) { return EnumNamesSTATE()[static_cast<
 
 enum TYPE {
   TYPE_PING = 0,
-  TYPE_INDIRECTPING = 1,
-  TYPE_SYNCSTATE = 2
+  TYPE_PONG = 1,
+  TYPE_INDIRECTPING = 2,
+  TYPE_SYNCSTATE = 3
 };
 
 inline const char **EnumNamesTYPE() {
-  static const char *names[] = { "PING", "INDIRECTPING", "SYNCSTATE", nullptr };
+  static const char *names[] = { "PING", "PONG", "INDIRECTPING", "SYNCSTATE", nullptr };
   return names;
 }
 
@@ -243,7 +244,7 @@ inline flatbuffers::Offset<IndirectPing> CreateIndirectPing(flatbuffers::FlatBuf
   return builder_.Finish();
 }
 
-struct Ack FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct Pong FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint64_t seqNo() const { return GetField<uint64_t>(4, 0); }
   bool mutate_seqNo(uint64_t seqNo) { return SetField(4, seqNo); }
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -253,21 +254,21 @@ struct Ack FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct AckBuilder {
+struct PongBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_seqNo(uint64_t seqNo) { fbb_.AddElement<uint64_t>(4, seqNo, 0); }
-  AckBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
-  AckBuilder &operator=(const AckBuilder &);
-  flatbuffers::Offset<Ack> Finish() {
-    auto o = flatbuffers::Offset<Ack>(fbb_.EndTable(start_, 1));
+  PongBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
+  PongBuilder &operator=(const PongBuilder &);
+  flatbuffers::Offset<Pong> Finish() {
+    auto o = flatbuffers::Offset<Pong>(fbb_.EndTable(start_, 1));
     return o;
   }
 };
 
-inline flatbuffers::Offset<Ack> CreateAck(flatbuffers::FlatBufferBuilder &_fbb,
+inline flatbuffers::Offset<Pong> CreatePong(flatbuffers::FlatBufferBuilder &_fbb,
    uint64_t seqNo = 0) {
-  AckBuilder builder_(_fbb);
+  PongBuilder builder_(_fbb);
   builder_.add_seqNo(seqNo);
   return builder_.Finish();
 }

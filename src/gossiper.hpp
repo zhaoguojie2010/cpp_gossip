@@ -38,8 +38,8 @@ public:
       dominant_(0),
       node_num_(0),
       is_leaving_(false),
-      hybrid_runner_(conf.Port_, handle_header,
-                     handle_body, message::HEADER_SIZE, handle_packet) {}
+      hybrid_runner_(conf.Port_, HandleHeader,
+                     HandleBody, message::HEADER_SIZE, HandlePacket) {}
 
     // sync with the first available peer and call Alive()
     // Returned value: indicates how many members the cluster has
@@ -226,11 +226,10 @@ private:
 
     void probeNode(const node_state &node) {
         std::size_t mtu = 1460;
-        char buff[mtu];
         std::string host = node.IP_;
         short port = std::stoi(node.Port_);
         auto client = std::make_shared<udp::AsyncClient>(*hybrid_runner_.GetIoSvc());
-
+        uint64_t seq_num = nextSeqNum();
         // Waterfall defines the series of behaviors after ping packets
         // is sent
         client->Waterfall(
@@ -240,13 +239,35 @@ private:
             // if sending ping timeout, just give up
             nullptr,
             // if pong is received, check if it's valid
-            nullptr, // TODO: check if ack is valid
+            [seq_num](char *resp, std::size_t size) {
+                auto pong = flatbuffers::GetRoot<message::Pong>(resp);
+                if (pong->seqNo() != seq_num) {
+                    logger->error("mismatched ping ack seqNo");
+                }
+            },
             // if pong timeout, start sending indirect ping packets
-            nullptr
+            std::bind(&gossiper::indirectPing, this)
         );
-        // TODO: get ping
-        //int size = 10;
-        //client->AsyncSendTo(buff, size, host, port, 1000);
+
+        //  generate ping
+        flatbuffers::FlatBufferBuilder builder(1024);
+        auto from = builder.CreateString(conf_.Name_);
+        auto ping = message::CreatePing(builder, seq_num, from);
+        uint8_t *buff = builder.GetBufferPointer();
+        int size = builder.GetSize();
+        message::Header header;
+        header.Type_ = message::TYPE_PING;
+        header.Body_length_ = size;
+        uint8_t send_buff[mtu];
+        message::EncodeHeader(send_buff, header);
+        std::memcpy(send_buff+message::HEADER_SIZE, buff, size);
+        // send ping
+        client->AsyncSendTo(reinterpret_cast<char*>(send_buff),
+                            message::HEADER_SIZE+size, host, port, 1000);
+    }
+
+    void indirectPing() {
+
     }
 
     // broadcast local state to other nodes via udp

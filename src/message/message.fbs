@@ -9,6 +9,7 @@ enum STATE:byte {
 
 enum TYPE:uint {
   PING,
+  PONG,
   INDIRECTPING,
   SYNCSTATE
 }
@@ -41,7 +42,7 @@ table IndirectPing {
   target:Node;
 }
 
-table Ack {
+table Pong {
   seqNo:ulong;
 }
 
