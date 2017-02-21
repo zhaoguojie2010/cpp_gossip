@@ -289,9 +289,48 @@ private:
         logger->info("start to gossip...\n");
     }
 
-    // merge state with remote node via tcp
-    void mergeState(const message::NodeStates *remote_states) {
+    // convert flatbuffers node state to internal node state
+    void convert(node_state &to, const message::NodeState &from) {
+        to.Name_ = from.node()->name()->str();
+        to.IP_ = from.node()->ip()->str();
+        to.Port_ = std::to_string(from.node()->port());
+        to.Dominant_ = from.dominant();
+        to.State_ = from.state();
+        to.From_ = from.from()->str();
+        to.Timestamp_ = from.timeStamp();
+    }
 
+    node_state&& convert(const message::NodeState &from) {
+        node_state tmp;
+        tmp.Name_ = from.node()->name()->str();
+        tmp.IP_ = from.node()->ip()->str();
+        tmp.Port_ = std::to_string(from.node()->port());
+        tmp.Dominant_ = from.dominant();
+        tmp.State_ = from.state();
+        tmp.From_ = from.from()->str();
+        tmp.Timestamp_ = from.timeStamp();
+        return std::move(tmp);
+    }
+
+    // merge state with remote node via tcp
+    void mergeStates(const message::NodeStates *remote_states) {
+        auto nss = remote_states->nodes();
+        auto len = nss->Length();
+        for(int i=0; i<len; ++i) {
+            auto ns = nss->Get(i);
+            node_state state(convert(*ns));
+            switch (state.State_) {
+                case message::STATE_ALIVE:
+                    aliveNode(state, false);
+                    break;
+                case message::STATE_SUSPECT:
+                    suspectNode(state);
+                    break;
+                case message::STATE_DEAD:
+                    deadNode(state);
+                    break;
+            }
+        }
     }
 
     void syncState(const std::string &host, const std::string &port) {
@@ -335,7 +374,7 @@ private:
         auto remote_states = message::GetNodeStates(resp);
 
         //merge
-        mergeState(remote_states);
+        mergeStates(remote_states);
     }
 
     uint64_t nextDominant(uint64_t shift = 1) {
