@@ -19,6 +19,7 @@
 #include "src/suspicion.hpp"
 #include "src/handler.hpp"
 #include "src/node.hpp"
+#include "src/utils.hpp"
 #include "src/message/header.hpp"
 #include "src/message/message_generated.h"
 #include "src/hybrid_runner.hpp"
@@ -27,6 +28,7 @@
 #include "thirdparty/asio/include/asio.hpp"
 #include "thirdparty/asio/include/asio/steady_timer.hpp"
 #include "src/network/udp/async_client.hpp"
+#include "src/network/tcp/blocking_client.hpp"
 
 namespace gossip {
 
@@ -41,34 +43,35 @@ public:
       hybrid_runner_(conf.Port_, HandleHeader,
                      HandleBody, message::HEADER_SIZE, HandlePacket) {}
 
-    // sync with the first available peer and call Alive()
+    // sync with peer and start the probe and gossip routine
     // Returned value: indicates how many members the cluster has
     // including ourselves when it's gt 0.
     // Join failed if it returns 0
     // peer example: 192.168.1.39:29011
-    int AliveAndJoin(std::vector<std::string> &peers) {
-        // select a random peer
-        std::srand(std::time(0));
-        const std::string &seed = peers[std::rand()%peers.size()];
+    int Join(const std::string &peer) {
+        auto vec = Split(peer, ":");
+        if (vec.size() != 2) {
+            logger->error("invalid peer: ", peer);
+            return -1;
+        }
+        std::string host = vec[0];
+        std::string port = vec[1];
+
+        // create node state
+        node_state a;
+        a.Name_ = conf_.Name_;
+        a.IP_ = conf_.Addr_;
+        a.Port_ = conf_.Port_;
+        a.Dominant_ = nextDominant();
+        aliveNode(a, true);
+
+        if (host != conf_.Addr_ || std::to_string(conf_.Port_) != port) {
+            // sync state
+            syncState(host, port);
+        }
+
+        alive();
         return 0;
-    }
-
-    // setAlive starts the random probe & gossip routine in a
-    // new thread
-    bool Alive() {
-        node_state alive;
-        alive.Name_ = conf_.Name_;
-        alive.IP_ = conf_.Addr_;
-        alive.Port_ = conf_.Port_;
-        alive.Dominant_ = nextDominant();
-        aliveNode(alive, true);
-
-        // randomly probe every 1 sec
-        hybrid_runner_.AddTicker(1000, std::bind(&gossiper::probe, this));
-        // gossip every 1 sec
-        hybrid_runner_.AddTicker(1000, std::bind(&gossiper::gossip, this));
-        hybrid_runner_.Run();
-        return true;
     }
 
     // GetAliveNodes
@@ -80,6 +83,17 @@ public:
     typedef std::shared_ptr<suspicion> suspicion_ptr;
 
 private:
+    // alive starts the random probe & gossip routine in a
+    // new thread
+    bool alive() {
+        // randomly probe every 1 sec
+        hybrid_runner_.AddTicker(1000, std::bind(&gossiper::probe, this));
+        // gossip every 1 sec
+        hybrid_runner_.AddTicker(1000, std::bind(&gossiper::gossip, this));
+        hybrid_runner_.Run();
+        return true;
+    }
+
     void aliveNode(const node_state &a, bool bootstrap) {
         const std::string alive_node_name = a.Name_;
         if (is_leaving_ && alive_node_name == conf_.Name_) {
@@ -275,9 +289,53 @@ private:
         logger->info("start to gossip...\n");
     }
 
-    // sync state with remote node via tcp
-    void syncState(const message::Node &remote_node) {
+    // merge state with remote node via tcp
+    void mergeState(const message::NodeStates *remote_states) {
 
+    }
+
+    void syncState(const std::string &host, const std::string &port) {
+        tcp::BlockingClient client;
+        client.Connect(host, port, conf_.Sync_state_timeout_);
+        // generate local state
+        flatbuffers::FlatBufferBuilder builder;
+        std::vector<flatbuffers::Offset<message::NodeState>> ns_vec;
+        for (auto it = node_map_.begin(); it != node_map_.end(); it++) {
+            auto node = message::CreateNode(builder, builder.CreateString(it->second->Name_),
+                                            builder.CreateString(it->second->IP_),
+                                            std::stoi(it->second->Port_));
+            auto ns = message::CreateNodeState(
+                builder, node, it->second->State_, it->second->Dominant_,
+                builder.CreateString(it->second->From_), it->second->Timestamp_);
+            ns_vec.push_back(ns);
+        }
+        auto nss = builder.CreateVector(ns_vec);
+        auto local_states = message::CreateNodeStates(builder, nss);
+        builder.Finish(local_states);
+        auto body = builder.GetBufferPointer();
+        int size = builder.GetSize();
+
+        uint8_t buff[message::HEADER_SIZE+size];
+        message::Header header;
+        header.Type_ = message::TYPE_SYNCSTATE;
+        header.Body_length_ = size;
+        message::EncodeHeader(buff, header);
+        std::memcpy(buff+message::HEADER_SIZE, body, size);
+        client.Write(reinterpret_cast<char*>(buff),
+                     message::HEADER_SIZE+size, conf_.Sync_state_timeout_);
+
+        // read header first
+        client.ReadFull(reinterpret_cast<char*>(buff),
+                        message::HEADER_SIZE, conf_.Sync_state_timeout_);
+        message::DecodeHeader(buff, header);
+
+        // read remote states body
+        char resp[header.Body_length_];
+        client.ReadFull(resp, header.Body_length_, conf_.Sync_state_timeout_);
+        auto remote_states = message::GetNodeStates(resp);
+
+        //merge
+        mergeState(remote_states);
     }
 
     uint64_t nextDominant(uint64_t shift = 1) {

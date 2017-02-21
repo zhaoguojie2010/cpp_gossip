@@ -76,7 +76,7 @@ int HandlePacket(char *buff, std::size_t size,
             }
             header.Type_ = message::TYPE_PONG;
             header.Body_length_ = size;
-            message::DecodeHeader(reinterpret_cast<uint8_t*>(resp_buff), header);
+            message::EncodeHeader(reinterpret_cast<uint8_t*>(resp_buff), header);
             std::memcpy(resp_buff+message::HEADER_SIZE, tmp_buff, size);
 
             break;

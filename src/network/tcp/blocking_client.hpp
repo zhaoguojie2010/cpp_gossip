@@ -68,7 +68,7 @@ public:
                 ec ? ec : asio::error::operation_aborted);
     }
 
-    std::string ReadFull(char *buff, std::size_t size, int timeout) {
+    void ReadFull(char *buff, std::size_t size, int timeout) {
         // Set a deadline for the asynchronous operation. Since this function uses
         // a composed operation (async_read_until), the deadline applies to the
         // entire operation, rather than individual reads from the socket.
@@ -96,14 +96,9 @@ public:
 
         if (ec)
             throw asio::system_error(ec);
-
-        std::string line;
-        std::istream is(&input_buffer_);
-        std::getline(is, line);
-        return line;
     }
 
-    void WriteLine(char *buff, std::size_t size,
+    void Write(char *buff, std::size_t size,
                    int timeout = 0) {
         // Set a deadline for the asynchronous operation. Since this function uses
         // a composed operation (async_write), the deadline applies to the entire
@@ -135,6 +130,12 @@ public:
             throw asio::system_error(ec);
     }
 
+    void Close() {
+        asio::error_code ignored_ec;
+        deadline_.cancel();
+        socket_.close(ignored_ec);
+    }
+
 private:
     void check_deadline() {
         // Check whether the deadline has passed. We compare the deadline against
@@ -159,7 +160,6 @@ private:
     asio::io_service io_service_;
     tcp::socket socket_;
     asio::steady_timer deadline_;
-    asio::streambuf input_buffer_;
 };
 
 }

@@ -19,6 +19,7 @@ struct config {
     : Port_(port),
       Addr_(getLocalAddr()),
       Indirect_checks_(1000),
+      Sync_state_timeout_(1000),
       Probe_interval_(1000),
       Probe_timeout_(1000),
       Gossip_interval_(1000) {
@@ -30,6 +31,8 @@ struct config {
     short Port_;
 
     short Indirect_checks_;
+
+    uint32_t Sync_state_timeout_;
 
     uint32_t Probe_interval_; // in ms
     uint32_t Probe_timeout_;
