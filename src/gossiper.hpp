@@ -17,7 +17,6 @@
 
 #include "src/config.hpp"
 #include "src/suspicion.hpp"
-#include "src/handler.hpp"
 #include "src/node.hpp"
 #include "src/utils.hpp"
 #include "src/message/header.hpp"
@@ -40,8 +39,16 @@ public:
       dominant_(0),
       node_num_(0),
       is_leaving_(false),
-      hybrid_runner_(conf.Port_, HandleHeader,
-                     HandleBody, message::HEADER_SIZE, HandlePacket) {}
+      hybrid_runner_(conf.Port_,
+                     std::bind(&gossiper::handleHeader, this, std::placeholders::_1,
+                               std::placeholders::_2, std::placeholders::_3),
+                     std::bind(&gossiper::handleBody, this, std::placeholders::_1,
+                               std::placeholders::_2, std::placeholders::_3,
+                               std::placeholders::_4, std::placeholders::_5),
+                     message::HEADER_SIZE,
+                     std::bind(&gossiper::handlePacket, this, std::placeholders::_1,
+                               std::placeholders::_2, std::placeholders::_3,
+                               std::placeholders::_4)) {}
 
     // sync with peer and start the probe and gossip routine
     // Returned value: indicates how many members the cluster has
@@ -333,11 +340,8 @@ private:
         }
     }
 
-    void syncState(const std::string &host, const std::string &port) {
-        tcp::BlockingClient client;
-        client.Connect(host, port, conf_.Sync_state_timeout_);
+    std::pair<uint8_t*, int> encodeLocalState(flatbuffers::FlatBufferBuilder &builder) {
         // generate local state
-        flatbuffers::FlatBufferBuilder builder;
         std::vector<flatbuffers::Offset<message::NodeState>> ns_vec;
         for (auto it = node_map_.begin(); it != node_map_.end(); it++) {
             auto node = message::CreateNode(builder, builder.CreateString(it->second->Name_),
@@ -351,8 +355,19 @@ private:
         auto nss = builder.CreateVector(ns_vec);
         auto local_states = message::CreateNodeStates(builder, nss);
         builder.Finish(local_states);
-        auto body = builder.GetBufferPointer();
+        uint8_t *body = builder.GetBufferPointer();
         int size = builder.GetSize();
+        return std::make_pair(body, size);
+    };
+
+    void syncState(const std::string &host, const std::string &port) {
+        tcp::BlockingClient client;
+        client.Connect(host, port, conf_.Sync_state_timeout_);
+        // generate local state
+        flatbuffers::FlatBufferBuilder builder;
+        auto p = encodeLocalState(builder);
+        auto body = p.first;
+        auto size = p.second;
 
         uint8_t buff[message::HEADER_SIZE+size];
         message::Header header;
@@ -473,6 +488,92 @@ private:
         node_lock_.unlock();
         return rst;
     }
+
+    void handleHeader(char* buff, std::size_t size,
+                      message::Header &header) {
+        if (size != message::HEADER_SIZE) {
+            logger->info("invalid header size: ", message::HEADER_SIZE);
+            return;
+        }
+        message::DecodeHeader(reinterpret_cast<uint8_t *>(buff), header);
+    }
+
+    std::size_t handleBody(uint32_t type,
+                           char *buff, std::size_t size,
+                           char *resp_buff, std::size_t resp_size) {
+        std::size_t result;
+        uint8_t *body;
+        switch (type) {
+            case message::TYPE_PING: {
+                auto ping = flatbuffers::GetRoot<message::Ping>(buff);
+                flatbuffers::FlatBufferBuilder builder(1024);
+                auto ack = message::CreatePong(builder, ping->seqNo());
+                builder.Finish(ack);
+                body = builder.GetBufferPointer();
+                result = builder.GetSize();
+
+                break;
+            }
+            case message::TYPE_INDIRECTPING: {
+                auto indirect_ping = flatbuffers::GetRoot<message::IndirectPing>(buff);
+                break;
+            }
+            case message::TYPE_SYNCSTATE: {
+                auto remote_states = message::GetNodeStates(buff);
+                mergeStates(remote_states);
+                flatbuffers::FlatBufferBuilder builder;
+                auto p = encodeLocalState(builder);
+                body = p.first;
+                result = p.second;
+                break;
+            }
+            default:
+                ;
+        }
+        if (result > resp_size) {
+            result = -1;
+        } else {
+            std::memcpy(resp_buff, body, size);
+        }
+        return result;
+    }
+
+    int handlePacket(char *buff, std::size_t size,
+                     char *resp_buff, std::size_t resp_size) {
+        int rst = 0;
+        message::Header header;
+        message::DecodeHeader(reinterpret_cast<uint8_t*>(buff), header);
+        switch (header.Type_) {
+            case message::TYPE_PING: {
+                auto ping = flatbuffers::GetRoot<message::Ping>(buff+message::HEADER_SIZE);
+                // generate pong
+                flatbuffers::FlatBufferBuilder builder(1024);
+                auto ack = message::CreatePong(builder, ping->seqNo());
+                builder.Finish(ack);
+                uint8_t *tmp_buff = builder.GetBufferPointer();
+                int size = builder.GetSize();
+                if (message::HEADER_SIZE+size > resp_size) {
+                    rst = -1;
+                    break;
+                }
+                header.Type_ = message::TYPE_PONG;
+                header.Body_length_ = size;
+                message::EncodeHeader(reinterpret_cast<uint8_t*>(resp_buff), header);
+                std::memcpy(resp_buff+message::HEADER_SIZE, tmp_buff, size);
+
+                break;
+            }
+            case message::TYPE_INDIRECTPING: {
+                break;
+            }
+            default: {
+                logger->error("invalid diagram type");
+                break;
+            }
+        }
+        return rst;
+    }
+
 private:
     config& conf_;
 

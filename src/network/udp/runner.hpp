@@ -8,7 +8,6 @@
 #include <cstdlib>
 #include <iostream>
 #include "asio.hpp"
-#include "src/handler.hpp"
 
 namespace gossip {
 namespace udp {
