@@ -22,7 +22,7 @@ typedef std::function<int(char */*data*/,
 class Server {
 public:
     Server(short port, packet_handler handle_packet, asio::io_service &io_svc)
-        : socket_(io_svc, udp::endpoint(udp::v4(), port)),
+        : socket_(io_svc, udp::endpoint(udp::v4(), port+1)),
           handle_packet_(handle_packet) {}
 
     void Start() {
@@ -39,6 +39,9 @@ public:
                     if (response_length > 0)
                         doSend(response_length);
                 } else {
+                    if (ec) {
+                        std::cout << "doReceive: " << ec.message() << std::endl;
+                    }
                     doReceive();
                 }
             });
@@ -47,7 +50,7 @@ public:
     void doSend(std::size_t length) {
         socket_.async_send_to(
             asio::buffer(data_, length), sender_endpoint_,
-            [this](std::error_code /*ec*/, std::size_t /*bytes_sent*/) {
+            [this, length](std::error_code /*ec*/, std::size_t /*bytes_sent*/) {
                 doReceive();
             });
     }

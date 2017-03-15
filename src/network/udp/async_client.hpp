@@ -10,6 +10,7 @@
 #include <memory>
 #include "asio.hpp"
 #include "asio/steady_timer.hpp"
+#include "src/logger.hpp"
 
 namespace gossip {
 namespace udp {
@@ -20,6 +21,10 @@ public:
     typedef std::function<void(char*, std::size_t)> recv_callback;
     typedef std::function<void()> send_callback;
 public:
+    ~AsyncClient() {
+        std::cout << "~AsyncClient\n";
+    }
+
     AsyncClient(asio::io_service &io_svc)
     : socket_(io_svc),
       send_finish_cb_(nullptr),
@@ -32,22 +37,13 @@ public:
                 const std::string &host, short port,
                 uint32_t timeout = 0) {
         if (size > mtu_) {
-            std::cout << "datagram size too large" << std::endl;
+            logger->error("datagram size too large");
             return;
         }
         auto self(shared_from_this());
         if (timeout > 0) {
+            logger->error("timeout");
             deadline_.expires_from_now(std::chrono::milliseconds(timeout));
-            /*deadline_.async_wait(std::bind(&AsyncClient::checkDeadline,
-                                           this, "udp send timeout",
-                                           [this]() {
-                                               // send timeout, cancel the sending operation
-                                               socket_.cancel();
-                                               if (send_timeout_cb_ != nullptr) {
-                                                   send_timeout_cb_();
-                                               }
-                                           }));
-                                           */
             deadline_.async_wait([this, self](asio::error_code) {
                 checkDeadline("udp send timeout", [this]() {
                     // send timeout, cancel the sending operation
@@ -58,23 +54,29 @@ public:
                 });
             });
         }
-        asio::ip::udp::endpoint peer(asio::ip::address::from_string(host), port);
+        asio::error_code ec;
+        auto addr = asio::ip::address::from_string(host, ec);
+        if (ec) {
+            std::cerr << ec.message() << std::endl;
+            return;
+        }
+        asio::ip::udp::endpoint peer(addr, port+1);
+        socket_.open(peer.protocol());
         socket_.async_send_to(
             asio::buffer(buff, size), peer,
-            [this, self](const asio::error_code &ec, std::size_t) {
+            [this, self, timeout](const asio::error_code &ec, std::size_t) {
                 // now the sending op is finished, cancel the timer
-                deadline_.cancel();
+                if (timeout > 0) {
+                    deadline_.cancel();
+                }
                 if (ec) {
-                    std::cerr << ec.message() << std::endl;
+                    std::cerr << "async_send_to: " << ec.message() << std::endl;
                     return;
                 }
                 if (send_finish_cb_ != nullptr) {
                     send_finish_cb_();
                 }
             });
-            //std::bind(&AsyncClient::handleSendTo, this,
-            //    std::placeholders::_1, std::placeholders::_2,
-            //    std::ref(peer)));
     }
 
     // Waterfall defines the behavior of the client
@@ -90,7 +92,7 @@ public:
     void AsyncReceiveFrom(
         const std::string &host, short port,
         uint32_t timeout = 0) {
-        auto peer = asio::ip::udp::endpoint(asio::ip::address::from_string(host), port);
+        auto peer = asio::ip::udp::endpoint(asio::ip::address::from_string(host), port+1);
         asyncReceiveFrom(peer, timeout);
     }
 
@@ -114,15 +116,6 @@ private:
         auto self(shared_from_this());
         if (timeout > 0) {
             deadline_.expires_from_now(std::chrono::milliseconds(timeout));
-            /*deadline_.async_wait(std::bind(&AsyncClient::checkDeadline,
-                                           this, "udp receive timeout",
-                                           [this]() {
-                                               socket_.cancel();
-                                               if (receive_timeout_cb_ != nullptr) {
-                                                   receive_timeout_cb_();
-                                               }
-                                           }));
-                                           */
             deadline_.async_wait([this, self](asio::error_code) {
                 checkDeadline("udp receive timeout", [this]() {
                     socket_.cancel();
@@ -135,9 +128,11 @@ private:
 
         socket_.async_receive_from(
             asio::buffer(data_, mtu_), peer,
-            [this, self](const asio::error_code &ec, std::size_t bytes_received) {
+            [this, self, timeout](const asio::error_code &ec, std::size_t bytes_received) {
                 // now the receiving op is finished, cancel the timer
-                deadline_.cancel();
+                if (timeout > 0) {
+                    deadline_.cancel();
+                }
                 if (ec) {
                     std::cerr << ec.message() << std::endl;
                     return;

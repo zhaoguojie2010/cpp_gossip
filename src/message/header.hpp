@@ -31,7 +31,7 @@ inline void EncodeHeader(uint8_t *buff, const Header &header) {
     uint32_t type = htobe32(header.Type_);
     std::memcpy(buff, reinterpret_cast<uint8_t*>(&type), 4);
     uint32_t length = htobe32(header.Body_length_);
-    std::memcpy(buff+4, reinterpret_cast<uint8_t*>(length), 4);
+    std::memcpy(buff+4, reinterpret_cast<uint8_t*>(&length), 4);
 }
 
 }

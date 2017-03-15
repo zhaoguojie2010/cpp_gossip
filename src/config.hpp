@@ -11,7 +11,7 @@
 namespace gossip {
 
 std::string getLocalAddr() {
-    return "localhost";
+    return "127.0.0.1";
 }
 
 struct config {
@@ -23,7 +23,7 @@ struct config {
       Probe_interval_(1000),
       Probe_timeout_(1000),
       Gossip_interval_(1000) {
-        Name_ = "localhost" + std::to_string(port);
+        Name_ = getLocalAddr() + ":" + std::to_string(port);
     }
 
     std::string Name_;

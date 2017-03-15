@@ -68,12 +68,14 @@ public:
         node_state a;
         a.Name_ = conf_.Name_;
         a.IP_ = conf_.Addr_;
-        a.Port_ = conf_.Port_;
+        a.Port_ = std::to_string(conf_.Port_);
         a.Dominant_ = nextDominant();
+        a.State_ = message::STATE_ALIVE;
         aliveNode(a, true);
 
         if (host != conf_.Addr_ || std::to_string(conf_.Port_) != port) {
             // sync state
+            std::cout << "sync state...\n";
             syncState(host, port);
         }
 
@@ -94,9 +96,9 @@ private:
     // new thread
     bool alive() {
         // randomly probe every 1 sec
-        hybrid_runner_.AddTicker(1000, std::bind(&gossiper::probe, this));
+        hybrid_runner_.AddTicker(5000, std::bind(&gossiper::probe, this));
         // gossip every 1 sec
-        hybrid_runner_.AddTicker(1000, std::bind(&gossiper::gossip, this));
+        //hybrid_runner_.AddTicker(1000, std::bind(&gossiper::gossip, this));
         hybrid_runner_.Run();
         return true;
     }
@@ -236,11 +238,11 @@ private:
 
     // probe randomly ping one known node via udp
     void probe() {
-        logger->info("start to probe...\n");
         auto candi = randomNode(1);
         auto node = getNodeState(candi[0]);
         if (node->State_ == message::STATE_ALIVE &&
             node->Name_ != conf_.Name_) {
+            logger->info("prepare to probe node: ", node->Name_, 123);
             probeNode(*node);
         }
     }
@@ -256,14 +258,22 @@ private:
         client->Waterfall(
             // if ping finish, start to receive pong
             std::bind(&udp::AsyncClient::AsyncReceiveFrom,
-                      client, host, port, 1000),
+                      client, host, port, 0),
             // if sending ping timeout, just give up
             nullptr,
             // if pong is received, check if it's valid
             [seq_num](char *resp, std::size_t size) {
-                auto pong = flatbuffers::GetRoot<message::Pong>(resp);
+                message::Header header;
+                message::DecodeHeader(reinterpret_cast<uint8_t*>(resp), header);
+                if (header.Type_ != message::TYPE_PONG) {
+                    logger->error("wrong ack type");
+                    return;
+                }
+                auto pong = flatbuffers::GetRoot<message::Pong>(resp+message::HEADER_SIZE);
                 if (pong->seqNo() != seq_num) {
                     logger->error("mismatched ping ack seqNo");
+                } else {
+                    logger->info("pong");
                 }
             },
             // if pong timeout, start sending indirect ping packets
@@ -274,6 +284,7 @@ private:
         flatbuffers::FlatBufferBuilder builder(1024);
         auto from = builder.CreateString(conf_.Name_);
         auto ping = message::CreatePing(builder, seq_num, from);
+        builder.Finish(ping);
         uint8_t *buff = builder.GetBufferPointer();
         int size = builder.GetSize();
         message::Header header;
@@ -281,10 +292,15 @@ private:
         header.Body_length_ = size;
         uint8_t send_buff[mtu];
         message::EncodeHeader(send_buff, header);
+        if (message::HEADER_SIZE+size > mtu) {
+            std::cerr << "udb packet too large, body len = " << size << std::endl;
+            return;
+        }
         std::memcpy(send_buff+message::HEADER_SIZE, buff, size);
+
         // send ping
         client->AsyncSendTo(reinterpret_cast<char*>(send_buff),
-                            message::HEADER_SIZE+size, host, port, 1000);
+                            message::HEADER_SIZE+size, host, port, 0);
     }
 
     void indirectPing() {
@@ -325,6 +341,7 @@ private:
         auto len = nss->Length();
         for(int i=0; i<len; ++i) {
             auto ns = nss->Get(i);
+            std::cout << "merging " << ns->node()->name()->str() << " state: " << ns->state() << std::endl;
             node_state state(convert(*ns));
             switch (state.State_) {
                 case message::STATE_ALIVE:
@@ -336,8 +353,22 @@ private:
                 case message::STATE_DEAD:
                     deadNode(state);
                     break;
+                default:
+                std::cerr << "merging wrong state: " << state.State_ << std::endl;
+                    break;
             }
         }
+        printNodeState();
+    }
+
+    void printNodeState() {
+        node_lock_.lock();
+        std::cout << "node states: ";
+        for(auto it=node_map_.begin(); it!=node_map_.end(); it++) {
+            std::cout << it->first << " ";
+        }
+        std::cout << std::endl;
+        node_lock_.unlock();
     }
 
     std::pair<uint8_t*, int> encodeLocalState(flatbuffers::FlatBufferBuilder &builder) {
@@ -503,6 +534,7 @@ private:
                            char *resp_buff, std::size_t resp_size) {
         std::size_t result;
         uint8_t *body;
+        message::Header header;
         switch (type) {
             case message::TYPE_PING: {
                 auto ping = flatbuffers::GetRoot<message::Ping>(buff);
@@ -511,6 +543,7 @@ private:
                 builder.Finish(ack);
                 body = builder.GetBufferPointer();
                 result = builder.GetSize();
+                header.Type_ = message::TYPE_PONG;
 
                 break;
             }
@@ -525,6 +558,7 @@ private:
                 auto p = encodeLocalState(builder);
                 body = p.first;
                 result = p.second;
+                header.Type_ = message::TYPE_SYNCSTATE;
                 break;
             }
             default:
@@ -533,9 +567,11 @@ private:
         if (result > resp_size) {
             result = -1;
         } else {
-            std::memcpy(resp_buff, body, size);
+            header.Body_length_ = result;
+            message::EncodeHeader(reinterpret_cast<uint8_t*>(resp_buff), header);
+            std::memcpy(resp_buff+message::HEADER_SIZE, body, result);
         }
-        return result;
+        return result+message::HEADER_SIZE;
     }
 
     int handlePacket(char *buff, std::size_t size,
@@ -547,7 +583,7 @@ private:
             case message::TYPE_PING: {
                 auto ping = flatbuffers::GetRoot<message::Ping>(buff+message::HEADER_SIZE);
                 // generate pong
-                flatbuffers::FlatBufferBuilder builder(1024);
+                flatbuffers::FlatBufferBuilder builder;
                 auto ack = message::CreatePong(builder, ping->seqNo());
                 builder.Finish(ack);
                 uint8_t *tmp_buff = builder.GetBufferPointer();
@@ -560,6 +596,8 @@ private:
                 header.Body_length_ = size;
                 message::EncodeHeader(reinterpret_cast<uint8_t*>(resp_buff), header);
                 std::memcpy(resp_buff+message::HEADER_SIZE, tmp_buff, size);
+                rst = size + message::HEADER_SIZE;
+
 
                 break;
             }
