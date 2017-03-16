@@ -22,7 +22,7 @@ typedef std::function<int(char */*data*/,
 class Server {
 public:
     Server(short port, packet_handler handle_packet, asio::io_service &io_svc)
-        : socket_(io_svc, udp::endpoint(udp::v4(), port+1)),
+        : socket_(io_svc, udp::endpoint(udp::v4(), port)),
           handle_packet_(handle_packet) {}
 
     void Start() {

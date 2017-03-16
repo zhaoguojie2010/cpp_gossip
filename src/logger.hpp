@@ -14,7 +14,8 @@ std::shared_ptr<spdlog::logger> GetLogger() {
 }
 
 std::shared_ptr<spdlog::logger> GetConsole() {
-    return spdlog::stdout_color_mt("console");
+    static int cnt = 0;
+    return spdlog::stdout_color_mt("console"+std::to_string(++cnt));
 }
 
 std::shared_ptr<spdlog::logger> logger = GetConsole();

@@ -58,7 +58,7 @@ public:
     int Join(const std::string &peer) {
         auto vec = Split(peer, ":");
         if (vec.size() != 2) {
-            logger->error("invalid peer: ", peer);
+            logger->error("invalid peer: {}", peer);
             return -1;
         }
         std::string host = vec[0];
@@ -75,12 +75,12 @@ public:
 
         if (host != conf_.Addr_ || std::to_string(conf_.Port_) != port) {
             // sync state
-            std::cout << "sync state...\n";
+            logger->info("sync state...");
             try {
                 syncState(host, port);
             } catch (const std::system_error &e) {
-                std::cout << "Error: " << e.what() << std::endl;
-                std::cout << "Msg: " << e.code().message() << std::endl;
+                logger->error("{0} ", e.what());
+                logger->error("{}", e.code().message());
             }
         }
 
@@ -247,7 +247,7 @@ private:
         auto node = getNodeState(candi[0]);
         if (node->State_ == message::STATE_ALIVE &&
             node->Name_ != conf_.Name_) {
-            logger->info("prepare to probe node: ", node->Name_, 123);
+            logger->info("prepare to probe node: {0}", node->Name_);
             probeNode(*node);
         }
     }
@@ -528,7 +528,7 @@ private:
     void handleHeader(char* buff, std::size_t size,
                       message::Header &header) {
         if (size != message::HEADER_SIZE) {
-            logger->info("invalid header size: ", message::HEADER_SIZE);
+            logger->info("invalid header size: {}", message::HEADER_SIZE);
             return;
         }
         message::DecodeHeader(reinterpret_cast<uint8_t *>(buff), header);
