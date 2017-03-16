@@ -19,7 +19,7 @@ struct config {
     : Port_(port),
       Addr_(getLocalAddr()),
       Indirect_checks_(1000),
-      Sync_state_timeout_(1000),
+      Sync_state_timeout_(0),
       Probe_interval_(1000),
       Probe_timeout_(1000),
       Gossip_interval_(1000) {

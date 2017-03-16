@@ -76,7 +76,12 @@ public:
         if (host != conf_.Addr_ || std::to_string(conf_.Port_) != port) {
             // sync state
             std::cout << "sync state...\n";
-            syncState(host, port);
+            try {
+                syncState(host, port);
+            } catch (const std::system_error &e) {
+                std::cout << "Error: " << e.what() << std::endl;
+                std::cout << "Msg: " << e.code().message() << std::endl;
+            }
         }
 
         alive();

@@ -36,7 +36,8 @@ public:
         // resolve to multiple endpoints, this function uses the composed operation
         // async_connect. The deadline applies to the entire operation, rather than
         // individual connection attempts.
-        deadline_.expires_from_now(std::chrono::milliseconds(timeout));
+        if (timeout > 0)
+            deadline_.expires_from_now(std::chrono::milliseconds(timeout));
 
         // Set up the variable that receives the result of the asynchronous
         // operation. The error code is set to would_block to signal that the
@@ -72,7 +73,8 @@ public:
         // Set a deadline for the asynchronous operation. Since this function uses
         // a composed operation (async_read_until), the deadline applies to the
         // entire operation, rather than individual reads from the socket.
-        deadline_.expires_from_now(std::chrono::milliseconds(timeout));
+        if (timeout > 0)
+            deadline_.expires_from_now(std::chrono::milliseconds(timeout));
 
         // Set up the variable that receives the result of the asynchronous
         // operation. The error code is set to would_block to signal that the
@@ -103,7 +105,8 @@ public:
         // Set a deadline for the asynchronous operation. Since this function uses
         // a composed operation (async_write), the deadline applies to the entire
         // operation, rather than individual writes to the socket.
-        deadline_.expires_from_now(std::chrono::milliseconds(timeout));
+        if (timeout > 0)
+            deadline_.expires_from_now(std::chrono::milliseconds(timeout));
 
         // Set up the variable that receives the result of the asynchronous
         // operation. The error code is set to would_block to signal that the

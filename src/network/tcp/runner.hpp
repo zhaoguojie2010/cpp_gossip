@@ -115,6 +115,7 @@ private:
                                        std::make_shared<Session>(std::move(
                                            socket_), handle_header_, handle_body_, header_size_)->Go();
                                    }
+                                   doAccept();
                                });
     }
 
