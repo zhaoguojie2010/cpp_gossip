@@ -38,6 +38,7 @@ public:
       seq_num_(0),
       dominant_(0),
       node_num_(0),
+      MAX_APPENDED_MSG_(10),
       is_leaving_(false),
       hybrid_runner_(conf.Port_,
                      std::bind(&gossiper::handleHeader, this, std::placeholders::_1,
@@ -75,7 +76,7 @@ public:
 
         if (host != conf_.Addr_ || std::to_string(conf_.Port_) != port) {
             // sync state
-            logger->info("sync state...");
+            logger->debug("sync state...");
             try {
                 syncState(host, port);
             } catch (const std::system_error &e) {
@@ -101,7 +102,7 @@ private:
     // new thread
     bool alive() {
         // randomly probe every 1 sec
-        hybrid_runner_.AddTicker(5000, std::bind(&gossiper::probe, this));
+        hybrid_runner_.AddTicker(2000, std::bind(&gossiper::probe, this));
         // gossip every 1 sec
         //hybrid_runner_.AddTicker(1000, std::bind(&gossiper::gossip, this));
         hybrid_runner_.Run();
@@ -146,7 +147,7 @@ private:
         } else {
             // it's not about us or we just init ourselves, start broadcasting
             node_state alive(a);
-            bc_queue_.push(std::make_shared<node_state>(std::move(alive)),
+            bc_queue_.Push(std::make_shared<node_state>(std::move(alive)),
                            node_num_.load(std::memory_order_relaxed));
         }
     }
@@ -161,7 +162,7 @@ private:
 
         std::function<void()> broadcastSuspect = [this, &s]() {
             node_state sus(s);
-            bc_queue_.push(std::make_shared<node_state>(std::move(sus)),
+            bc_queue_.Push(std::make_shared<node_state>(std::move(sus)),
                            node_num_.load(std::memory_order_relaxed));
         };
 
@@ -234,7 +235,7 @@ private:
         }
         // start to broadcast
         node_state dead(d);
-        bc_queue_.push(std::make_shared<node_state>(std::move(dead)),
+        bc_queue_.Push(std::make_shared<node_state>(std::move(dead)),
                        node_num_.load(std::memory_order_relaxed));
 
         // notify leave
@@ -247,7 +248,7 @@ private:
         auto node = getNodeState(candi[0]);
         if (node->State_ == message::STATE_ALIVE &&
             node->Name_ != conf_.Name_) {
-            logger->info("prepare to probe node: {0}", node->Name_);
+            logger->debug("prepare to probe node: {0}", node->Name_);
             probeNode(*node);
         }
     }
@@ -277,35 +278,80 @@ private:
                 auto pong = flatbuffers::GetRoot<message::Pong>(resp+message::HEADER_SIZE);
                 if (pong->seqNo() != seq_num) {
                     logger->error("mismatched ping ack seqNo");
-                } else {
-                    logger->info("pong");
                 }
             },
             // if pong timeout, start sending indirect ping packets
             std::bind(&gossiper::indirectPing, this)
         );
 
+        uint8_t send_buff[mtu];
+        int size = generatePing(seq_num, send_buff, mtu);
+
+        // send ping
+        client->AsyncSendTo(reinterpret_cast<char*>(send_buff),
+                            size, host, port, 0);
+    }
+
+    int generatePing(uint64_t seqNo, uint8_t *send_buff, int send_buff_size) {
         //  generate ping
         flatbuffers::FlatBufferBuilder builder(1024);
         auto from = builder.CreateString(conf_.Name_);
-        auto ping = message::CreatePing(builder, seq_num, from);
+        auto ping = message::CreatePing(builder, seqNo, from);
         builder.Finish(ping);
         uint8_t *buff = builder.GetBufferPointer();
         int size = builder.GetSize();
         message::Header header;
         header.Type_ = message::TYPE_PING;
         header.Body_length_ = size;
-        uint8_t send_buff[mtu];
         message::EncodeHeader(send_buff, header);
-        if (message::HEADER_SIZE+size > mtu) {
-            std::cerr << "udb packet too large, body len = " << size << std::endl;
-            return;
+        if (message::HEADER_SIZE+size > send_buff_size) {
+            std::cerr << "ping packet too large, body len = " << size << std::endl;
+            return -1;
         }
         std::memcpy(send_buff+message::HEADER_SIZE, buff, size);
 
-        // send ping
-        client->AsyncSendTo(reinterpret_cast<char*>(send_buff),
-                            message::HEADER_SIZE+size, host, port, 0);
+        return message::HEADER_SIZE + size + appendGossipMsg(
+            send_buff+message::HEADER_SIZE+size, send_buff_size-size-message::HEADER_SIZE);
+    }
+
+    int appendGossipMsg(uint8_t *buff, int buff_size) {
+        int default_mgs_num = MAX_APPENDED_MSG_;
+        flatbuffers::FlatBufferBuilder builder(1024);
+        std::vector<flatbuffers::Offset<message::NodeState>> ns_vec;
+        while (default_mgs_num > 0) {
+            auto node = bc_queue_.Peek();
+            if (node == nullptr)
+                break;
+            auto n = message::CreateNode(builder, builder.CreateString(node->Name_),
+                                            builder.CreateString(node->IP_),
+                                            std::stoi(node->Port_));
+            auto ns = message::CreateNodeState(
+                builder, n, node->State_, node->Dominant_,
+                builder.CreateString(node->From_), node->Timestamp_);
+            ns_vec.push_back(ns);
+            --default_mgs_num;
+        }
+        
+        if (default_mgs_num == MAX_APPENDED_MSG_) {
+            return 0;
+        }
+
+        auto nss = builder.CreateVector(ns_vec);
+        auto gossipMsg = message::CreateNodeStates(builder, nss);
+        builder.Finish(gossipMsg);
+        int size = builder.GetSize();
+        if (size > buff_size) {
+            // fbs size too large, give up sending peeked msg and
+            // shrink the MAX_APPENDED_MSG_
+            bc_queue_.ResetPeek();
+            shrinkMaxAppendedMsg();
+            return 0;
+        }
+        // now pop the peeked msg
+        bc_queue_.ApplyPeek();
+        uint8_t *body = builder.GetBufferPointer();
+        std::memcpy(buff, body, size);
+        return size;
     }
 
     void indirectPing() {
@@ -314,7 +360,7 @@ private:
 
     // broadcast local state to other nodes via udp
     void gossip() {
-        logger->info("start to gossip...\n");
+        logger->debug("start to gossip...\n");
     }
 
     // convert flatbuffers node state to internal node state
@@ -400,7 +446,7 @@ private:
         tcp::BlockingClient client;
         client.Connect(host, port, conf_.Sync_state_timeout_);
         // generate local state
-        flatbuffers::FlatBufferBuilder builder;
+        flatbuffers::FlatBufferBuilder builder(2048);
         auto p = encodeLocalState(builder);
         auto body = p.first;
         auto size = p.second;
@@ -509,7 +555,7 @@ private:
         alive.Dominant_ = d;
 
         // broadcast
-        bc_queue_.push(std::make_shared<node_state>(std::move(alive)),
+        bc_queue_.Push(std::make_shared<node_state>(std::move(alive)),
             node_num_.load(std::memory_order_relaxed));
     }
 
@@ -528,7 +574,7 @@ private:
     void handleHeader(char* buff, std::size_t size,
                       message::Header &header) {
         if (size != message::HEADER_SIZE) {
-            logger->info("invalid header size: {}", message::HEADER_SIZE);
+            logger->error("invalid header size: {}", message::HEADER_SIZE);
             return;
         }
         message::DecodeHeader(reinterpret_cast<uint8_t *>(buff), header);
@@ -559,7 +605,7 @@ private:
             case message::TYPE_SYNCSTATE: {
                 auto remote_states = message::GetNodeStates(buff);
                 mergeStates(remote_states);
-                flatbuffers::FlatBufferBuilder builder;
+                flatbuffers::FlatBufferBuilder builder(2048);
                 auto p = encodeLocalState(builder);
                 body = p.first;
                 result = p.second;
@@ -587,6 +633,11 @@ private:
         switch (header.Type_) {
             case message::TYPE_PING: {
                 auto ping = flatbuffers::GetRoot<message::Ping>(buff+message::HEADER_SIZE);
+                if (header.Body_length_+message::HEADER_SIZE < size) {
+                    // there's gossip msg appended to the ping msg
+                    auto gossipMsg = message::GetNodeStates(buff+message::HEADER_SIZE+header.Body_length_);
+                    mergeStates(gossipMsg);
+                }
                 // generate pong
                 flatbuffers::FlatBufferBuilder builder;
                 auto ack = message::CreatePong(builder, ping->seqNo());
@@ -617,6 +668,14 @@ private:
         return rst;
     }
 
+    void shrinkMaxAppendedMsg() {
+        if (MAX_APPENDED_MSG_ == 1) {
+            logger->error("appened msg too large, cannot fit in udp packets");
+        } else {
+            MAX_APPENDED_MSG_ /= 2;
+        }
+    }
+
 private:
     config& conf_;
 
@@ -635,7 +694,8 @@ private:
     std::mutex suspicion_lock_;
     std::unordered_map<std::string, suspicion_ptr> suspicions_;
 
-    broadcast_queue bc_queue_;
+    BroadcastQueue bc_queue_;
+    int MAX_APPENDED_MSG_;
 };
 }
 
