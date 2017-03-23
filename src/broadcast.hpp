@@ -71,6 +71,7 @@ public:
             pop();
             --peeked_;
         }
+        peek_ = cur_;
         mtx_.unlock();
     }
 

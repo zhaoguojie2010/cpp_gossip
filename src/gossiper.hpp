@@ -49,7 +49,8 @@ public:
                      message::HEADER_SIZE,
                      std::bind(&gossiper::handlePacket, this, std::placeholders::_1,
                                std::placeholders::_2, std::placeholders::_3,
-                               std::placeholders::_4)) {}
+                               std::placeholders::_4)) {
+    }
 
     // sync with peer and start the probe and gossip routine
     // Returned value: indicates how many members the cluster has
@@ -560,12 +561,18 @@ private:
     }
 
     std::vector<std::string> randomNode(int num) {
-        std::vector<std::string> rst(num, "");
-        std::srand(std::time(0));
+        std::vector<std::string> rst;
+        static int cursor;
+
         node_lock_.lock();
-        int siz = nodes_.size();
-        for (int i=0; i<num; i++) {
-            rst[i] = nodes_[rand()%siz];
+        int size = nodes_.size();
+        if (nodes_.size() <= num) {
+            rst = nodes_;
+        } else {
+            for (int i = 0; i < num; i++) {
+                rst.push_back(nodes_[(cursor+i)%size]);
+            }
+            cursor = (cursor + num)%size;
         }
         node_lock_.unlock();
         return rst;

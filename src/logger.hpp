@@ -14,7 +14,9 @@ std::shared_ptr<spdlog::logger> GetLogger() {
 }
 
 std::shared_ptr<spdlog::logger> GetConsole() {
-    return spdlog::stdout_color_mt("console");
+    auto console = spdlog::stdout_color_mt("console");
+    console->set_level(spdlog::level::debug);
+    return console;
 }
 
 std::shared_ptr<spdlog::logger> logger = GetConsole();
