@@ -42,7 +42,6 @@ public:
         }
         auto self(shared_from_this());
         if (timeout > 0) {
-            logger->error("timeout");
             deadline_.expires_from_now(std::chrono::milliseconds(timeout));
             deadline_.async_wait([this, self](asio::error_code) {
                 checkDeadline("udp send timeout", [this]() {

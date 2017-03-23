@@ -154,6 +154,7 @@ private:
     }
 
     void suspectNode(const node_state &s) {
+        logger->debug("suspecting node {}", s.Name_);
         auto suspect_node_name = s.Name_;
         auto state = getNodeState(suspect_node_name);
 
@@ -239,6 +240,7 @@ private:
         bc_queue_.Push(std::make_shared<node_state>(std::move(dead)),
                        node_num_.load(std::memory_order_relaxed));
 
+        logger->info("node {} is dead", d.Name_);
         // notify leave
         // TODO:
     }
@@ -265,7 +267,7 @@ private:
         client->Waterfall(
             // if ping finish, start to receive pong
             std::bind(&udp::AsyncClient::AsyncReceiveFrom,
-                      client, host, port, 0),
+                      client, host, port, 1000),
             // if sending ping timeout, just give up
             nullptr,
             // if pong is received, check if it's valid
@@ -281,8 +283,11 @@ private:
                     logger->error("mismatched ping ack seqNo");
                 }
             },
-            // if pong timeout, start sending indirect ping packets
-            std::bind(&gossiper::indirectPing, this)
+            // TODO: if pong timeout, start sending indirect ping packets
+            // std::bind(&gossiper::indirectPing, this)
+            // right now, if we didn't get pong in time, just treat the target
+            // node as a suspect
+            std::bind(&gossiper::suspectNode, this, node)
         );
 
         uint8_t send_buff[mtu];
@@ -290,7 +295,7 @@ private:
 
         // send ping
         client->AsyncSendTo(reinterpret_cast<char*>(send_buff),
-                            size, host, port, 0);
+                            size, host, port, 1000);
     }
 
     int generatePing(uint64_t seqNo, uint8_t *send_buff, int send_buff_size) {
