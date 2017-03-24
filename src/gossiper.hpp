@@ -50,6 +50,7 @@ public:
                      std::bind(&gossiper::handlePacket, this, std::placeholders::_1,
                                std::placeholders::_2, std::placeholders::_3,
                                std::placeholders::_4)) {
+        node_num_.store(0, std::memory_order_relaxed);
     }
 
     // sync with peer and start the probe and gossip routine
@@ -328,6 +329,7 @@ private:
             auto node = bc_queue_.Peek();
             if (node == nullptr)
                 break;
+            logger->info("append port = {}, name = {}, state = {}, distinct = {}, dominant = {}", node->Port_, node->Name_, node->State_, bc_queue_.Distinct(), node->Dominant_);
             auto n = message::CreateNode(builder, builder.CreateString(node->Name_),
                                             builder.CreateString(node->IP_),
                                             std::stoi(node->Port_));
@@ -431,6 +433,7 @@ private:
     std::pair<uint8_t*, int> encodeLocalState(flatbuffers::FlatBufferBuilder &builder) {
         // generate local state
         std::vector<flatbuffers::Offset<message::NodeState>> ns_vec;
+        node_lock_.lock();
         for (auto it = node_map_.begin(); it != node_map_.end(); it++) {
             auto node = message::CreateNode(builder, builder.CreateString(it->second->Name_),
                                             builder.CreateString(it->second->IP_),
@@ -440,6 +443,7 @@ private:
                 builder.CreateString(it->second->From_), it->second->Timestamp_);
             ns_vec.push_back(ns);
         }
+        node_lock_.unlock();
         auto nss = builder.CreateVector(ns_vec);
         auto local_states = message::CreateNodeStates(builder, nss);
         builder.Finish(local_states);
@@ -548,10 +552,11 @@ private:
 
     // object if we're accused of being suspect or dead
     void fuckyou(uint64_t dominant) {
+        logger->info("fuck i'm alive");
         node_state alive;
         alive.Name_ = conf_.Name_;
         alive.IP_ = conf_.Addr_;
-        alive.Port_ = conf_.Port_;
+        alive.Port_ = std::to_string(conf_.Port_);
         alive.State_ = message::STATE_ALIVE;
 
         auto d = nextDominant();

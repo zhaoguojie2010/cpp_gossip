@@ -78,7 +78,11 @@ public:
     // Push the msg into the queue, node_num is used to
     // decide how many times the new state needs to be
     // broadcasted. see the comment of broadcast_multi_
-    void Push(std::shared_ptr<node_state> msg, const uint32_t node_num) {
+    void Push(std::shared_ptr<node_state> msg, uint32_t node_num) {
+        //std::cout << "push " << msg->Name_ << ", num = " << node_num << std::endl;
+        if (node_num <= 1) {
+            node_num = 2;
+        }
         auto key = msg->Name_;
         int times = broadcast_multi_ * std::ceil(std::log10(node_num));
         mtx_.lock();
@@ -92,6 +96,13 @@ public:
             }
         }
         mtx_.unlock();
+    }
+
+    int Distinct() {
+        mtx_.lock();
+        int d = m_.size();
+        mtx_.unlock();
+        return d;
     }
 
 public:
@@ -110,8 +121,9 @@ private:
         if (--cur_->second.second < 1) {
             // if counter is 0, remove the msg
             m_.erase(cur_++);
+        } else {
+            cur_++;
         }
-
         return rst;
     }
 
