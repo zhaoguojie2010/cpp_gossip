@@ -1,4 +1,6 @@
 #include <iostream>
+#include <thread>
+#include <chrono>
 #include "gossip.hpp"
 
 int main(int argc, char* argv[]) {
@@ -18,7 +20,6 @@ int main(int argc, char* argv[]) {
         g1.Join("localhost:29011");
     });
      */
-    int a;
-    std::cin >> a;
+    std::this_thread::sleep_for(std::chrono::seconds(10000));
     return 0;
 }

@@ -33,6 +33,10 @@ namespace gossip {
 
 class gossiper {
 public:
+    ~gossiper() {
+        std::cout << "~gossiper\n";
+    }
+
     gossiper(config& conf)
     : conf_(conf),
       seq_num_(0),
@@ -50,7 +54,7 @@ public:
                      std::bind(&gossiper::handlePacket, this, std::placeholders::_1,
                                std::placeholders::_2, std::placeholders::_3,
                                std::placeholders::_4)) {
-        node_num_.store(0, std::memory_order_relaxed);
+        //node_num_.store(0, std::memory_order_relaxed);
     }
 
     // sync with peer and start the probe and gossip routine
@@ -74,7 +78,7 @@ public:
         a.Port_ = std::to_string(conf_.Port_);
         a.Dominant_ = nextDominant();
         a.State_ = message::STATE_ALIVE;
-        aliveNode(a, true);
+        aliveNode(a, false);
 
         if (host != conf_.Addr_ || std::to_string(conf_.Port_) != port) {
             // sync state
@@ -111,7 +115,7 @@ private:
         return true;
     }
 
-    void aliveNode(const node_state &a, bool bootstrap) {
+    void aliveNode(const node_state &a, bool need_bc) {
         const std::string alive_node_name = a.Name_;
         if (is_leaving_ && alive_node_name == conf_.Name_) {
             return;
@@ -142,6 +146,19 @@ private:
         suspicions_.erase(alive_node_name);
         suspicion_lock_.unlock();
 
+        if (need_bc) {
+            //logger->info("push alive node:{} state:{}, domi:{}", alive_node_name, a.State_, a.Dominant_);
+            //logger->info("updated node:{} state:{}, domi:{}", alive_node_name, node_map_[alive_node_name]->State_, node_map_[alive_node_name]->Dominant_);
+            node_state alive(a);
+            bc_queue_.Push(std::make_shared<node_state>(std::move(alive)),
+                           node_num_.load(std::memory_order_relaxed));
+        }
+
+        if (alive_node_name == conf_.Name_) {
+            dominant_ = a.Dominant_;
+        }
+
+        /*
         // if it's about us and this is not a initialization, then update
         // ourselves
         if (!bootstrap && alive_node_name == conf_.Name_) {
@@ -152,6 +169,7 @@ private:
             bc_queue_.Push(std::make_shared<node_state>(std::move(alive)),
                            node_num_.load(std::memory_order_relaxed));
         }
+         */
     }
 
     void suspectNode(const node_state &s) {
@@ -228,31 +246,32 @@ private:
             return;
         }
 
-        updateNodeState(dead_node_name, d);
-        removeNodeState(dead_node_name);
-
         // if it's us, object
         if (dead_node_name == conf_.Name_ && !is_leaving_) {
             fuckyou(d.Dominant_);
             return;
         }
+
+        updateNodeState(dead_node_name, d);
+        removeNodeState(dead_node_name);
+
         // start to broadcast
         node_state dead(d);
         bc_queue_.Push(std::make_shared<node_state>(std::move(dead)),
                        node_num_.load(std::memory_order_relaxed));
 
-        logger->info("node {} is dead", d.Name_);
+        // logger->info("node {} is dead", d.Name_);
         // notify leave
         // TODO:
     }
 
     // probe randomly ping one known node via udp
     void probe() {
-        auto candi = randomNode(1);
+        auto candi = roundrobinNode(1);
         auto node = getNodeState(candi[0]);
         if (node->State_ == message::STATE_ALIVE &&
             node->Name_ != conf_.Name_) {
-            logger->debug("prepare to probe node: {0}", node->Name_);
+            //logger->info("prepare to probe node: {0}", node->Name_);
             probeNode(*node);
         }
     }
@@ -268,7 +287,7 @@ private:
         client->Waterfall(
             // if ping finish, start to receive pong
             std::bind(&udp::AsyncClient::AsyncReceiveFrom,
-                      client, host, port, 1000),
+                      client, host, port, 500),
             // if sending ping timeout, just give up
             nullptr,
             // if pong is received, check if it's valid
@@ -296,7 +315,7 @@ private:
 
         // send ping
         client->AsyncSendTo(reinterpret_cast<char*>(send_buff),
-                            size, host, port, 1000);
+                            size, host, port, 500);
     }
 
     int generatePing(uint64_t seqNo, uint8_t *send_buff, int send_buff_size) {
@@ -329,7 +348,7 @@ private:
             auto node = bc_queue_.Peek();
             if (node == nullptr)
                 break;
-            logger->info("append port = {}, name = {}, state = {}, distinct = {}, dominant = {}", node->Port_, node->Name_, node->State_, bc_queue_.Distinct(), node->Dominant_);
+            //logger->info("append port = {}, name = {}, state = {}, distinct = {}, dominant = {}", node->Port_, node->Name_, node->State_, bc_queue_.Distinct(), node->Dominant_);
             auto n = message::CreateNode(builder, builder.CreateString(node->Name_),
                                             builder.CreateString(node->IP_),
                                             std::stoi(node->Port_));
@@ -395,16 +414,16 @@ private:
     }
 
     // merge state with remote node via tcp
-    void mergeStates(const message::NodeStates *remote_states) {
+    void mergeStates(const message::NodeStates *remote_states, bool need_bc) {
         auto nss = remote_states->nodes();
         auto len = nss->Length();
         for(int i=0; i<len; ++i) {
             auto ns = nss->Get(i);
-            std::cout << "merging " << ns->node()->name()->str() << " state: " << ns->state() << std::endl;
+            //std::cout << "merging " << ns->node()->name()->str() << " state: " << ns->state() << std::endl;
             node_state state(convert(*ns));
             switch (state.State_) {
                 case message::STATE_ALIVE:
-                    aliveNode(state, false);
+                    aliveNode(state, need_bc);
                     break;
                 case message::STATE_SUSPECT:
                     suspectNode(state);
@@ -417,7 +436,7 @@ private:
                     break;
             }
         }
-        printNodeState();
+        //printNodeState();
     }
 
     void printNodeState() {
@@ -481,7 +500,7 @@ private:
         auto remote_states = message::GetNodeStates(resp);
 
         //merge
-        mergeStates(remote_states);
+        mergeStates(remote_states, false);
     }
 
     uint64_t nextDominant(uint64_t shift = 1) {
@@ -523,9 +542,6 @@ private:
     }
 
     void removeNodeState(const std::string &node_name) {
-        // when a node died, we don't remove it from the
-        // node_map_ yet, so that it could the last dominant
-        // when it joins the cluster again
         node_lock_.lock();
         int num = nodes_.size();
         for (int i = 0; i < num; i++) {
@@ -534,6 +550,7 @@ private:
                 nodes_.pop_back();
             }
         }
+        node_map_.erase(node_name);
         node_lock_.unlock();
     }
 
@@ -552,7 +569,7 @@ private:
 
     // object if we're accused of being suspect or dead
     void fuckyou(uint64_t dominant) {
-        logger->info("fuck i'm alive");
+        //logger->info("fuck i'm alive");
         node_state alive;
         alive.Name_ = conf_.Name_;
         alive.IP_ = conf_.Addr_;
@@ -570,7 +587,7 @@ private:
             node_num_.load(std::memory_order_relaxed));
     }
 
-    std::vector<std::string> randomNode(int num) {
+    std::vector<std::string> roundrobinNode(int num) {
         std::vector<std::string> rst;
         static int cursor;
 
@@ -621,7 +638,7 @@ private:
             }
             case message::TYPE_SYNCSTATE: {
                 auto remote_states = message::GetNodeStates(buff);
-                mergeStates(remote_states);
+                mergeStates(remote_states, true);
                 flatbuffers::FlatBufferBuilder builder(2048);
                 auto p = encodeLocalState(builder);
                 body = p.first;
@@ -653,7 +670,7 @@ private:
                 if (header.Body_length_+message::HEADER_SIZE < size) {
                     // there's gossip msg appended to the ping msg
                     auto gossipMsg = message::GetNodeStates(buff+message::HEADER_SIZE+header.Body_length_);
-                    mergeStates(gossipMsg);
+                    mergeStates(gossipMsg, true);
                 }
                 // generate pong
                 flatbuffers::FlatBufferBuilder builder;

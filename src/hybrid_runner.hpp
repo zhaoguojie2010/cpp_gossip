@@ -59,6 +59,7 @@ public:
     }
 
     ~HybridRunner() {
+        std::cout << "~HybridRunner\n";
         std::for_each(tickers_.begin(), tickers_.end(), [](Ticker* t) {
             delete t;
         });
