@@ -24,8 +24,8 @@
 #include "src/hybrid_runner.hpp"
 #include "src/logger.hpp"
 #include "src/broadcast.hpp"
-#include "thirdparty/asio/include/asio.hpp"
-#include "thirdparty/asio/include/asio/steady_timer.hpp"
+#include "thirdparty/asio.hpp"
+#include "thirdparty/asio/steady_timer.hpp"
 #include "src/network/udp/async_client.hpp"
 #include "src/network/tcp/blocking_client.hpp"
 

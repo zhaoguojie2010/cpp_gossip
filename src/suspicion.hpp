@@ -10,8 +10,8 @@
 #include <functional>
 #include <cstdint>
 
-#include "thirdparty/asio/include/asio.hpp"
-#include "thirdparty/asio/include/asio/steady_timer.hpp"
+#include "thirdparty/asio.hpp"
+#include "thirdparty/asio/steady_timer.hpp"
 namespace gossip {
 
 class suspicion :public asio::steady_timer {
