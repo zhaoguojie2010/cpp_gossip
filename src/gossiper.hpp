@@ -31,6 +31,7 @@
 
 namespace gossip {
 
+template<int THREAD_NUM>
 class gossiper {
 public:
     typedef std::shared_ptr<node_state> node_state_ptr;
@@ -131,7 +132,7 @@ private:
         hybrid_runner_.AddTicker(2000, std::bind(&gossiper::probe, this));
         // gossip every 1 sec
         //hybrid_runner_.AddTicker(1000, std::bind(&gossiper::gossip, this));
-        hybrid_runner_.Run();
+        hybrid_runner_.Run(THREAD_NUM);
         return true;
     }
 

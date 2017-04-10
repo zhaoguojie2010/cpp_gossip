@@ -42,16 +42,18 @@ public:
         tickers_.push_back(ticker);
     }
 
-    void Run() {
+    void Run(int thread_num) {
         // start the tcp server
         tcp_svr_.Start();
         // start the udp server
         udp_svr_.Start();
 
 
-        std::thread ([this]() {
-            io_service_.run();
-        }).detach();
+        for(int i=0; i<thread_num; i++) {
+            std::thread([this]() {
+                io_service_.run();
+            }).detach();
+        }
     }
 
     asio::io_service* GetIoSvc() {
