@@ -69,7 +69,7 @@ public:
                     deadline_.cancel();
                 }
                 if (ec) {
-                    std::cerr << "async_send_to: " << ec.message() << std::endl;
+                    logger->debug("async_send_to {}", ec.message());
                     return;
                 }
                 if (send_finish_cb_ != nullptr) {
@@ -133,7 +133,7 @@ private:
                     deadline_.cancel();
                 }
                 if (ec) {
-                    std::cerr << "xxx" << ec.message() << std::endl;
+                    logger->debug("async_receive_from {}", ec.message());
                     return;
                 }
                 if (receive_finish_cb_ != nullptr) {
@@ -144,7 +144,7 @@ private:
 
     void checkDeadline(const std::string &error_info, timeout_callback op) {
         if (deadline_.expires_at() <= std::chrono::steady_clock::now()) {
-            std::cout << error_info << std::endl;
+            logger->debug("checkDeadline {}", error_info);
             if (op != nullptr) {
                 op();
             }

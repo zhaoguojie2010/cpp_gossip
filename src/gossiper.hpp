@@ -33,6 +33,11 @@ namespace gossip {
 
 class gossiper {
 public:
+    typedef std::shared_ptr<node_state> node_state_ptr;
+    typedef std::shared_ptr<suspicion> suspicion_ptr;
+    typedef std::function<void(std::string)> event_notifier;
+
+public:
     ~gossiper() {
         std::cout << "~gossiper\n";
     }
@@ -43,6 +48,8 @@ public:
       dominant_(0),
       node_num_(0),
       MAX_APPENDED_MSG_(10),
+      notify_join_(nullptr),
+      notify_leave_(nullptr),
       is_leaving_(false),
       hybrid_runner_(conf.Port_,
                      std::bind(&gossiper::handleHeader, this, std::placeholders::_1,
@@ -95,13 +102,26 @@ public:
         return 0;
     }
 
+    // register event handler
+    // WARNING: make sure that neither notify_join or notify_leave
+    // will block, and since they runs in a separate thread, make
+    // sure they are thread-safe
+    // TODO: if they do block, create a thread pool for gossiping
+    void RegisterNotifier(event_notifier notify_join,
+        event_notifier notify_leave) {
+        notify_join_ = notify_join;
+        notify_leave_ = notify_leave;
+    }
+
     // GetAliveNodes
+    std::vector<std::string> GetAliveNodes() {
+        node_lock_.lock();
+        auto rst = nodes_;
+        node_lock_.unlock();
+        return std::move(rst);
+    }
 
     // Leave
-
-public:
-    typedef std::shared_ptr<node_state> node_state_ptr;
-    typedef std::shared_ptr<suspicion> suspicion_ptr;
 
 private:
     // alive starts the random probe & gossip routine in a
@@ -130,9 +150,6 @@ private:
             state->State_ = message::STATE_DEAD;
 
             addNodeState(alive_node_name, state);
-
-            // notify join
-            // TODO:
         }
 
         if (a.Dominant_ <= state->Dominant_) {
@@ -158,18 +175,11 @@ private:
             dominant_ = a.Dominant_;
         }
 
-        /*
-        // if it's about us and this is not a initialization, then update
-        // ourselves
-        if (!bootstrap && alive_node_name == conf_.Name_) {
-            dominant_ = a.Dominant_;
-        } else {
-            // it's not about us or we just init ourselves, start broadcasting
-            node_state alive(a);
-            bc_queue_.Push(std::make_shared<node_state>(std::move(alive)),
-                           node_num_.load(std::memory_order_relaxed));
+
+        // notify join
+        if (alive_node_name != conf_.Name_) {
+            notify_join_(alive_node_name);
         }
-         */
     }
 
     void suspectNode(const node_state &s) {
@@ -260,9 +270,10 @@ private:
         bc_queue_.Push(std::make_shared<node_state>(std::move(dead)),
                        node_num_.load(std::memory_order_relaxed));
 
-        // logger->info("node {} is dead", d.Name_);
         // notify leave
-        // TODO:
+        if (dead_node_name != conf_.Name_) {
+            notify_leave_(dead_node_name);
+        }
     }
 
     // probe randomly ping one known node via udp
@@ -730,6 +741,10 @@ private:
 
     BroadcastQueue bc_queue_;
     int MAX_APPENDED_MSG_;
+
+    // callback functions gossiper calls when node join/leave the cluster
+    event_notifier notify_join_;
+    event_notifier notify_leave_;
 };
 }
 
