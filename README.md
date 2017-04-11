@@ -49,3 +49,17 @@ int main(int argc, char* argv[]) {
     >./a.out 127.0.0.1:29011 127.0.0.1:29011
     * in another terminal:
     >./a.out 127.0.0.1:29013 127.0.0.1:29011
+
+# API
+
+* void gossiper::Join(const std::string &peer)
+    * Join the target cluster, peer denotes the seed node of the cluster
+* void gossiper::RegisterNotifier(event_notifier notify_join, notify_leave)
+    * Register join/leave event handler. If not specified, gossiper does nothing when such events occur
+    * WARNING: make sure that neither notify_join or notify_leave will block, and since they runs in a separate thread, make sure they are thread-safe
+* std::vector<std::string> gossiper::GetAliveNodes()
+    * Return all alive nodes of the cluster. Each element is a ip:port pair
+
+# NOTE
+
+* when you create a gossiper as mentioned before: `gossip::gossiper<THREAD_NUM> g(conf);`, normally set THREAD_NUM to 1 would be recommended. This means that all the gossip routines run in one separate OS thread. However, if you need more threads to handle the gossip routines, says 3 threads, just change the code as follow: `gossip::gossiper<3> g(conf);`

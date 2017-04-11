@@ -66,15 +66,12 @@ public:
     }
 
     // sync with peer and start the probe and gossip routine
-    // Returned value: indicates how many members the cluster has
-    // including ourselves when it's gt 0.
-    // Join failed if it returns 0
     // peer example: 192.168.1.39:29011
-    int Join(const std::string &peer) {
+    void Join(const std::string &peer) {
         auto vec = Split(peer, ":");
         if (vec.size() != 2) {
             logger->error("invalid peer: {}", peer);
-            return -1;
+            return;
         }
         std::string host = vec[0];
         std::string port = vec[1];
@@ -100,7 +97,6 @@ public:
         }
 
         alive();
-        return 0;
     }
 
     // register event handler
