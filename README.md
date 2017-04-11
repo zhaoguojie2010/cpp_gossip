@@ -1,11 +1,11 @@
-# cppgosip
+# cpp_gossip
 
-cppgossip is an header-only cross-platform gossip(aka. anti-entropy) protocol written in c++11
+cpp_gossip is an header-only cross-platform gossip(aka. anti-entropy) protocol written in c++11
 
 
 # Getting started
 
-1. git@github.com:zhaoguojie2010/cppgossip.git
+1. git clone git@github.com:zhaoguojie2010/cpp_gossip.git
 2. include "gossip.hpp"
 3. create join/leave handler, the signature should be void(std::string)
 4. create a config object: gossip::config conf(addr). addr format is ip:port
