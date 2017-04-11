@@ -1,8 +1,9 @@
-##cppgosip
+# cppgosip
+
 cppgossip is an header-only cross-platform gossip(aka. anti-entropy) protocol written in c++11
 
 
-##Getting started
+# Getting started
 
 1. git@github.com:zhaoguojie2010/cppgossip.git
 2. include "gossip.hpp"
