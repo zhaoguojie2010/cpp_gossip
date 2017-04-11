@@ -7,6 +7,8 @@
 
 #include <string>
 #include <cstdio>
+#include <exception>
+#include "utils.hpp"
 
 namespace gossip {
 
@@ -15,15 +17,25 @@ std::string getLocalAddr() {
 }
 
 struct config {
-    config(short port)
-    : Port_(port),
-      Addr_(getLocalAddr()),
-      Indirect_checks_(1000),
+    config(const std::string &addr)
+    : Indirect_checks_(1000),
       Sync_state_timeout_(0),
       Probe_interval_(1000),
       Probe_timeout_(1000),
       Gossip_interval_(1000) {
-        Name_ = getLocalAddr() + ":" + std::to_string(port);
+        Name_ = addr;
+        auto fields = Split(addr, ":");
+        if (fields.size() != 2) {
+            std::cout << "invalid addr " << addr << std::endl;
+            std::terminate();
+        }
+        Addr_ = fields[0];
+        try {
+            Port_ = std::stoi(fields[1]);
+        } catch(std::exception) {
+            std::cout << "invalid port " << fields[1] << std::endl;
+            std::terminate();
+        }
     }
 
     std::string Name_;
@@ -45,7 +57,7 @@ struct config {
 typedef std::shared_ptr<config> confptr;
 
 confptr DefaultConfig() {
-    auto conf = std::make_shared<config>(29011);
+    auto conf = std::make_shared<config>("127.0.0.1:29011");
     return conf;
 }
 }

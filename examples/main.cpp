@@ -13,14 +13,14 @@ void notify_leave(std::string node) {
 
 int main(int argc, char* argv[]) {
     if (argc != 3) {
-        std::cout << "example: ./a.out <local port> <join port>";
+        std::cout << "example: ./a.out <local addr> <join addr>";
         return 0;
     }
-    short local_port = std::atoi(argv[1]);
-    gossip::config conf(local_port);
+    std::string addr(argv[1]);
+    gossip::config conf(addr);
     gossip::gossiper<3> g(conf);
     g.RegisterNotifier(notify_join, notify_leave);
-    g.Join("127.0.0.1:" + std::string(argv[2]));
+    g.Join(std::string(argv[2]));
 
     /*
     std::thread t([]() {
