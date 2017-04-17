@@ -22,7 +22,7 @@ public:
               asio::io_service *io_svc, uint32_t timeout)
     : asio::steady_timer(*io_svc),
       confirm_(0),
-      need_confirm_(std::log(node_num) * 3),
+      need_confirm_(std::ceil(std::log2(node_num))),
       convict_(convict) {
         expires_from_now(std::chrono::milliseconds(timeout));
         async_wait([this](const asio::error_code&) {

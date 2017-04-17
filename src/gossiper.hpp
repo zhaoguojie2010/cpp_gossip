@@ -125,7 +125,7 @@ private:
     // new thread
     bool alive() {
         // randomly probe every 1 sec
-        hybrid_runner_.AddTicker(2000, std::bind(&gossiper::probe, this));
+        hybrid_runner_.AddTicker(1000, std::bind(&gossiper::probe, this));
         // gossip every 1 sec
         //hybrid_runner_.AddTicker(1000, std::bind(&gossiper::gossip, this));
         hybrid_runner_.Run(THREAD_NUM);
@@ -139,9 +139,11 @@ private:
         }
 
         auto state = getNodeState(alive_node_name);
+        bool need_notify = false;
         // if we've never seen this node, then create one and
         // add it to node_map_
         if (state == nullptr) {
+            need_notify = true;
             state = std::make_shared<node_state>(a);
             state->Dominant_ = 0;
             state->State_ = message::STATE_DEAD;
@@ -174,13 +176,12 @@ private:
 
 
         // notify join
-        if (alive_node_name != conf_.Name_) {
+        if (need_notify && alive_node_name != conf_.Name_ && notify_join_ != nullptr) {
             notify_join_(alive_node_name);
         }
     }
 
     void suspectNode(const node_state &s) {
-        logger->debug("suspecting node {}", s.Name_);
         auto suspect_node_name = s.Name_;
         auto state = getNodeState(suspect_node_name);
 
@@ -188,6 +189,7 @@ private:
             return;
         }
 
+        logger->debug("suspecting node {}", s.Name_);
         std::function<void()> broadcastSuspect = [this, &s]() {
             node_state sus(s);
             bc_queue_.Push(std::make_shared<node_state>(std::move(sus)),
@@ -268,7 +270,7 @@ private:
                        node_num_.load(std::memory_order_relaxed));
 
         // notify leave
-        if (dead_node_name != conf_.Name_) {
+        if (dead_node_name != conf_.Name_ && notify_leave_ != nullptr) {
             notify_leave_(dead_node_name);
         }
     }
