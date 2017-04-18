@@ -143,16 +143,21 @@ private:
         // if we've never seen this node, then create one and
         // add it to node_map_
         if (state == nullptr) {
-            need_notify = true;
             state = std::make_shared<node_state>(a);
             state->Dominant_ = 0;
             state->State_ = message::STATE_DEAD;
-
-            addNodeState(alive_node_name, state);
         }
 
         if (a.Dominant_ <= state->Dominant_) {
             return;
+        }
+
+        // if node come back alive from dead or it's a new alive node,
+        // 1. do the notification
+        // 2. add the node
+        if (state->State_ == message::STATE_DEAD) {
+            need_notify = true;
+            addNodeState(alive_node_name, state);
         }
 
         updateNodeState(alive_node_name, a);
@@ -189,7 +194,7 @@ private:
             return;
         }
 
-        logger->debug("suspecting node {}", s.Name_);
+        logger->info("suspecting node {0}, dominant = {1}", s.Name_, state->Dominant_);
         std::function<void()> broadcastSuspect = [this, &s]() {
             node_state sus(s);
             bc_queue_.Push(std::make_shared<node_state>(std::move(sus)),
@@ -278,10 +283,10 @@ private:
     // probe randomly ping one known node via udp
     void probe() {
         auto candi = roundrobinNode(1);
+        logger->info("prepare to probe node: {0}", candi[0]);
         auto node = getNodeState(candi[0]);
         if (node->State_ == message::STATE_ALIVE &&
             node->Name_ != conf_.Name_) {
-            //logger->info("prepare to probe node: {0}", node->Name_);
             probeNode(*node);
         }
     }
@@ -558,9 +563,14 @@ private:
             if (nodes_[i].compare(node_name) == 0) {
                 std::swap(nodes_[i], nodes_[num-1]);
                 nodes_.pop_back();
+                node_num_.fetch_sub(1, std::memory_order_relaxed);
+                break;
             }
         }
-        node_map_.erase(node_name);
+        // keep the dead in the node_map_ so that when it come back
+        // alive it could issue an objection to update its dominant to
+        // prevent flipping join/leave notifications.
+        //node_map_.erase(node_name);
         node_lock_.unlock();
     }
 
@@ -579,7 +589,7 @@ private:
 
     // object if we're accused of being suspect or dead
     void fuckyou(uint64_t dominant) {
-        //logger->info("fuck i'm alive");
+        logger->info("fuck i'm alive");
         node_state alive;
         alive.Name_ = conf_.Name_;
         alive.IP_ = conf_.Addr_;
@@ -591,6 +601,7 @@ private:
             d = nextDominant(dominant-d+1);
         }
         alive.Dominant_ = d;
+        logger->info("alive.dominant = {}", d);
 
         // broadcast
         bc_queue_.Push(std::make_shared<node_state>(std::move(alive)),
