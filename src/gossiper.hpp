@@ -125,9 +125,9 @@ private:
     // new thread
     bool alive() {
         // randomly probe every 1 sec
-        hybrid_runner_.AddTicker(1000, std::bind(&gossiper::probe, this));
+        hybrid_runner_.AddTicker(conf_.Probe_interval_, std::bind(&gossiper::probe, this));
         // gossip every 1 sec
-        //hybrid_runner_.AddTicker(1000, std::bind(&gossiper::gossip, this));
+        hybrid_runner_.AddTicker(conf_.Gossip_interval_, std::bind(&gossiper::gossip, this));
         hybrid_runner_.Run(THREAD_NUM);
         return true;
     }
@@ -238,7 +238,7 @@ private:
         // make sure the suspicion is not created by other threads(if any)
         if (suspicions_.find(suspect_node_name) == suspicions_.end()) {
             sus = std::make_shared<suspicion>(node_num_.load(std::memory_order_relaxed),
-                                              convict, hybrid_runner_.GetIoSvc(), 2000);
+                                              convict, hybrid_runner_.GetIoSvc(), 1000);
             suspicions_[suspect_node_name] = sus;
         }
         suspicion_lock_.unlock();
@@ -302,7 +302,7 @@ private:
         client->Waterfall(
             // if ping finish, start to receive pong
             std::bind(&udp::AsyncClient::AsyncReceiveFrom,
-                      client, host, port, 500),
+                      client, host, port, conf_.Probe_timeout_),
             // if sending ping timeout, just give up
             nullptr,
             // if pong is received, check if it's valid
@@ -342,7 +342,7 @@ private:
 
         // send ping
         client->AsyncSendTo(reinterpret_cast<char*>(send_buff),
-                            size, host, port, 500);
+                            size, host, port, conf_.Probe_timeout_);
     }
 
     int generatePing(uint64_t seqNo, uint8_t *send_buff, int send_buff_size) {

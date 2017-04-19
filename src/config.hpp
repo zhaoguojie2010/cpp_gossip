@@ -20,8 +20,8 @@ struct config {
     config(const std::string &addr)
     : Indirect_checks_(1000),
       Sync_state_timeout_(0),
-      Probe_interval_(1000),
-      Probe_timeout_(1000),
+      Probe_interval_(500),
+      Probe_timeout_(500),
       Gossip_interval_(1000) {
         Name_ = addr;
         auto fields = Split(addr, ":");
