@@ -3,7 +3,7 @@
 #ifndef FLATBUFFERS_GENERATED_MESSAGE_GOSSIP_MESSAGE_H_
 #define FLATBUFFERS_GENERATED_MESSAGE_GOSSIP_MESSAGE_H_
 
-#include "flatbuffers/flatbuffers.h"
+#include "thirdparty/flatbuffers/flatbuffers.h"
 
 
 namespace gossip {
