@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
     }
     std::string addr(argv[1]);
     gossip::config conf(addr);
-    gossip::gossiper<3> g(conf);
+    gossip::gossiper<1> g(conf);
     g.RegisterNotifier(notify_join, notify_leave);
     g.Join(std::string(argv[2]));
 

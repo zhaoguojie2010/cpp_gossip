@@ -194,7 +194,7 @@ private:
             return;
         }
 
-        logger->info("suspecting node {0}, dominant = {1}", s.Name_, state->Dominant_);
+        //logger->info("suspecting node {0}, dominant = {1}", s.Name_, state->Dominant_);
         std::function<void()> broadcastSuspect = [this, &s]() {
             node_state sus(s);
             bc_queue_.Push(std::make_shared<node_state>(std::move(sus)),
@@ -283,7 +283,7 @@ private:
     // probe randomly ping one known node via udp
     void probe() {
         auto candi = roundrobinNode(1);
-        logger->info("prepare to probe node: {0}", candi[0]);
+        //logger->info("prepare to probe node: {0}", candi[0]);
         auto node = getNodeState(candi[0]);
         if (node->State_ == message::STATE_ALIVE &&
             node->Name_ != conf_.Name_) {
@@ -306,7 +306,7 @@ private:
             // if sending ping timeout, just give up
             nullptr,
             // if pong is received, check if it's valid
-            [seq_num](char *resp, std::size_t size) {
+            [this,seq_num](char *resp, std::size_t size) {
                 message::Header header;
                 message::DecodeHeader(reinterpret_cast<uint8_t*>(resp), header);
                 if (header.Type_ != message::TYPE_PONG) {
@@ -316,6 +316,18 @@ private:
                 auto pong = flatbuffers::GetRoot<message::Pong>(resp+message::HEADER_SIZE);
                 if (pong->seqNo() != seq_num) {
                     logger->error("mismatched ping ack seqNo");
+                }
+
+                // check if dead alert is appended
+                if (size > message::HEADER_SIZE+header.Body_length_) {
+                    auto dead_node_state = flatbuffers::GetRoot<message::NodeState>(
+                        resp+message::HEADER_SIZE+header.Body_length_);
+                    auto name = dead_node_state->node()->name()->str();
+                    auto state = dead_node_state->state();
+                    if (name == conf_.Name_ && state == message::STATE_DEAD) {
+                        // there is a dead alert appended, object
+                        fuckyou(dead_node_state->dominant());
+                    }
                 }
             },
             // TODO: if pong timeout, start sending indirect ping packets
@@ -391,6 +403,33 @@ private:
         }
         // now pop the peeked msg
         bc_queue_.ApplyPeek();
+        uint8_t *body = builder.GetBufferPointer();
+        std::memcpy(buff, body, size);
+        return size;
+    }
+
+    // Sometimes a node fails to join a cluster. This typically happens when a node
+    // restart immediately after it crashes/shutdown and the seed node already
+    // sends a ping to the current node and is waiting for the pong. At this point,
+    // the seed node hasn't realized that the node leaved the cluster for a while. So
+    // when the pong finally timed out, the other nodes in the cluster will simply
+    // mark this node as dead, while this node thinks it joined the cluster successfully.
+    // To prevent this, when current node received a ping from other node and the local
+    // node state of the other node is dead, the current node append a dead alter to the
+    // pong so that the other node has a chance to object.
+    int appendDeadAlert(node_state_ptr node, uint8_t *buff, int buff_size) {
+        flatbuffers::FlatBufferBuilder builder(1024);
+        auto n = message::CreateNode(builder, builder.CreateString(node->Name_),
+                                     builder.CreateString(node->IP_),
+                                     std::stoi(node->Port_));
+        auto ns = message::CreateNodeState(
+            builder, n, node->State_, node->Dominant_,
+            builder.CreateString(node->From_), node->Timestamp_);
+        builder.Finish(ns);
+        int size = builder.GetSize();
+        if (size > buff_size) {
+            return 0;
+        }
         uint8_t *body = builder.GetBufferPointer();
         std::memcpy(buff, body, size);
         return size;
@@ -589,7 +628,7 @@ private:
 
     // object if we're accused of being suspect or dead
     void fuckyou(uint64_t dominant) {
-        logger->info("fuck i'm alive");
+        //logger->info("fuck i'm alive");
         node_state alive;
         alive.Name_ = conf_.Name_;
         alive.IP_ = conf_.Addr_;
@@ -601,7 +640,6 @@ private:
             d = nextDominant(dominant-d+1);
         }
         alive.Dominant_ = d;
-        logger->info("alive.dominant = {}", d);
 
         // broadcast
         bc_queue_.Push(std::make_shared<node_state>(std::move(alive)),
@@ -688,6 +726,7 @@ private:
         switch (header.Type_) {
             case message::TYPE_PING: {
                 auto ping = flatbuffers::GetRoot<message::Ping>(buff+message::HEADER_SIZE);
+                auto ns = getNodeState(ping->from()->str());
                 if (header.Body_length_+message::HEADER_SIZE < size) {
                     // there's gossip msg appended to the ping msg
                     auto gossipMsg = message::GetNodeStates(buff+message::HEADER_SIZE+header.Body_length_);
@@ -709,7 +748,11 @@ private:
                 std::memcpy(resp_buff+message::HEADER_SIZE, tmp_buff, size);
                 rst = size + message::HEADER_SIZE;
 
-
+                // append dead alert if needed
+                if (ns != nullptr && ns->State_ == message::STATE_DEAD) {
+                    int append_size = appendDeadAlert(ns, reinterpret_cast<uint8_t*>(resp_buff)+rst, resp_size-rst);
+                    rst += append_size;
+                }
                 break;
             }
             case message::TYPE_INDIRECTPING: {

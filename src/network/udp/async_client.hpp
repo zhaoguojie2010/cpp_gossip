@@ -40,6 +40,9 @@ public:
             logger->error("datagram size too large");
             return;
         }
+        if (size <= 0) {
+            logger->error("invalid datagram size: {}", size);
+        }
         auto self(shared_from_this());
         if (timeout > 0) {
             deadline_.expires_from_now(std::chrono::milliseconds(timeout));
