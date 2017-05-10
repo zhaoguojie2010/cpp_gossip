@@ -4,6 +4,7 @@
 
 #ifndef CPPGOSSIP_GOSSIP_H
 #define CPPGOSSIP_GOSSIP_H
+#define ASIO_STANDALONE
 
 #include "src/config.hpp"
 #include "src/gossiper.hpp"
